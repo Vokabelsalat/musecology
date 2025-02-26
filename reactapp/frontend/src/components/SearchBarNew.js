@@ -1,8 +1,10 @@
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { useEffect, useState, useMemo } from "react";
-import { getFlagEmoji, langUnicode } from "./Tooltip";
+import { isEmojiSupported } from "is-emoji-supported";
+import { useMemo } from "react";
+import { ReactCountryFlag } from "react-country-flag";
 import { replaceSpecialCharacters } from "../utils/utils";
+import { langUnicode } from "./Tooltip";
 
 export default function SearchBar(props) {
   const {
@@ -208,8 +210,15 @@ export default function SearchBar(props) {
                           <div
                             key={`searchOption${replaceSpecialCharacters(str)}`}
                           >
-                            {getFlagEmoji(langUnicode[language])} :{" "}
-                            {str.charAt(0).toUpperCase() + str.slice(1)}
+                            <ReactCountryFlag
+                              style={{
+                                fontSize: "1.5em",
+                                lineHeight: "1.5em"
+                              }}
+                              countryCode={langUnicode[language]}
+                              svg={!isEmojiSupported("🇬🇧")}
+                            />{" "}
+                            : {str.charAt(0).toUpperCase() + str.slice(1)}
                           </div>
                         );
                       }

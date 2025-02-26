@@ -3,6 +3,7 @@ import Switch from "@mui/material/Switch";
 import Legend from "./LegendNew";
 import SearchBar from "./SearchBarNew";
 import CountrySearchBar from "./CountrySearchBar";
+import { ReactCountryFlag } from "react-country-flag";
 
 export default function CenterPanel(props) {
   const {
@@ -17,7 +18,12 @@ export default function CenterPanel(props) {
     speciesData,
     treeMapFilter,
     setTreeMapFilter,
-    formMapMode
+    formMapMode,
+    countriesDictionary,
+    ecoRegionSearchOptions,
+    setSelectedCountry,
+    selectedCountry,
+    setSelectedEcoregion
   } = props;
 
   return (
@@ -119,17 +125,14 @@ export default function CenterPanel(props) {
           <CountrySearchBar
             speciesData={speciesData}
             mapSearchMode={formMapMode}
-            /* mapSearchBarData={}
-          value={}
-          mode={} */
+            countriesDictionary={countriesDictionary}
+            ecoRegionSearchOptions={ecoRegionSearchOptions}
+            setSelectedCountry={setSelectedCountry}
+            setSelectedEcoregion={setSelectedEcoregion}
+            selectedCountry={selectedCountry}
           />
         </div>
       </div>
-      <div></div>
-      <div></div>
-
-      <div></div>
-      <div></div>
     </div>
   );
 }

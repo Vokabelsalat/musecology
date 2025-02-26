@@ -110,6 +110,10 @@ export default function HomeNew(props) {
   const [instrumentGroup, setInstrumentGroup] = useState();
   const [instrumentPart, setInstrumentPart] = useState();
 
+  const [countriesDictionary, setCountriesDictionary] = useState(null);
+  const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
+  const [ecoRegionSearchOptions, setEcoRegionSearchOptions] = useState(null);
+
   const [timeFrame, setTimeFrame] = useState([]);
   const [speciesData, setSpeciesData] = useState({});
 
@@ -120,6 +124,7 @@ export default function HomeNew(props) {
   const [formMapMode, setFormMapMode] = useState("countries");
 
   const [selectedCountry, setSelectedCountry] = useState();
+  const [selectedEcoregion, setSelectedEcoregion] = useState();
 
   const [treeMapFilter, setTreeMapFilter] = useState({});
 
@@ -196,6 +201,17 @@ export default function HomeNew(props) {
       })
       .catch((error) => {
         console.log(`Couldn't find file allSpecies.json`, error);
+      });
+
+    fetch("/countryDictionary.json")
+      .then((res) => res.json())
+      .then(function (json) {
+        let tmpOrchestraToISO3 = {};
+        for (let country of Object.values(json)) {
+          tmpOrchestraToISO3[country["orchestraCountry"]] = country["ISO3"];
+        }
+        setCountriesDictionary(json);
+        setOrchestrasToISO3(tmpOrchestraToISO3);
       });
   }, []);
 
@@ -441,6 +457,11 @@ export default function HomeNew(props) {
                     treeMapFilter={treeMapFilter}
                     setTreeMapFilter={setTreeMapFilter}
                     formMapMode={formMapMode}
+                    countriesDictionary={countriesDictionary}
+                    ecoRegionSearchOptions={ecoRegionSearchOptions}
+                    setSelectedCountry={setSelectedCountry}
+                    selectedCountry={selectedCountry}
+                    setSelectedEcoregion={setSelectedEcoregion}
                   />
                 }
               </div>
@@ -518,6 +539,9 @@ export default function HomeNew(props) {
                       formMapMode={formMapMode}
                       setFormMapMode={setFormMapMode}
                       timeFrame={timeFrame}
+                      countriesDictionary={countriesDictionary}
+                      orchestrasToISO3={orchestrasToISO3}
+                      setEcoRegionSearchOptions={setEcoRegionSearchOptions}
                     />
                   </ResizeComponent>
                 )}

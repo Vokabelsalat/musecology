@@ -1,116 +1,87 @@
+import Autocomplete from "@mui/material/Autocomplete";
+import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { useEffect, useState, useMemo } from "react";
-import { getFlagEmoji, langUnicode } from "./Tooltip";
+import { isEmojiSupported } from "is-emoji-supported";
+import React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ReactCountryFlag } from "react-country-flag";
+// import { getFlagEmoji, langUnicode } from "./Tooltip";
 
 export default function CountrySearchBar(props) {
   const {
-    id,
-    setFilter,
     speciesData: data,
     mapSearchMode,
-    mapSearchBarData,
-    value,
-    mode
+    countriesDictionary,
+    ecoRegionSearchOptions,
+    setSelectedCountry,
+    selectedCountry,
+    setSelectedEcoregion
   } = props;
 
-  // console.log(value, data, mode, mapSearchBarData, mapSearchMode);
+  const [value, setValue] = useState();
 
-  /* const value = useMemo(() => {
-    return treeMapFilter.species
-      ? {
-          title: treeMapFilter.species,
-          type: "species",
-          kingdom: treeMapFilter.kingdom,
-          family: treeMapFilter.familia,
-          genus: treeMapFilter.genus,
-          species: treeMapFilter.species
-        }
-      : treeMapFilter.genus
-      ? {
-          title: treeMapFilter.genus,
-          type: "genus",
-          kingdom: treeMapFilter.kingdom,
-          family: treeMapFilter.familia,
-          genus: treeMapFilter.genus,
-          species: null
-        }
-      : null;
-  }, [treeMapFilter]); */
-
-  //  const [value, setValue] = useState(treeMapFilter.species);
-
-  /* const select = (val) => {
-    setFilter({
-      searchBarSpecies: val != null ? val.title : null,
-      kingdom: val != null ? [val.kingdom] : null,
-      familia: val != null ? [val.family] : null,
-      genus: val != null ? [val.genus] : null,
-      species: val != null ? (val.species ? [val.species] : null) : null
-    });
-    setValue(val);
-  }; */
-
-  let options = [];
-
-  if (data) {
-    let genus = {};
-    for (let key of Object.keys(data).sort()) {
-      let keyGenus = data[key].Genus.trim();
-      if (!Object.keys(genus).includes(keyGenus)) {
-        genus[keyGenus] = [key];
-        options.push({
-          title: keyGenus,
-          type: "genus",
-          kingdom: data[key].Kingdom.trim(),
-          family: data[key].Family.trim(),
-          genus: data[key].Genus.trim(),
-          species: null
+  const [countryOptions, ecoRegionOptions] = useMemo(() => {
+    let tmpCountryOptions = [];
+    let tmpEcoRegionOptions = [];
+    if (countriesDictionary != null) {
+      tmpCountryOptions = Object.keys(countriesDictionary)
+        .filter((key) => {
+          return (
+            countriesDictionary[key].BGCI !== "" &&
+            countriesDictionary[key].BGCI !== "replaceME"
+          );
+        })
+        .map((e) => {
+          return {
+            title: countriesDictionary[e].BGCI,
+            value: countriesDictionary[e].ROMNAM,
+            iso: countriesDictionary[e].ISO2,
+            type: "country"
+          };
+        })
+        .sort((a, b) => {
+          return (a.title > b.title) - (a.title < b.title);
         });
-      } else {
-        genus[keyGenus].push(key);
-      }
-
-      options.push({
-        title: key,
-        type: "species",
-        kingdom: data[key].Kingdom.trim(),
-        family: data[key].Family.trim(),
-        genus: data[key].Genus.trim(),
-        species: key,
-        en: data[key]["fixedCommonNames"]["en"],
-        de: data[key]["fixedCommonNames"]["de"],
-        es: data[key]["fixedCommonNames"]["es"],
-        fr: data[key]["fixedCommonNames"]["fr"],
-        all: Object.values(data[key]["fixedCommonNames"]).join(" ")
-      });
     }
 
-    options = options.filter((opt) => {
-      if (opt["type"] === "genus" && genus[opt["genus"]].length === 1) {
-        return false;
-      }
-      return true;
-    });
-  }
+    if (ecoRegionSearchOptions != null) {
+      tmpEcoRegionOptions = ecoRegionSearchOptions.sort((a, b) => {
+        return (a.title > b.title) - (a.title < b.title);
+      });
+    }
+    return [tmpCountryOptions, tmpEcoRegionOptions];
+    // const tmpSpeciesPerCountry = {};
+    /* for (let key of Object.keys(data)) {
+      // for()
+    } */
+  }, [data, countriesDictionary, ecoRegionSearchOptions]);
+
+  const label = useMemo(() => {
+    switch (mapSearchMode) {
+      case "ecoregions":
+      case "hexagons":
+      case "protection":
+        return "Ecoregion Search";
+      case "countries":
+      default:
+        return "Country Search";
+    }
+  }, [mapSearchMode]);
 
   return (
     <Autocomplete
-      value={value}
+      value={value != null ? value : null}
       onChange={(event, newValue) => {
-        console.log(event, newValue);
-
-        /* setTreeMapFilter({
-          genus: newValue && newValue["genus"] ? newValue["genus"] : null,
-          species: newValue && newValue["species"] ? newValue["species"] : null,
-          family: newValue && newValue["family"] ? newValue["family"] : null,
-          kingdom: newValue && newValue["kingdom"] ? newValue["kingdom"] : null
-        }); */
+        if (mapSearchMode === "countries") {
+          setSelectedCountry(newValue != null ? newValue.value : null);
+        } else if (mapSearchMode === "ecoregions") {
+          setSelectedEcoregion(newValue.value);
+        }
+        setValue(newValue);
       }}
+      id="country-search-input"
       filterOptions={(options, params) => {
         const { inputValue } = params;
-        /* const filtered = filter(options, params); */
-        /* console.log(filtered, options, params); */
 
         const filtered = options.filter((entry) => {
           if (entry.title.toLowerCase().includes(inputValue.toLowerCase())) {
@@ -155,26 +126,19 @@ export default function CountrySearchBar(props) {
           }
         });
 
-        /* const { inputValue } = params;
-        // Suggest the creation of a new value
-        const isExisting = options.some(
-          (option) => inputValue === option.title
-        ); */
-        /*  if (inputValue !== "" && !isExisting) {
-        filtered.push({
-          inputValue,
-          title: `Add "${inputValue}"`
-        });
-      } */
-
         return filtered;
       }}
       selectOnFocus
       clearOnBlur
       handleHomeEndKeys
-      id="free-solo-with-text-demo"
-      options={options}
+      options={
+        mapSearchMode === "countries" ? countryOptions : ecoRegionOptions
+      }
       getOptionLabel={(option) => {
+        if (option.iso != null) {
+          return `${option.title}`;
+        }
+
         // Value selected with enter, right from the input
         if (typeof option === "string") {
           return option;
@@ -188,50 +152,53 @@ export default function CountrySearchBar(props) {
         return option.title;
       }}
       renderOption={(props, option) => {
-        return (
-          <li {...props}>
-            {option.type === "genus" ? (
-              <span>
-                <b>
-                  <i>{option.title}</i>
-                </b>{" "}
-                (Genus)
-              </span>
-            ) : (
-              <div>
-                <i>{option.title}</i>
-                {option.found && (
-                  <div style={{ fontSize: "smaller" }}>
-                    {option.found.map((language) => {
-                      if (option[language] == null) {
-                        return <></>;
-                      } else {
-                        let str = option[language];
-                        return (
-                          <div>
-                            {getFlagEmoji(langUnicode[language])} :{" "}
-                            {str.charAt(0).toUpperCase() + str.slice(1)}
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-          </li>
-        );
+        if (option.iso != null) {
+          return (
+            <li {...props}>
+              <ReactCountryFlag
+                style={{
+                  fontSize: "1.5em",
+                  lineHeight: "1.5em"
+                }}
+                countryCode={option.iso}
+                svg={!isEmojiSupported("🇬🇧")}
+              />
+              &nbsp;
+              {option.title}
+            </li>
+          );
+        } else {
+          return <li {...props}>{option.title}</li>;
+        }
       }}
       sx={{ width: 250 }}
       freeSolo
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          className={value ? "filterUsed" : ""}
-          label="Country Search"
-          size="small"
-        />
-      )}
+      renderInput={(params) => {
+        return (
+          <div className="relative">
+            {value != null && (
+              <ReactCountryFlag
+                className="absolute h-[1.6em] z-40 left-2"
+                style={{
+                  fontSize: "1.6em",
+                  lineHeight: "1.6em",
+                  height: "1.6em"
+                }}
+                countryCode={value.iso}
+                svg={!isEmojiSupported("🇬🇧")}
+              />
+            )}
+            <TextField
+              {...params}
+              className={value ? "filterUsed" : ""}
+              size="small"
+              variant="outlined"
+              // InputLabelProps={{ shrink: value != null ? true : false }}
+              label="Country Search"
+            />
+          </div>
+        );
+      }}
       style={{ display: "table-cell", verticalAlign: "middle" }}
     />
   );

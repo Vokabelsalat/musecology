@@ -69,6 +69,8 @@ export default function TreeMapTile(props) {
 
   const [visibleIndex, setVisibleIndex] = useState(0);
 
+  const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|webp|tiff|svg)$/i;
+
   const photos = useMemo(() => {
     const ph = [];
 
@@ -82,9 +84,13 @@ export default function TreeMapTile(props) {
 
     if (speciesLevel && max.data.mediaUrls) {
       ph.push(
-        ...max.data.mediaUrls.map((e) => {
-          return { type: "wiki", src: e };
-        })
+        ...max.data.mediaUrls
+          .filter((e) => {
+            return imageExtensions.test(e);
+          })
+          .map((e) => {
+            return { type: "wiki", src: e };
+          })
       );
     }
 

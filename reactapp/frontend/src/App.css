@@ -1235,3 +1235,7 @@ a:any-link {
 .mapboxgl-ctrl-top-right {
   top: 35px !important;
 }
+
+#country-search-input {
+  margin-left: 25px;
+}

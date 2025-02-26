@@ -48,55 +48,57 @@ export default function Legend(props) {
               <div className="infoI">i</div>
             </a>
           </div>
-          {citesAssessment.getSortedLevels().map((e) => {
-            let style = {
-              display: "inline-block",
-              minWidth: "40px",
-              /*  border:
+          <div className="flex justify-center">
+            {citesAssessment.getSortedLevels().map((e) => {
+              let style = {
+                display: "inline-block",
+                minWidth: "40px",
+                /*  border:
                 categoryFilter &&
                 categoryFilter.type === "cites" &&
                 categoryFilter.cat === e
                   ? "2px solid var(--highlightpurple)"
                   : "none",*/
-              backgroundColor: citesAssessment.get(e).getColor(colorBlind),
-              color: citesAssessment.get(e).getForegroundColor(colorBlind)
-            };
-            return (
-              <div
-                key={e}
-                style={style}
-                data-info="CITES"
-                data-key={e}
-                className={`legendEntry ${
-                  threatType === type ? "clickable" : ""
-                } ${
-                  categoryFilter &&
-                  categoryFilter.type === "cites" &&
-                  categoryFilter.value === e
-                    ? "highlight-border"
-                    : ""
-                }`}
-                onClick={(event) => {
-                  if (threatType === type) {
-                    if (
-                      categoryFilter &&
-                      categoryFilter.value === e &&
-                      categoryFilter.type === "cites"
-                    ) {
-                      setCategoryFilter(null);
-                    } else {
-                      setCategoryFilter({ type: "cites", value: e });
+                backgroundColor: citesAssessment.get(e).getColor(colorBlind),
+                color: citesAssessment.get(e).getForegroundColor(colorBlind)
+              };
+              return (
+                <div
+                  key={e}
+                  style={style}
+                  data-info="CITES"
+                  data-key={e}
+                  className={`legendEntry ${
+                    threatType === type ? "clickable" : ""
+                  } ${
+                    categoryFilter &&
+                    categoryFilter.type === "cites" &&
+                    categoryFilter.value === e
+                      ? "highlight-border"
+                      : ""
+                  }`}
+                  onClick={(event) => {
+                    if (threatType === type) {
+                      if (
+                        categoryFilter &&
+                        categoryFilter.value === e &&
+                        categoryFilter.type === "cites"
+                      ) {
+                        setCategoryFilter(null);
+                      } else {
+                        setCategoryFilter({ type: "cites", value: e });
+                      }
                     }
-                  }
-                }}
-                /*  onMouseEnter={(e) => this.tooltip(e, true)}
+                  }}
+                  /*  onMouseEnter={(e) => this.tooltip(e, true)}
                 onMouseLeave={(e) => this.tooltip(e, false)}
                 onMouseMove={(e) => this.tooltipMove(e)} */
-              >
-                {e}
-              </div>
-            );
-          })}
+                >
+                  {e}
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div
           style={{
@@ -184,7 +186,7 @@ export default function Legend(props) {
               <div className="infoI">i</div>
             </a>
           </div>
-          <div>
+          <div className="flex justify-center">
             {iucnAssessment.getSortedLevels().map((e, i) => {
               let width;
               if (["LR/cd"].includes(e)) {
@@ -252,64 +254,66 @@ export default function Legend(props) {
             opacity: threatType === type ? 1.0 : 0.5
           }}
         >
-          {bgciAssessment.getSortedLevels().map((e) => {
-            let width;
-            if (["EX"].includes(e)) {
-              width = "70px";
-            } else if (["TH"].includes(e)) {
-              width = "105px";
-            } else {
-              width = "35px";
-            }
+          <div className="flex justify-center">
+            {bgciAssessment.getSortedLevels().map((e) => {
+              let width;
+              if (["EX"].includes(e)) {
+                width = "70px";
+              } else if (["TH"].includes(e)) {
+                width = "105px";
+              } else {
+                width = "35px";
+              }
 
-            let style = {
-              minWidth: width,
-              cursor: threatType === type ? "pointer" : "default",
-              /* border:
+              let style = {
+                minWidth: width,
+                cursor: threatType === type ? "pointer" : "default",
+                /* border:
                 categoryFilter &&
                 categoryFilter.type === "bgci" &&
                 categoryFilter.cat === e
                   ? "2px solid var(--highlightpurple)"
                   : "none", */
-              backgroundColor: bgciAssessment.get(e).getColor(colorBlind),
-              color: bgciAssessment.get(e).getForegroundColor(colorBlind)
-            };
-            return (
-              <div
-                key={e}
-                style={style}
-                data-info="BGCI"
-                data-key={e}
-                className={`legendEntry ${
-                  threatType === type ? "clickable" : ""
-                } ${
-                  categoryFilter &&
-                  categoryFilter.type === "bgci" &&
-                  categoryFilter.value === e
-                    ? "highlight-border"
-                    : ""
-                }`}
-                onClick={(event) => {
-                  if (threatType === type) {
-                    if (
-                      categoryFilter &&
-                      categoryFilter.value === e &&
-                      categoryFilter.type === "bgci"
-                    ) {
-                      setCategoryFilter(null);
-                    } else {
-                      setCategoryFilter({ type: "bgci", value: e });
+                backgroundColor: bgciAssessment.get(e).getColor(colorBlind),
+                color: bgciAssessment.get(e).getForegroundColor(colorBlind)
+              };
+              return (
+                <div
+                  key={e}
+                  style={style}
+                  data-info="BGCI"
+                  data-key={e}
+                  className={`legendEntry ${
+                    threatType === type ? "clickable" : ""
+                  } ${
+                    categoryFilter &&
+                    categoryFilter.type === "bgci" &&
+                    categoryFilter.value === e
+                      ? "highlight-border"
+                      : ""
+                  }`}
+                  onClick={(event) => {
+                    if (threatType === type) {
+                      if (
+                        categoryFilter &&
+                        categoryFilter.value === e &&
+                        categoryFilter.type === "bgci"
+                      ) {
+                        setCategoryFilter(null);
+                      } else {
+                        setCategoryFilter({ type: "bgci", value: e });
+                      }
                     }
-                  }
-                }}
-                /* onMouseEnter={(e) => this.tooltip(e, true)}
+                  }}
+                  /* onMouseEnter={(e) => this.tooltip(e, true)}
                 onMouseLeave={(e) => this.tooltip(e, false)}
                 onMouseMove={(e) => this.tooltipMove(e)} */
-              >
-                {e}
-              </div>
-            );
-          })}
+                >
+                  {e}
+                </div>
+              );
+            })}
+          </div>
           <div style={{ textAlign: "center", lineHeight: "1.7em" }}>
             BGCI ThreatSearch
             <a

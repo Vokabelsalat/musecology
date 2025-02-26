@@ -1,23 +1,18 @@
+import { faDroplet, faMountainSun } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as turf from "@turf/turf";
-import {
-  useEffect,
-  useMemo,
-  useState,
-  forwardRef,
-  useCallback,
-  useRef
-} from "react";
 import colorsys from "colorsys";
 import * as d3Scale from "d3-scale";
-import DiversityScale from "./DiversityScale";
 import { nanoid } from "nanoid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faEarthAmericas,
-  faHandHolding,
-  faMountainSun,
-  faWater
-} from "@fortawesome/free-solid-svg-icons";
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
+import DiversityScale from "./DiversityScale";
 
 import ReactMapGL, {
   Layer,
@@ -59,7 +54,10 @@ const Map = forwardRef((props, ref) => {
     timeFrame,
     isStory = false,
     formMapMode,
-    setFormMapMode
+    setFormMapMode,
+    countriesDictionary,
+    orchestrasToISO3,
+    setEcoRegionSearchOptions
   } = props;
 
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
@@ -154,8 +152,6 @@ const Map = forwardRef((props, ref) => {
   const [hexagonGeoJSON, setHexagonGeoJSON] = useState(null);
   const [hexagonGeoJSONTest, setHexagonGeoJSONTest] = useState(null);
   const [capitalsToISO, setCapitalsToISO] = useState(null);
-  const [countriesDictionary, setCountriesDictionary] = useState(null);
-  const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
   const [orchestraHeatMap, setOrchestraHeatMap] = useState(null);
   const [orchestraHeatMapMax, setOrchestraHeatMapMax] = useState(null);
   const [capitalThreatMarkers, setCapitalThreatMarkers] = useState(null);
@@ -252,22 +248,12 @@ const Map = forwardRef((props, ref) => {
         setCountriesHighlightLinesIndex(tmpCountriesLinesIndex);
       });
 
-    fetch("/countryDictionary.json")
-      .then((res) => res.json())
-      .then(function (json) {
-        let tmpOrchestraToISO3 = {};
-        for (let country of Object.values(json)) {
-          tmpOrchestraToISO3[country["orchestraCountry"]] = country["ISO3"];
-        }
-        setCountriesDictionary(json);
-        setOrchestrasToISO3(tmpOrchestraToISO3);
-      });
-
     fetch("/WWF_Terrestrial_Ecoregions2017-3.json")
       .then((res) => res.json())
       .then(function (geojson) {
         const tmpCentroids = [];
         const newFeatures = [];
+        const newEcoRegionSearchOptions = [];
         for (const ecoRegion of geojson.features) {
           if (ecoRegion.geometry != null) {
             let centroid = turf.centroid(ecoRegion);
@@ -276,6 +262,11 @@ const Map = forwardRef((props, ref) => {
           }
           ecoRegion.properties.myID = ecoRegion.id.toString() + "EcoRegion";
           newFeatures.push(ecoRegion);
+          newEcoRegionSearchOptions.push({
+            title: ecoRegion.properties.ECO_NAME,
+            type: "ecoregion",
+            value: ecoRegion.properties.ECO_ID
+          });
         }
         setEcoRegionsGeoJson({
           features: newFeatures,
@@ -285,6 +276,7 @@ const Map = forwardRef((props, ref) => {
           type: "FeatureCollection",
           features: tmpCentroids
         });
+        setEcoRegionSearchOptions(newEcoRegionSearchOptions);
       });
 
     fetch("/WWF_Terrestrial_Ecoregions2017-3-5_lines.json")
@@ -1738,7 +1730,9 @@ const Map = forwardRef((props, ref) => {
           <div className="tools-box w-full h-full">
             <div className="grid grid-cols-2 w-[60px] justify-items-center h-full">
               <div
-                className="border-r border-[#e5e7eb] rounded-[4px_0px_0px_4px] w-full h-full flex justify-center items-center delay-150 duration-500 ease-in-out transition-colors"
+                className={`border-r border-[#e5e7eb] rounded-[4px_0px_0px_4px] w-full h-full flex justify-center items-center delay-150 duration-500 ease-in-out transition-colors ${
+                  isTerrestial ? "bg-transparent" : "bg-[#f3f3f4]"
+                } hover:bg-[rgba(45,45,255,0.2)]`}
                 onMouseEnter={(e) => {
                   setTooltip({
                     tooltipText: "Terrestrial",
@@ -1748,32 +1742,30 @@ const Map = forwardRef((props, ref) => {
                 onMouseLeave={() => {
                   setTooltip(null);
                 }}
-                style={{
-                  backgroundColor: isTerrestial ? "transparent" : "#f3f3f4"
-                }}
               >
                 <FontAwesomeIcon
                   icon={faMountainSun}
                   color={isTerrestial ? blueIconColor : "gray"}
                   className="delay-150 duration-1000 ease-in-out transition-colors"
+                  size="lg"
                 />
               </div>
               <div
-                className="flex items-center justify-center size-full delay-150 duration-500 ease-in-out transition-colors rounded-[0px_4px_4px_0px]"
+                className={`flex items-center justify-center size-full delay-150 duration-500 ease-in-out transition-colors rounded-[0px_4px_4px_0px] ${
+                  isTerrestial ? "#f3f3f4" : "transparent"
+                } hover:bg-[rgba(45,45,255,0.2)]`}
                 onMouseEnter={(e) => {
                   setTooltip({ tooltipText: "Marine", tooltipMode: "text" });
                 }}
                 onMouseLeave={() => {
                   setTooltip(null);
                 }}
-                style={{
-                  backgroundColor: isTerrestial ? "#f3f3f4" : "transparent"
-                }}
               >
                 <FontAwesomeIcon
-                  icon={faWater}
+                  icon={faDroplet}
                   color={isTerrestial ? "gray" : blueIconColor}
                   className="delay-150 duration-1000 ease-in-out transition-colors"
+                  size="lg"
                 />
               </div>
             </div>

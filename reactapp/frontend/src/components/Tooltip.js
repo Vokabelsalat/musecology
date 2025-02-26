@@ -1,17 +1,11 @@
-import { useContext, useEffect, useMemo, useRef } from "react";
-import { TooltipContext } from "./TooltipProvider";
-import ThreatIcon from "./ThreatIcon";
-import ThreatCode from "./ThreatCode";
-import { createProxyPhoto } from "./TimelineFront";
+import { isEmojiSupported } from "is-emoji-supported";
+import { useContext, useMemo, useRef } from "react";
+import { ReactCountryFlag } from "react-country-flag";
 import { useRefDimensions } from "./Story/useRefDimensions";
-
-export function getFlagEmoji(countryCode) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt());
-  return String.fromCodePoint(...codePoints);
-}
+import ThreatCode from "./ThreatCode";
+import ThreatIcon from "./ThreatIcon";
+import { createProxyPhoto } from "./TimelineFront";
+import { TooltipContext } from "./TooltipProvider";
 
 export const langUnicode = {
   de: "DE",
@@ -111,7 +105,15 @@ export default function Tooltip(props) {
               } else {
                 return (
                   <div key={`langTag-${species}-${language}`}>
-                    {getFlagEmoji(langUnicode[language])} {labels[language]}
+                    <ReactCountryFlag
+                      style={{
+                        fontSize: "1.5em",
+                        lineHeight: "1.5em"
+                      }}
+                      countryCode={langUnicode[language]}
+                      svg={!isEmojiSupported("🇬🇧")}
+                    />{" "}
+                    {labels[language]}
                   </div>
                 );
               }
