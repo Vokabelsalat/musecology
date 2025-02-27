@@ -104,7 +104,7 @@ export default function DiversityScale(props) {
             style={{
               height: "10px",
               paddingRight: "2px",
-              textAlign: "end",
+              textAlign: "start",
               fontSize: "smaller"
             }}
           >
@@ -119,6 +119,8 @@ export default function DiversityScale(props) {
 
     return { scaleElements, typeText, typeTextSecond, col };
   }, [scale, mapMode]);
+
+  console.log("scaleElements", scaleElements);
 
   const orangeIconColor = iucnAssessment.get("CR").getColor(colorBlind);
   const redIconColor = iucnAssessment.get("EX").getColor(colorBlind);
@@ -240,8 +242,9 @@ export default function DiversityScale(props) {
               />
               <div className="text-sm/6 w-min leading-none">
                 Species
-                <span className="maplayer-devider">/</span>Ecoregion Protection
-                Potential
+                <span className="maplayer-devider">/</span>
+                Ecoregion{" "}
+                <span className="whitespace-nowrap">Protection Potential</span>
               </div>
             </div>
             <div className="relative h-[21px] w-5">
@@ -275,20 +278,33 @@ export default function DiversityScale(props) {
   ];
 
   return (
-    <>
+    <div className="grid grid-cols-[auto_min-content] grid-rows-1 items-center">
       <div
         className={className}
         style={{
           width: "100%",
           height: "auto",
           display: "grid",
-          gridTemplateColumns: Array.from(Array(col).keys())
+          gridTemplateColumns: Array.from(Array(col - 1).keys())
             .map((e) => "auto")
             .join(" "),
           gridTemplateRows: "30px"
         }}
       >
         {scaleElements}
+      </div>
+      <div
+        style={{
+          display: "grid",
+          height: "auto",
+          width: "fit-content",
+          gridTemplateColumns: "auto auto auto auto",
+          gridTemplateRows: "auto",
+          gridGap: "8px",
+          padding: "3px",
+          alignItems: "center"
+        }}
+      >
         <div
           style={{
             /* whiteSpace: "break-spaces", */
@@ -303,7 +319,7 @@ export default function DiversityScale(props) {
           {/* <div style={{textWrapMode: "nowrap", height: "100%", display: "flex"}}>{typeText}<span className="maplayer-devider">/</span>{typeTextSecond}</div> */}
           <div className="mx-auto h-full">
             <Listbox value={mapMode} onChange={setMapMode}>
-              <ListboxButton className="relative block w-full rounded-[4px] bg-white border border-gray-400 py-1.5 pr-8 pl-3 text-left text-sm/6 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25">
+              <ListboxButton className="relative block w-full rounded-[4px] bg-white border border-gray-400 py-1 pr-7 pl-1 text-left text-sm/6 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25">
                 <div className="flex gap-1 items-center">
                   <MapModeListboxOption id={mapMode} />
                 </div>
@@ -368,33 +384,7 @@ export default function DiversityScale(props) {
           </div> */}
         </div>
       </div>
-      <div
-        style={{
-          display: "grid",
-          height: "auto",
-          width: "fit-content",
-          gridTemplateColumns: "auto auto auto auto",
-          gridTemplateRows: "auto",
-          gridGap: "8px",
-          padding: "5px",
-          alignItems: "center"
-        }}
-      >
-        {/* {mapMode === "orchestras" && (
-          <>
-            <div
-              style={{
-                width: "15px",
-                height: "15px",
-                backgroundColor: "purple",
-                borderRadius: "50%"
-              }}
-            ></div>
-            Orchestra
-          </>
-        )} */}
-      </div>
-    </>
+    </div>
   );
 
   //return <div style={{  }}></div>;

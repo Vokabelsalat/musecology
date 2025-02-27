@@ -1077,6 +1077,7 @@ const Map = forwardRef((props, ref) => {
 
   return (
     <div
+      className="grid grid-cols-1 grid-rows-[min-content_1fr]"
       style={{
         border: keepAspectRatio ? "1px solid black" : "",
         width: `${newWidth}px`,
@@ -1091,8 +1092,8 @@ const Map = forwardRef((props, ref) => {
               display: "grid",
               gridTemplateColumns: "100%",
               marginRight: "5px",
-              gap: "5px",
-              paddingLeft: "2px"
+              gap: "5px"
+              // paddingLeft: "2px"
             }}
           >
             <div className="diversityScaleWrapper">

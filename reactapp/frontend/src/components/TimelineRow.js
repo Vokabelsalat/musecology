@@ -53,27 +53,31 @@ export default function TimelineRow(props) {
         {type.toUpperCase()}
       </div>
       <svg height={`${rowHeight}`} width={width}>
-        {data.map((assessmentAndElement, index) => {
-          let xVal = x(parseInt(assessmentAndElement.element.year));
-          if (xVal < 0) {
-            return;
-          }
+        {data
+          .sort((a, b) => {
+            return parseInt(a.element.year) - parseInt(b.element.year);
+          })
+          .map((assessmentAndElement, index) => {
+            let xVal = x(parseInt(assessmentAndElement.element.year));
+            if (xVal < 0) {
+              return;
+            }
 
-          return (
-            <g
-              key={`${assessmentAndElement.element.year}${assessmentAndElement.element.type}${assessmentAndElement.element.text}${assessmentAndElement.element.sciName}${colorBlind}`}
-              transform={`translate(${xVal}, 0)`}
-            >
-              <TimelineMarker
-                iconWidth={Math.min(width, x.bandwidth())}
-                width={width}
-                height={rowHeight}
-                assessmentAndElement={assessmentAndElement}
-                colorBlind={colorBlind}
-              />
-            </g>
-          );
-        })}
+            return (
+              <g
+                key={`${assessmentAndElement.element.year}${assessmentAndElement.element.type}${assessmentAndElement.element.text}${assessmentAndElement.element.sciName}${colorBlind}`}
+                transform={`translate(${xVal}, 0)`}
+              >
+                <TimelineMarker
+                  iconWidth={Math.min(width, x.bandwidth())}
+                  width={width}
+                  height={rowHeight}
+                  assessmentAndElement={assessmentAndElement}
+                  colorBlind={colorBlind}
+                />
+              </g>
+            );
+          })}
       </svg>
       <div>
         {type === "iucn" && populationTrend !== null && (
