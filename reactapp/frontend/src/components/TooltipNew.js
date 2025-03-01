@@ -1,17 +1,9 @@
-import { useContext, useEffect, useMemo, useRef } from "react";
-import { TooltipContext } from "./TooltipProvider";
-import ThreatIcon from "./ThreatIcon";
+import { isEmojiSupported } from "is-emoji-supported";
+import { useMemo } from "react";
+import { ReactCountryFlag } from "react-country-flag";
 import ThreatCode from "./ThreatCode";
+import ThreatIcon from "./ThreatIcon";
 import { createProxyPhoto } from "./TimelineFront";
-import { useRefDimensions } from "./Story/useRefDimensions";
-
-export function getFlagEmoji(countryCode) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt());
-  return String.fromCodePoint(...codePoints);
-}
 
 export const langUnicode = {
   de: "DE",
@@ -92,7 +84,15 @@ export default function Tooltip(props) {
               } else {
                 return (
                   <div key={`langTag-${species}-${language}`}>
-                    {getFlagEmoji(langUnicode[language])} {labels[language]}
+                    <ReactCountryFlag
+                      style={{
+                        fontSize: "1.5em",
+                        lineHeight: "1.5em"
+                      }}
+                      countryCode={langUnicode[language]}
+                      svg={!isEmojiSupported("🇬🇧")}
+                    />{" "}
+                    {labels[language]}
                   </div>
                 );
               }
@@ -125,9 +125,7 @@ export default function Tooltip(props) {
               <div className="col-span-2 text-nowrap">
                 {threatThreatLevel.getName()}
               </div>
-              <div className="row-span-2">
-                {tooltipOptions.cites.length > 0 ? "CITES:" : ""}
-              </div>
+              <div className="row-span-2">CITES:</div>
               <div className="row-span-2">
                 {tooltipOptions.cites.length > 0 && (
                   <ThreatCode

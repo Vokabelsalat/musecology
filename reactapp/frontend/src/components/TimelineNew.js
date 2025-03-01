@@ -85,7 +85,7 @@ export default function TimelineNew(props) {
           gridRowEnd: 1
         }}
         onMouseEnter={onMouseEnter}
-        // onMouseLeave={onMouseLeave}
+        onMouseLeave={onMouseLeave}
       >
         <TimelineHeader
           species={species}
@@ -105,7 +105,7 @@ export default function TimelineNew(props) {
           gridRowEnd: 2
         }}
         onMouseEnter={onMouseEnter}
-        // onMouseLeave={onMouseLeave}
+        onMouseLeave={onMouseLeave}
       >
         <TimelineFront
           speciesName={sciName}

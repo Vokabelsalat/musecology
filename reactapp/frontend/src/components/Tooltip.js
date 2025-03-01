@@ -146,9 +146,7 @@ export default function Tooltip(props) {
               <div className="col-span-2 text-nowrap">
                 {threatThreatLevel.getName()}
               </div>
-              <div className="row-span-2">
-                {tooltipOptions.cites.length > 0 ? "CITES:" : ""}
-              </div>
+              <div className="row-span-2">CITES:</div>
               <div className="row-span-2">
                 {tooltipOptions.cites.length > 0 && (
                   <ThreatCode
