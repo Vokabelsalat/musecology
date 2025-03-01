@@ -3,7 +3,6 @@ import Switch from "@mui/material/Switch";
 import Legend from "./LegendNew";
 import SearchBar from "./SearchBarNew";
 import CountrySearchBar from "./CountrySearchBar";
-import { ReactCountryFlag } from "react-country-flag";
 
 export default function CenterPanel(props) {
   const {

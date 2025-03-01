@@ -129,7 +129,11 @@ class TimelineScaleD3 extends Component {
       >
         <div></div>
         <svg
-          className={this.props.bottom ? "scaleBottom" : ""}
+          className={
+            this.props.bottom
+              ? "scaleBottom overflow-visible"
+              : "overflow-visible"
+          }
           id={this.state.id}
           width={this.props.width}
           height={"50px"}

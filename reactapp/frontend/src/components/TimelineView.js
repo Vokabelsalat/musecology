@@ -360,8 +360,7 @@ class TimelineView extends Component {
               height: "20px"
             }}
           ></div> */}
-          {
-            <TimelineScaleD3
+          {/*  <TimelineScaleD3
               initWidth={this.props.initWidth}
               key={"scaleToptimeline"}
               data={null}
@@ -373,8 +372,7 @@ class TimelineView extends Component {
               timeFrame={this.props.timeFrame}
               x={x}
               width={timescaleWidth}
-            />
-          }
+            /> */}
           {
             <div
               style={{
@@ -469,7 +467,8 @@ class TimelineView extends Component {
             </div>
           }
           {
-            <TimelineScaleD3
+            {
+              /* <TimelineScaleD3
               initWidth={this.props.initWidth}
               key={"scaleBottomtimeline"}
               data={null}
@@ -482,7 +481,8 @@ class TimelineView extends Component {
               x={x}
               width={timescaleWidth}
               bottom={true}
-            />
+            /> */
+            }
           }
         </div>
       );

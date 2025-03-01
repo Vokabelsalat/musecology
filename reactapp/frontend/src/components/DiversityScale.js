@@ -120,8 +120,6 @@ export default function DiversityScale(props) {
     return { scaleElements, typeText, typeTextSecond, col };
   }, [scale, mapMode]);
 
-  console.log("scaleElements", scaleElements);
-
   const orangeIconColor = iucnAssessment.get("CR").getColor(colorBlind);
   const redIconColor = iucnAssessment.get("EX").getColor(colorBlind);
   const yellowIconColor = iucnAssessment.get("NT").getColor(colorBlind);

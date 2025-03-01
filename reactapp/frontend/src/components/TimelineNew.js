@@ -1,7 +1,7 @@
 import TimelineHeader from "./TimelineHeader";
 import TimelineFront from "./TimelineFront";
 import TimelineRows from "./TimelineRows";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { TooltipContext } from "./TooltipProvider";
 
 export default function TimelineNew(props) {
@@ -20,7 +20,7 @@ export default function TimelineNew(props) {
     setTreeMapFilter
   } = props;
 
-  const { speciesName, genusName } = species;
+  const { speciesName, genusName, kingdomName, familyName } = species;
   const sciName = `${genusName} ${speciesName}`;
 
   const tradeThreat = getTreeThreatLevel(sciName, "economically");
@@ -57,6 +57,15 @@ export default function TimelineNew(props) {
     setTooltip(null);
   };
 
+  const onClick = useCallback(() => {
+    setTreeMapFilter({
+      kingdom: kingdomName,
+      family: familyName,
+      genus: genusName,
+      species: sciName
+    });
+  }, [familyName, genusName, kingdomName, sciName, setTreeMapFilter]);
+
   return (
     <div
       key={`timelineNew${sciName}`}
@@ -76,7 +85,7 @@ export default function TimelineNew(props) {
           gridRowEnd: 1
         }}
         onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        // onMouseLeave={onMouseLeave}
       >
         <TimelineHeader
           species={species}
@@ -96,12 +105,13 @@ export default function TimelineNew(props) {
           gridRowEnd: 2
         }}
         onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        // onMouseLeave={onMouseLeave}
       >
         <TimelineFront
           speciesName={sciName}
           imageLink={imageLink}
           dummyLink={dummyImageLink}
+          onClick={onClick}
         />
       </div>
       <div

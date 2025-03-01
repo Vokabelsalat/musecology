@@ -210,15 +210,15 @@ export default function SearchBar(props) {
                           <div
                             key={`searchOption${replaceSpecialCharacters(str)}`}
                           >
-                            <ReactCountryFlag
+                            {/* <ReactCountryFlag
                               style={{
                                 fontSize: "1.5em",
                                 lineHeight: "1.5em"
                               }}
                               countryCode={langUnicode[language]}
                               svg={!isEmojiSupported("🇬🇧")}
-                            />{" "}
-                            : {str.charAt(0).toUpperCase() + str.slice(1)}
+                            />{" "} */}
+                            Test : {str.charAt(0).toUpperCase() + str.slice(1)}
                           </div>
                         );
                       }

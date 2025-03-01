@@ -50,7 +50,7 @@ export default function TimelineViewNew(props) {
   }
 
   const sortedKeys = data != null ? Object.keys(data).sort() : [];
-  const id = replaceSpecialCharacters(sortedKeys.join(""));
+  const id = "timelineView";
 
   return (
     <div

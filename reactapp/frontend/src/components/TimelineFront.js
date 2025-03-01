@@ -28,12 +28,14 @@ export const createProxyPhoto = (dummyLink) => {
 };
 
 export default function TimelineFront(props) {
-  const { speciesName, imageLink, dummyLink } = props;
+  const { speciesName, imageLink, dummyLink, onClick } = props;
 
   return (
     <>
       {imageLink ? (
         <div
+          className="cursor-pointer"
+          onClick={onClick}
           style={{
             height: "100%",
             width: "100%",

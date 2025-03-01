@@ -45,10 +45,10 @@ export default function TimelineHeader(props) {
       >
         <span
           style={{ fontWeight: hover ? "bold" : "normal", cursor: "pointer" }}
-          onMouseLeave={(event) => {
+          /* onMouseLeave={(event) => {
             setHover(false);
             setTooltip(null);
-          }}
+          }} */
           onClick={() => {
             setTreeMapFilter({
               kingdom: kingdomName,
