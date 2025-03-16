@@ -82,7 +82,8 @@ export default function TimelineNew(props) {
           gridColumnStart: 1,
           gridColumnEnd: "span 2",
           gridRowStart: 1,
-          gridRowEnd: 1
+          gridRowEnd: 1,
+          width: "fit-content"
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -124,7 +125,7 @@ export default function TimelineNew(props) {
       >
         {data !== null && (
           <TimelineRows
-            width={width}
+            width={width - 20}
             data={data}
             speciesName={sciName}
             x={x}

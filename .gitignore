@@ -132,3 +132,4 @@ dist
 *.DS_Store
 reactapp/frontend/public/
 reactapp/frontend/build/
+reactapp/frontend/data-fusing-and-crawling/downloaded-data/

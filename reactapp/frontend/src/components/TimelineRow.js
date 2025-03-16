@@ -17,15 +17,15 @@ export default function TimelineRow(props) {
   let populationTrendIcon = "";
 
   switch (populationTrend) {
-    case "Decreasing":
+    case 1:
       populationTrendColor = iucnAssessment.get("EX").getColor(colorBlind);
       populationTrendIcon = "\u21D8";
       break;
-    case "Increasing":
+    case 0:
       populationTrendColor = iucnAssessment.get("LC").getColor(colorBlind);
       populationTrendIcon = "\u21D7";
       break;
-    case "Stable":
+    case 2:
       populationTrendColor = iucnAssessment.get("NT").getColor(colorBlind);
       populationTrendIcon = "\u21D2";
       break;
@@ -33,7 +33,7 @@ export default function TimelineRow(props) {
       populationTrendColor = "transparent";
       populationTrendIcon = "";
       break;
-    case "Unknown":
+    case 0:
       populationTrendColor = "transparent";
       populationTrendIcon = "";
       break;
@@ -71,7 +71,7 @@ export default function TimelineRow(props) {
                 <TimelineMarker
                   iconWidth={Math.min(width, x.bandwidth())}
                   width={width}
-                  height={rowHeight}
+                  height={rowHeight - 2}
                   assessmentAndElement={assessmentAndElement}
                   colorBlind={colorBlind}
                 />
@@ -79,7 +79,7 @@ export default function TimelineRow(props) {
             );
           })}
       </svg>
-      <div>
+      <div className={`h-[${rowHeight}px]`}>
         {type === "iucn" && populationTrend !== null && (
           <>
             <div
@@ -89,6 +89,7 @@ export default function TimelineRow(props) {
                 display: "flex",
                 backgroundColor: populationTrendColor,
                 justifyContent: "center",
+                alignItems: "center",
                 fontSize: populationTrend !== "Stable" ? "17px" : "13px"
               }}
             >

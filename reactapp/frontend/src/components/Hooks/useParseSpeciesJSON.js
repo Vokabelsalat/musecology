@@ -10,19 +10,13 @@ import { returnImageLink, returnDummyLink, returnImageLinks } from "../HomeNew";
 export function useParseSpeciesJSON(i_speciesData, slice) {
   return useMemo(() => {
     const speciesData = Object.fromEntries(
-      Object.entries(
-        i_speciesData["species"] != null ? i_speciesData["species"] : {}
-      ).slice(
+      Object.entries(i_speciesData != null ? i_speciesData : {}).slice(
         0,
         slice
           ? 140
-          : Object.keys(
-              i_speciesData["species"] != null ? i_speciesData["species"] : {}
-            ).length
+          : Object.keys(i_speciesData != null ? i_speciesData : {}).length
       )
     );
-
-    console.log("speciesData", speciesData);
 
     let tmpImageLinks = {};
     let tmpDummyImageLinks = {};
@@ -101,6 +95,10 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         proxy: tmpDummyImageLinks[spec],
         mediaUrls: speciesObj["mediaUrls"]
       };
+
+      if (speciesObj.origMat == null) {
+        continue;
+      }
 
       for (const mat of speciesObj.origMat) {
         if (
@@ -205,8 +203,9 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       if (speciesObj.timeListing.length > 0) {
         let assessmentPerYear = {};
         for (let element of speciesObj.timeListing) {
-          let year = element.effectiveYear.toString();
-          element.year = element.effectiveYear;
+          let year = element.effective_at.substring(0, 4);
+          element["assessment_year"] = element.year;
+          element.year = year;
           tmpYears.add(parseInt(element.year));
           let assessment = citesAssessment.get(element.appendix);
 

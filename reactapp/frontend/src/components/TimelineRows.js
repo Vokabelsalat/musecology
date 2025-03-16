@@ -12,7 +12,7 @@ export default function TimelineRows(props) {
         display: "grid",
         width: "100%",
         height: "100%",
-        gridTemplateColumns: "40px auto 20px",
+        gridTemplateColumns: "40px auto 30px",
         gridTemplateRows: "auto auto auto",
         fontSize: "12px",
         position: "relative"

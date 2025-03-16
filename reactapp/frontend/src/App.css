@@ -78,6 +78,9 @@
 
 html {
   width: 100%;
+  overflow: scroll;
+  scrollbar-color: gray rgba(211, 211, 211, 0.5);
+  scrollbar-width: thin;
 }
 
 body {
@@ -1112,7 +1115,7 @@ a:any-link {
   font-weight: bold;
   font-style: italic;
   text-shadow: 1px 1px 0px #656565;
-  font-size: 11cqw;
+  font-size: clamp(10px, 10cqw, 44px);
 }
 
 .maplayer-select {

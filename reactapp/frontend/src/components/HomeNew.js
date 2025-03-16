@@ -133,6 +133,8 @@ export default function HomeNew(props) {
 
   const slice = false;
 
+  console.log("categoryFilter", categoryFilter);
+
   const getSpeciesSignThreat = (species, type = null) => {
     if (type === null) {
       type = threatType;
@@ -194,7 +196,7 @@ export default function HomeNew(props) {
   };
 
   useEffect(() => {
-    fetch("./generatedOutput/allSpecies.json")
+    fetch("/data_merged.json")
       .then((res) => res.json())
       .then(function (speciesData) {
         setSpeciesData(speciesData);
