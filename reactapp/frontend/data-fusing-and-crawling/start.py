@@ -10,17 +10,17 @@ from crawlCites import crawlCites
 from parseExcel import parsePhotos
 
 offline_mode = False
-mode = "mixed" # "offline" # "online"
+mode = "mixed" # "offline" # "online" # "dry" # "mixed"
 
 all_species = {}
 
 print(f"---- {mode} Mode ----")
 
-if mode == "offline" or mode == "mixed":
+if "offline" in mode or "mixed" in mode:
     with open("output/data.json", "r") as f:
         all_species = json.load(f)
 
-if mode == "mixed" or mode == "online":
+if  "mixed" in mode or "online" in mode:
     excel_data = pd.read_excel('Database-musical_instruments-species.xlsx', None)
 
     excelPhotos = excel_data["Species-Material Fotos"]
@@ -45,9 +45,10 @@ if mode == "mixed" or mode == "online":
 
     parsedPhotos = parsePhotos(excelPhotos)
 
-    with open('output/photos.txt', 'w') as f:
-        f.write(json.dumps(parsedPhotos, indent=2).replace('NaN', 'null'))
-        f.close()
+    if "dry" not in mode:
+        with open('output/photos.txt', 'w') as f:
+            f.write(json.dumps(parsedPhotos, indent=2).replace('NaN', 'null'))
+            f.close()
 
     # Open and read the CSV file
     with open('./downloaded-data/Botanical species specifications.csv', mode='r', encoding="utf-8-sig") as file:
@@ -116,19 +117,21 @@ if mode == "mixed" or mode == "online":
             all_species[speciesName].update({'photos': parsedPhotos[speciesName] if speciesName in parsedPhotos else None})
 
             if counter % 20 == 0:
-                print("\n############### WRITE! ############### WRITE! ############### WRITE! ###############\n")
-                allSpeciesFile = open('output/data.json', "w")
-                allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
-                allSpeciesFile.close()  
+                if "dry" not in mode:
+                    print("\n############### WRITE! ############### WRITE! ############### WRITE! ###############\n")
+                    allSpeciesFile = open('output/data.json', "w")
+                    allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
+                    allSpeciesFile.close()  
 
             # if counter > 20:
             #     break
             counter = counter + 1 # stop after a few for test purposes
 
-    print("\n############### WRITE! ############### WRITE! ############### WRITE! ###############\n")
-    allSpeciesFile = open('output/data.json', "w")
-    allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
-    allSpeciesFile.close()  
+    if "dry" not in mode:
+        print("\n############### WRITE! ############### WRITE! ############### WRITE! ###############\n")
+        allSpeciesFile = open('output/data.json', "w")
+        allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
+        allSpeciesFile.close()  
 
     # Open and read the CSV file
     with open('./downloaded-data/Musical instrument parts to species.csv', mode='r', encoding="utf-8-sig") as file:
@@ -272,6 +275,7 @@ for species in all_species:
     del all_species[species]["labels"]
     # all_species[species]["commonNamesAll"] = fixedCommonNames
 
-allSpeciesFile = open('output/data_test.json', "w")
-allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
-allSpeciesFile.close()        
+if "dry" not in mode:
+    allSpeciesFile = open('output/data_test.json', "w")
+    allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
+    allSpeciesFile.close()

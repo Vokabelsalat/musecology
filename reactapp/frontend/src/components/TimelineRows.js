@@ -24,6 +24,8 @@ export default function TimelineRows(props) {
           width={width}
           type="cites"
           data={data.cites}
+          species={`${data.genus} ${data.species}`}
+          author={data.author}
           x={x}
           colorBlind={colorBlind}
         />
@@ -33,6 +35,8 @@ export default function TimelineRows(props) {
           width={width}
           type="iucn"
           data={data.iucn}
+          species={`${data.genus} ${data.species}`}
+          author={data.author}
           x={x}
           colorBlind={colorBlind}
           populationTrend={data.populationTrend}
@@ -43,6 +47,8 @@ export default function TimelineRows(props) {
           width={width}
           type="bgci"
           data={data.bgci}
+          species={`${data.genus} ${data.species}`}
+          author={data.author}
           x={x}
           colorBlind={colorBlind}
         />

@@ -40,6 +40,7 @@ for species in all_species:
 
 
     for element in all_species[species]["timeThreat"]:
+        print(element)
         bgci_categories.add(element["threatened"])
 
     for element in all_species[species]["timeListing"]:

@@ -133,8 +133,6 @@ export default function HomeNew(props) {
 
   const slice = false;
 
-  console.log("categoryFilter", categoryFilter);
-
   const getSpeciesSignThreat = (species, type = null) => {
     if (type === null) {
       type = threatType;

@@ -4,7 +4,15 @@ import { TooltipContext } from "./TooltipProvider";
 import { ThreatLevel } from "../utils/timelineUtils";
 
 export default function TimelineMarker(props) {
-  const { assessmentAndElement, colorBlind, width, height, iconWidth } = props;
+  const {
+    assessmentAndElement,
+    colorBlind,
+    width,
+    height,
+    iconWidth,
+    species,
+    author
+  } = props;
 
   const [hover, setHover] = useState(false);
 
@@ -25,15 +33,15 @@ export default function TimelineMarker(props) {
         );
       }}
       onMouseEnter={(event) => {
-        let tooltipContent = (
-          <div>
-            {year} - {assessment.name}
-            <br />
-            {assessment.assessmentType}
-          </div>
-        );
         setHover(true);
-        setTooltip({ tooltipText: tooltipContent, tooltipMode: "text" });
+        setTooltip({
+          tooltipText: {
+            ...assessmentAndElement,
+            species: species,
+            author: author
+          },
+          tooltipMode: "assessment"
+        });
         event.stopPropagation();
         event.preventDefault();
       }}

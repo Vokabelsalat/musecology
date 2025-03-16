@@ -66,6 +66,92 @@ export default function Tooltip(props) {
   const tooltipContent = useMemo(() => {
     if (tooltipMode === "text") {
       return tooltipText;
+    } else if (tooltipMode === "assessment") {
+      const assessmentAndElement = tooltipText;
+
+      return (
+        <div className="flex flex-col gap-1 max-w-80">
+          <div className="font-bold text-[medium] mb-1">
+            <span className="italic">{assessmentAndElement.species}</span>
+            {` (${assessmentAndElement.author})`}
+          </div>
+          {assessmentAndElement.assessment.assessmentType === "CITES" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">CITES Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">CITES: </span>
+                <span>{`${assessmentAndElement.element.year} – Appendix ${assessmentAndElement.element.appendix}`}</span>
+              </div>
+              {assessmentAndElement.element.annotation && (
+                <div>
+                  <span className="font-bold">Annotation: </span>
+                  <span>{assessmentAndElement.element.annotation}</span>
+                </div>
+              )}
+              {assessmentAndElement.element.hash_annotation && (
+                <div>
+                  <div className="font-bold">
+                    Annotation for traded commodities:
+                  </div>
+                  <div>{`${assessmentAndElement.element.hash_annotation.symbol} ${assessmentAndElement.element.hash_annotation.note}`}</div>
+                </div>
+              )}
+            </>
+          )}
+          {assessmentAndElement.assessment.assessmentType === "IUCN" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">IUCN Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">IUCN: </span>
+                <span>{`${assessmentAndElement.element.year} – ${assessmentAndElement.assessment.name} (${assessmentAndElement.assessment.abbreviation})`}</span>
+              </div>
+              <div>
+                <span className="font-bold">Assessment Year: </span>
+                <span>{`${new Date(
+                  assessmentAndElement.element.assessmentDate
+                ).getFullYear()}`}</span>
+              </div>
+            </>
+          )}
+          {assessmentAndElement.assessment.assessmentType === "BGCI" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">BGCI Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">BGCI: </span>
+                <span>
+                  {`${assessmentAndElement.assessment.name} (${assessmentAndElement.assessment.abbreviation})`}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold">Assessment Year: </span>
+                <span>{assessmentAndElement.element.year}</span>
+              </div>
+              <div>
+                <span className="font-bold">Reference: </span>
+                <span>{`${assessmentAndElement.element.reference}`}</span>
+              </div>
+            </>
+          )}
+        </div>
+      );
     } else if (tooltipMode === "species") {
       const species = tooltipText;
       const labels = speciesLabels[species];

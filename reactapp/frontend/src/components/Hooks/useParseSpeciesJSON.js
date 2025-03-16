@@ -136,7 +136,8 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         kingdom: speciesObj.Kingdom,
         family: speciesObj.Family,
         genus: speciesObj.Genus,
-        species: speciesObj.Species
+        species: speciesObj.Species,
+        author: speciesObj.Author
       };
 
       if (speciesObj.timeIUCN != null && speciesObj.timeIUCN.length > 0) {

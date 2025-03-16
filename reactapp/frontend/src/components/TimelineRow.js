@@ -1,5 +1,12 @@
 import { PatternRect } from "leaflet";
-import { useEffect, useRef, useState, cloneElement } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  cloneElement,
+  useMemo,
+  useContext
+} from "react";
 import {
   citesAssessment,
   bgciAssessment,
@@ -7,39 +14,67 @@ import {
 } from "../utils/timelineUtils";
 import { pushOrCreate } from "../utils/utils";
 import TimelineMarker from "./TimelineMarker";
+import { TooltipContext } from "./TooltipProvider";
 
 export default function TimelineRow(props) {
-  const { type, data, x, width, colorBlind, populationTrend } = props;
+  const { type, data, x, width, colorBlind, populationTrend, species, author } =
+    props;
 
   const rowHeight = 20;
 
-  let populationTrendColor = "transparent";
-  let populationTrendIcon = "";
+  const { setTooltip } = useContext(TooltipContext);
 
-  switch (populationTrend) {
-    case 1:
-      populationTrendColor = iucnAssessment.get("EX").getColor(colorBlind);
-      populationTrendIcon = "\u21D8";
-      break;
-    case 0:
-      populationTrendColor = iucnAssessment.get("LC").getColor(colorBlind);
-      populationTrendIcon = "\u21D7";
-      break;
-    case 2:
-      populationTrendColor = iucnAssessment.get("NT").getColor(colorBlind);
-      populationTrendIcon = "\u21D2";
-      break;
-    case null:
-      populationTrendColor = "transparent";
-      populationTrendIcon = "";
-      break;
-    case 0:
-      populationTrendColor = "transparent";
-      populationTrendIcon = "";
-      break;
-    default:
-      break;
-  }
+  const [populationTrendColor, populationTrendIcon, populationTrendText] =
+    useMemo(() => {
+      let populationTrendColor = "transparent";
+      let populationTrendIcon = "";
+      let populationTrendText = "";
+
+      switch (populationTrend) {
+        case 1:
+          populationTrendColor = iucnAssessment.get("EX").getColor(colorBlind);
+          populationTrendIcon = "\u21D8";
+          populationTrendText = "Decreasing";
+          break;
+        case 0:
+          populationTrendColor = iucnAssessment.get("LC").getColor(colorBlind);
+          populationTrendIcon = "\u21D7";
+          populationTrendText = "Increasing";
+          break;
+        case 2:
+          populationTrendColor = iucnAssessment.get("NT").getColor(colorBlind);
+          populationTrendIcon = "\u21D2";
+          populationTrendText = "Stable";
+          break;
+        case null:
+          populationTrendColor = "transparent";
+          populationTrendIcon = "";
+          populationTrendText = "Unknown";
+          break;
+        case 0:
+          populationTrendColor = "transparent";
+          populationTrendIcon = "";
+          populationTrendText = "Unknown";
+          break;
+        default:
+          break;
+      }
+      return [populationTrendColor, populationTrendIcon, populationTrendText];
+    }, [iucnAssessment, colorBlind, populationTrend]);
+
+  const onMouseEnter = (event) => {
+    setTooltip({
+      tooltipText: `Population Trend: ${populationTrendText}`,
+      tooltipMode: "text"
+    });
+    event.stopPropagation();
+    event.preventDefault();
+    // setHover(true);
+  };
+
+  const onMouseLeave = (event) => {
+    setTooltip(null);
+  };
 
   return (
     <>
@@ -74,6 +109,8 @@ export default function TimelineRow(props) {
                   height={rowHeight - 2}
                   assessmentAndElement={assessmentAndElement}
                   colorBlind={colorBlind}
+                  species={species}
+                  author={author}
                 />
               </g>
             );
@@ -83,7 +120,10 @@ export default function TimelineRow(props) {
         {type === "iucn" && populationTrend !== null && (
           <>
             <div
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
               style={{
+                cursor: "default",
                 height: "100%",
                 width: "15px",
                 display: "flex",
