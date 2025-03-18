@@ -165,7 +165,7 @@ export default function Tooltip(props) {
           </b>
           <div className="flex gap-3">
             {Object.keys(labels).map((language) => {
-              if (labels[language] == null) {
+              if (labels[language] == null || labels[language].length === 0) {
                 return <></>;
               } else {
                 return (
@@ -178,7 +178,7 @@ export default function Tooltip(props) {
                       countryCode={langUnicode[language]}
                       svg={!isEmojiSupported("🇬🇧")}
                     />{" "}
-                    {labels[language]}
+                    {labels[language].join(", ")}
                   </div>
                 );
               }

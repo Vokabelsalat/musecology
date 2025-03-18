@@ -15,8 +15,6 @@ export default function SearchBar(props) {
     speciesData: data
   } = props;
 
-  // console.log(treeMapFilter);
-
   const value = useMemo(() => {
     return treeMapFilter.species
       ? {
@@ -122,28 +120,28 @@ export default function SearchBar(props) {
             entry.found = [];
             if (
               entry.en != null &&
-              entry.en.toLowerCase().includes(inputValue.toLowerCase())
+              entry.en.join().toLowerCase().includes(inputValue.toLowerCase())
             ) {
               entry.found.push("en");
             }
 
             if (
               entry.fr != null &&
-              entry.fr.toLowerCase().includes(inputValue.toLowerCase())
+              entry.fr.join().toLowerCase().includes(inputValue.toLowerCase())
             ) {
               entry.found.push("fr");
             }
 
             if (
               entry.es != null &&
-              entry.es.toLowerCase().includes(inputValue.toLowerCase())
+              entry.es.join().toLowerCase().includes(inputValue.toLowerCase())
             ) {
               entry.found.push("es");
             }
 
             if (
               entry.de != null &&
-              entry.de.toLowerCase().includes(inputValue.toLowerCase())
+              entry.de.join().toLowerCase().includes(inputValue.toLowerCase())
             ) {
               entry.found.push("de");
             }
@@ -206,6 +204,7 @@ export default function SearchBar(props) {
                         return <></>;
                       } else {
                         let str = option[language];
+                        str = Array.isArray(str) ? str.join(", ") : str;
                         return (
                           <div
                             key={`searchOption${replaceSpecialCharacters(str)}`}
@@ -218,7 +217,7 @@ export default function SearchBar(props) {
                               countryCode={langUnicode[language]}
                               svg={!isEmojiSupported("🇬🇧")}
                             />{" "} */}
-                            Test : {str.charAt(0).toUpperCase() + str.slice(1)}
+                            {str.charAt(0).toUpperCase() + str.slice(1)}
                           </div>
                         );
                       }
