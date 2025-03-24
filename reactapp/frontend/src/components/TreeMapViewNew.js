@@ -121,7 +121,7 @@ export default function TreeMapView(props) {
         width={width}
         height={height}
         data={tmpData}
-        headerOffset={kingdom ? 40 : 0}
+        headerOffset={kingdom ? 48 : 0}
         filterTreeMap={filterTreeMap}
       />
     </div>

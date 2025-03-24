@@ -57,7 +57,8 @@ const Map = forwardRef((props, ref) => {
     setFormMapMode,
     countriesDictionary,
     orchestrasToISO3,
-    setEcoRegionSearchOptions
+    setEcoRegionSearchOptions,
+    setMarineEcoRegionSearchOptions
   } = props;
 
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
@@ -146,6 +147,7 @@ const Map = forwardRef((props, ref) => {
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const [countriesGeoJsonTest, setCountriesGeoJsonTest] = useState(null);
   const [ecoRegionsGeoJson, setEcoRegionsGeoJson] = useState(null);
+  const [marineERegionsGeoJson, setMarineEcoRegionsGeoJson] = useState(null);
   const [ecoRegionsGeoJsonTest, setEcoRegionsGeoJsonTest] = useState(null);
   const [orchestraGeoJson, setOrchestraGeoJson] = useState(null);
   const [capitalsGeoJSON, setCapitalsGeoJSON] = useState(null);
@@ -159,6 +161,8 @@ const Map = forwardRef((props, ref) => {
   const [capitalMarkerCache, setCapitalMarkerCache] = useState({});
   const [ecoThreatMarkers, setEcoThreatMarkers] = useState(null);
   const [centroidsOfEcoregions, setCentroidsOfEcoregions] = useState(null);
+  const [centroidsOfMarineEcoregions, setCentroidsOfMarineEcoregions] =
+    useState(null);
   const [ecoregionHeatMap, setEcoregionHeatMap] = useState(null);
   const [ecoregionHeatMapMax, setEcoregionHeatMapMax] = useState(null);
   const [countriesHeatMap, setCountriesHeatMap] = useState(null);
@@ -277,6 +281,37 @@ const Map = forwardRef((props, ref) => {
           features: tmpCentroids
         });
         setEcoRegionSearchOptions(newEcoRegionSearchOptions);
+      });
+
+    fetch("/Marine_ecoregions.json")
+      .then((res) => res.json())
+      .then(function (geojson) {
+        const tmpCentroids = [];
+        const newFeatures = [];
+        const newEcoRegionSearchOptions = [];
+        for (const ecoRegion of geojson.features) {
+          if (ecoRegion.geometry != null) {
+            let centroid = turf.centroid(ecoRegion);
+            centroid.properties = ecoRegion.properties;
+            tmpCentroids.push(centroid);
+          }
+          ecoRegion.properties.myID = ecoRegion.id.toString() + "EcoRegion";
+          newFeatures.push(ecoRegion);
+          newEcoRegionSearchOptions.push({
+            title: ecoRegion.properties.ECO_NAME,
+            type: "ecoregion",
+            value: ecoRegion.properties.ECO_ID
+          });
+        }
+        setMarineEcoRegionsGeoJson({
+          features: newFeatures,
+          type: "FeatureCollection"
+        });
+        setCentroidsOfMarineEcoregions({
+          type: "FeatureCollection",
+          features: tmpCentroids
+        });
+        setMarineEcoRegionSearchOptions(newEcoRegionSearchOptions);
       });
 
     fetch("/WWF_Terrestrial_Ecoregions2017-3-5_lines.json")
@@ -500,13 +535,17 @@ const Map = forwardRef((props, ref) => {
     const tmpEcoToSpecies = {};
     for (let species of Object.keys(speciesEcos)) {
       const ecos = speciesEcos[species];
-      if (ecos != null) {
-        for (let speciesEco of ecos) {
-          if (tmpEcoToSpecies.hasOwnProperty(speciesEco)) {
-            tmpEcoToSpecies[speciesEco].push(species);
-          } else {
-            tmpEcoToSpecies[speciesEco] = [species];
-          }
+      if (ecos == null || ecos.length === 0) {
+        continue;
+      }
+
+      for (let speciesEco of isTerrestial
+        ? ecos["terrestrial"]
+        : ecos["marine"]) {
+        if (tmpEcoToSpecies.hasOwnProperty(speciesEco)) {
+          tmpEcoToSpecies[speciesEco].push(species);
+        } else {
+          tmpEcoToSpecies[speciesEco] = [species];
         }
       }
     }
@@ -560,19 +599,21 @@ const Map = forwardRef((props, ref) => {
     setEcoregionHeatMapMax(tmpEcoregionHeatMapMax);
     setEcoregionHeatMap(tmpEcoregionHeatMap);
     setEcosToMyIDs(tmpEcosToMyIDs);
-  }, [speciesEcos, ecoRegionsGeoJson]);
+  }, [speciesEcos, ecoRegionsGeoJson, isTerrestial]);
 
   useEffect(() => {
     const tmpHexasToSpecies = {};
     for (let species of Object.keys(speciesHexas)) {
       const hexas = speciesHexas[species];
-      if (hexas != null) {
-        for (let speciesHex of hexas) {
-          if (tmpHexasToSpecies.hasOwnProperty(speciesHex)) {
-            tmpHexasToSpecies[speciesHex.toString()].push(species);
-          } else {
-            tmpHexasToSpecies[speciesHex.toString()] = [species];
-          }
+      if (hexas == null || hexas.length === 0) {
+        continue;
+      }
+
+      for (let speciesHex of isTerrestial ? hexas.terrestrial : hexas.marine) {
+        if (tmpHexasToSpecies.hasOwnProperty(speciesHex)) {
+          tmpHexasToSpecies[speciesHex.toString()].push(species);
+        } else {
+          tmpHexasToSpecies[speciesHex.toString()] = [species];
         }
       }
     }
@@ -1011,10 +1052,8 @@ const Map = forwardRef((props, ref) => {
           case "ecoregions":
             const ecoID = feat.properties.ECO_ID;
             hoverIds = [ecosToMyIDs[ecoID]];
-            console.log(feat.properties);
             break;
           case "hexagons":
-            console.log(feat.properties);
             break;
           default:
             break;

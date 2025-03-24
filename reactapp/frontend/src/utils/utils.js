@@ -78,7 +78,7 @@ export const replaceAll = function (string, search, replacement) {
   return string.replace(new RegExp(search, "g"), replacement);
 };
 export const replaceSpecialCharacters = function (string) {
-  return string.replace(/[ &\/\\#,+()$~%.'":*?<>{}]/g, "_");
+  return string.replace(/[ &\/\\#,+()$~%.'":*?<>{}|]/g, "_");
 };
 export const serializeXmlNode = function (xmlNode) {
   if (typeof window.XMLSerializer != "undefined") {

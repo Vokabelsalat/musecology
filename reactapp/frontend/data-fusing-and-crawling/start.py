@@ -16,7 +16,7 @@ all_species = {}
 
 print(f"---- {mode} Mode ----")
 
-if "offline" in mode or "mixed" in mode:
+if "online dry" in mode or "mixed" in mode:
     with open("output/data.json", "r") as f:
         all_species = json.load(f)
 
@@ -30,19 +30,40 @@ if  "mixed" in mode or "online" in mode:
     powo_syns_by_id = {}
     with open('./downloaded-data/wcvp_names.csv', mode='r', encoding="utf-8-sig") as powo_file:
         csv_reader_powo = csv.DictReader(powo_file, delimiter="|")
-        powo_rows = list(csv_reader_powo)  # Convert to a list to shuffle
+        powo_rows = list(csv_reader_powo)
+
         for powo_row in powo_rows:
             if powo_row["taxon_status"] == "Accepted":
+                if powo_row['taxon_name'] == ["Dalbergia masoalensis", "Dalbergia bojery", "Loxodonta africana", "Loxodonta cyclotis"]:
+                    print("ACC", powo_row['taxon_name'])
                 powo_syns_by_name[powo_row["taxon_name"]] = powo_row
                 if powo_row["accepted_plant_name_id"] not in powo_syns_by_id:
-                    powo_syns_by_id[str(powo_row["accepted_plant_name_id"])] = []
+                    powo_syns_by_id[str(powo_row["accepted_plant_name_id"])] = [powo_row]
 
             elif powo_row["taxon_status"] == "Synonym":
+                if powo_row['taxon_name'] in ["Dalbergia masoalensis", "Dalbergia bojery", "Loxodonta africana", "Loxodonta cyclotis"]:
+                    print("SYN", powo_row['taxon_name'])
                 if powo_row["accepted_plant_name_id"] not in powo_syns_by_id:
                     powo_syns_by_id[str(powo_row["accepted_plant_name_id"])] = [powo_row]
                 else:
                     powo_syns_by_id[str(powo_row["accepted_plant_name_id"])].append(powo_row)
 
+    try:
+        print(powo_syns_by_name["Dalbergia masoalensis"])
+    except:
+        pass
+    try:
+        print(powo_syns_by_name["Dalbergia bojery"])
+    except:
+        pass
+    try:
+        print(powo_syns_by_name["Loxodonta cyclotis"])
+    except:
+        pass
+    try:
+        print(powo_syns_by_name["Loxodonta africana"])
+    except:
+        pass
     parsedPhotos = parsePhotos(excelPhotos)
 
     if "dry" not in mode:
@@ -52,7 +73,7 @@ if  "mixed" in mode or "online" in mode:
 
     # Open and read the CSV file
     with open('./downloaded-data/Botanical species specifications.csv', mode='r', encoding="utf-8-sig") as file:
-        csv_reader = csv.DictReader(file, delimiter=";")
+        csv_reader = csv.DictReader(file, delimiter=",")
         rows = list(csv_reader)  # Convert to a list to shuffle
 
         # Shuffle the list randomly
@@ -62,10 +83,14 @@ if  "mixed" in mode or "online" in mode:
         # Iterate through the rows
         for row in rows:
 
+            print(row)
             del row["Used synonym for distribution data "] # we do not need this column
             row["Ecosystem"] = row["Ecosystem"].replace("Freshwater", "F").replace("Marine", "M").replace("Terrestrial", "T")
             row["Domestication"] = row["Domestication"].replace("Domesticated", "D").replace("Wild", "W")
             speciesName = row["Scientific Name"]
+
+            if speciesName not in ["Dalbergia masoalensis", "Dalbergia bojery", "Loxodonta africana", "Loxodonta cyclotis"]:
+                continue
 
             if speciesName in all_species: # skip species if his already exists in the data in case of mixed mode
                 counter = counter + 1
@@ -135,7 +160,7 @@ if  "mixed" in mode or "online" in mode:
 
     # Open and read the CSV file
     with open('./downloaded-data/Musical instrument parts to species.csv', mode='r', encoding="utf-8-sig") as file:
-        csv_reader = csv.DictReader(file, delimiter=";")
+        csv_reader = csv.DictReader(file, delimiter=",")
         
         # Iterate through the rows
         for row in csv_reader:

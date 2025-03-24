@@ -43,6 +43,7 @@ def query_IUCN_taxa_information(genus, species):
     # Define the API endpoint
     url = f"https://api.iucnredlist.org/api/v4/taxa/scientific_name?genus_name={genus}&species_name={species}"
 
+    print(url)
     # Send GET request with headers
     response = requests.get(url, headers=headers)
 

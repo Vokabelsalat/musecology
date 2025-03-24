@@ -64,14 +64,14 @@ export default function OrchestraInstruments(props) {
   return (
     <>
       <path
-        id={`pathForInstrumentGroupHeadingWrapper${id}${groupName}`}
+        id={`pathIGWrapper${id}${groupName}`}
         fill="none"
         strokeWidth="1px"
         stroke={isSelected && selectedInstrument === null ? "purple" : "gray"}
         d={pathString}
       ></path>
       <path
-        id={`pathForInstrumentGroupHeading${id}${groupName}`}
+        id={`pathIGHeading${id}${groupName}`}
         fill="none"
         strokeWidth="1px"
         d={textPathForHeading}
@@ -84,7 +84,7 @@ export default function OrchestraInstruments(props) {
       >
         <textPath
           className="textonpath noselect"
-          href={`#pathForInstrumentGroupHeading${id}${groupName}`}
+          href={`#pathIGHeading${id}${groupName}`}
           fontSize="10"
           textAnchor="middle"
           startOffset="50%"

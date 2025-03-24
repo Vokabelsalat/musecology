@@ -13,7 +13,6 @@ const groupToPosition = {
 
 export default function OrchestraNew(props) {
   const {
-    id,
     data,
     width,
     height,
@@ -126,7 +125,15 @@ export default function OrchestraNew(props) {
           Reset
         </div>
       )}
-      <svg width={scaledWidth} height={scaledHeight}>
+      <svg
+        width={scaledWidth + 4}
+        height={scaledHeight + 4}
+        style={{
+          border: "1px solid lightgray",
+          boxSizing: "border-box",
+          padding: "1px"
+        }}
+      >
         <g
           ref={ref}
           transform={`${scaleString ? scaleString : `scale(${scale})`}`}
@@ -157,8 +164,8 @@ export default function OrchestraNew(props) {
 
             return (
               <OrchestraGroup
-                key={`OrchestraGroup${id}${i}`}
-                id={`OrchestraGroup${id}${i}`}
+                key={`OG${i}`}
+                id={`OG${i}`}
                 groupName={group}
                 position={{
                   x: 510 / 2,

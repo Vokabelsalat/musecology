@@ -54,6 +54,7 @@ def getCommonNames(species):
     commonNamesCites = {}
     
     if 'taxon_concepts' in result and len(result['taxon_concepts']) > 0:
+        print("TRUE")
         for taxon in result['taxon_concepts']:
             if 'common_names' in taxon and len(taxon['common_names']) > 0:
                 grouped = pd.DataFrame(taxon['common_names']).groupby(['language'])['name'].apply(list).to_dict()
@@ -76,11 +77,10 @@ def getCommonNames(species):
 def crawlCites(speciesName, speciesSynonyms):
     time.sleep(random.uniform(0, 1))
     timeListing = []
-    found = None
     timeListing = getListingHistory(getTaxon(speciesName))
 
     synCounter = 0
-    if timeListing != []:
+    if timeListing == []:
         print("CHECKING SYNONYMS!")
         for synCounter, synonym in enumerate(speciesSynonyms):
             print("Checking with ", synonym["taxonName"])
@@ -88,21 +88,23 @@ def crawlCites(speciesName, speciesSynonyms):
             timeListing = getListingHistory(getTaxon(synonym["taxonName"]))
             if timeListing != []:
                 print("Found with synonym instead:", synonym)
-                found = synonym
                 for listing in timeListing:
                     listing["foundBy"] = synonym
                 break
 
     commonNamesCites = {}
     if len(timeListing) > 1:
-        print("CHECKING SYNONYMS!")
+        print("CHECKING COMMON NAMES!")
         commonNamesCites = getCommonNames(speciesName)
-        for synCounter, synonym in enumerate(speciesSynonyms):
-            print("Checking with ", synonym["taxonName"])
-            time.sleep(2 + random.uniform(0, 0.5))
-            commonNamesCites = getCommonNames(synonym["taxonName"])
-            if commonNamesCites != {}:
-                print("Found with synonym instead:", synonym)
-                break
+        print("commonNamesCites", commonNamesCites)
+        if commonNamesCites == {}:
+            for synCounter, synonym in enumerate(speciesSynonyms):
+                print("Checking with ", synonym["taxonName"])
+                time.sleep(2 + random.uniform(0, 0.5))
+                commonNamesCites = getCommonNames(synonym["taxonName"])
+                print("commonNamesCites", commonNamesCites)
+                if commonNamesCites != {}:
+                    print("Found with synonym instead:", synonym)
+                    break
 
     return {"timeListing": timeListing, "commonNamesCites": commonNamesCites}

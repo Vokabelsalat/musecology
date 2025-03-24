@@ -102,17 +102,20 @@ def crawlBGCI(speciesName, speciesSynonyms):
     treeSearch = getTreeSearch(speciesName)
 
     synCounter = 0
+    found = None
     if treeSearch == []:
+        print("CHECKING SYNONYMS!")
         for synCounter, synonym in enumerate(speciesSynonyms):
             time.sleep(2 + random.uniform(0, 0.5))
             print("Checking with ", synonym["taxonName"])
             treeSearch = getTreeSearch(synonym["taxonName"])
             if treeSearch != []:
                 print("Found with synonym instead:", synonym)
-                foundName = synonym["taxonName"]
+                found = synonym
                 break
         
     return {
             'treeCountries': filterOutCountryNames(treeSearch), 
             'timeThreat': tmpThreats,
+            "treeCountriesFoundBy": found
             }

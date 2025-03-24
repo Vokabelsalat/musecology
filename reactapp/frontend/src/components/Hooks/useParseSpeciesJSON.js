@@ -254,8 +254,20 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       }
 
       tmpSpeciesCountries[genusSpecies] = tmpCountries;
-      tmpSpeciesEcos[genusSpecies] = speciesObj.ecos;
-      tmpSpeciesHexas[genusSpecies] = speciesObj.hexas;
+
+      tmpSpeciesEcos[genusSpecies] = {
+        terrestrial: speciesObj.terEcos != null ? speciesObj.terEcos : [],
+        marine: speciesObj.marEcos != null ? speciesObj.marEcos : []
+      };
+
+      if (genusSpecies === "Haliotis asinina") {
+        console.log("Haliotis asinina", speciesObj);
+      }
+
+      tmpSpeciesHexas[genusSpecies] = {
+        terrestrial: speciesObj.terHexagons ?? [],
+        marine: speciesObj.marHexagons ?? []
+      };
 
       // Labels as Common Names from Wikipedia
       tmpSpeciesLabels[genusSpecies] = speciesObj.fixedCommonNames;
@@ -277,11 +289,6 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       maxYear: Math.max(...tmpYears) + 1,
       minYear: Math.min(...tmpYears) - 1
     };
-
-    /* console.log(kingdoms);
-          console.log(families);
-          console.log(genera);
-          console.log(speciesTreeMapData); */
 
     let tmpKingdomData = [];
     for (let kingdom of Object.keys(kingdoms)) {

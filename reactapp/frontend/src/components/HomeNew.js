@@ -30,6 +30,7 @@ import { useTimelineFilter } from "./Hooks/useTimelineFilter";
 import { useFilterSpecies } from "./Hooks/useFilterSpecies";
 import { useParseSpeciesJSON } from "./Hooks/useParseSpeciesJSON";
 import { useOrchestraFilter } from "./Hooks/useOrchestraFilter";
+import Footer from "./Footer";
 
 export const returnDummyLink = (speciesObj) => {
   if (speciesObj["photos"] != null) {
@@ -113,6 +114,8 @@ export default function HomeNew(props) {
   const [countriesDictionary, setCountriesDictionary] = useState(null);
   const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
   const [ecoRegionSearchOptions, setEcoRegionSearchOptions] = useState(null);
+  const [ecoMarineRegionSearchOptions, setMarineEcoRegionSearchOptions] =
+    useState(null);
 
   const [timeFrame, setTimeFrame] = useState([]);
   const [speciesData, setSpeciesData] = useState({});
@@ -350,13 +353,14 @@ export default function HomeNew(props) {
           <OverlayProvider>
             {/* {<Tooltip speciesLabels={speciesLabels} />} */}
             {<Overlay />}
+
             <div
               style={{
                 display: "grid",
                 width: "100%",
                 height: "100%",
                 gridTemplateColumns: "50% 50%",
-                gridTemplateRows: "45% 10% 45%",
+                gridTemplateRows: "calc(50% - 55px) 90px calc(50% - 55px) 20px",
                 transformOrigin: zoomOrigin,
                 transform: zoomTransform,
                 transitionProperty: "transform",
@@ -513,16 +517,6 @@ export default function HomeNew(props) {
                   position: "relative"
                 }}
               >
-                {/*  <div>
-                  {selectedCountry}
-                  <button
-                    onClick={() => {
-                      setSelectedCountry(null);
-                    }}
-                  >
-                    X
-                  </button>
-                </div> */}
                 {showMap && (
                   <ResizeComponent>
                     <Map
@@ -542,6 +536,9 @@ export default function HomeNew(props) {
                       countriesDictionary={countriesDictionary}
                       orchestrasToISO3={orchestrasToISO3}
                       setEcoRegionSearchOptions={setEcoRegionSearchOptions}
+                      setMarineEcoRegionSearchOptions={
+                        setMarineEcoRegionSearchOptions
+                      }
                     />
                   </ResizeComponent>
                 )}
@@ -555,16 +552,7 @@ export default function HomeNew(props) {
                   }}
                 />
               </div>
-              <div
-                style={{
-                  gridColumnStart: 1,
-                  gridColumnEnd: "span 2",
-                  gridRowStart: 4,
-                  gridRowEnd: 4
-                }}
-              >
-                Footer
-              </div>
+              <Footer />
             </div>
           </OverlayProvider>
         </TooltipProvider>
