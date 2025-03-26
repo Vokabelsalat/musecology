@@ -123,6 +123,15 @@ export default function Tooltip(props) {
                   assessmentAndElement.element.assessmentDate
                 ).getFullYear()}`}</span>
               </div>
+              {assessmentAndElement.element.reasonOfChange != null && (
+                <div className="italic">
+                  {assessmentAndElement.element.reasonOfChange === "N"
+                    ? "non-genuine status change"
+                    : assessmentAndElement.element.reasonOfChange === "G"
+                    ? "genuine status change"
+                    : "previous listing was an error"}
+                </div>
+              )}
             </>
           )}
           {assessmentAndElement.assessment.assessmentType === "BGCI" && (

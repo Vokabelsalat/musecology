@@ -75,6 +75,7 @@ def getCommonNames(species):
 
   
 def crawlCites(speciesName, speciesSynonyms):
+    print("CITES", speciesName, speciesSynonyms)
     time.sleep(random.uniform(0, 1))
     timeListing = []
     timeListing = getListingHistory(getTaxon(speciesName))

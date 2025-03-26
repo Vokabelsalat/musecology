@@ -27,7 +27,8 @@ export default function OrchestraNew(props) {
     instrument,
     instrumentPart,
     setInstrumentPart,
-    showThreatDonuts = true
+    showThreatDonuts = true,
+    instrumentVideos
   } = props;
 
   const ref = useRef(null);
@@ -203,45 +204,49 @@ export default function OrchestraNew(props) {
             overflowY: "scroll"
           }}
         >
-          <OrchestraHeader
-            instrumentGroup={instrumentGroup}
-            instrument={instrument}
-            instrumentParts={instrumentData[instrument]}
-            instrumentPart={instrumentPart}
-            setInstrument={setInstrument}
-            setInstrumentPart={setInstrumentPart}
-          />
-          <div
-            style={{
-              display: "grid",
-              gridGap: "5px",
-              padding: "5px"
-            }}
-          >
-            {instrumentData.hasOwnProperty(instrument) &&
-              Object.keys(instrumentData[instrument])
-                .sort()
-                .map((instPart) => {
-                  return (
-                    <div
-                      style={{
-                        cursor: "pointer",
-                        width: "fit-content",
-                        boxSizing: "border-box",
-                        padding: "2px",
-                        border:
-                          instrumentPart === instPart
-                            ? "solid 2px purple"
-                            : "none"
-                      }}
-                      onClick={() => {
-                        setInstrumentPart(instPart);
-                      }}
-                    >
-                      {instPart} ({instrumentData[instrument][instPart].length})
-                    </div>
-                  );
-                })}
+          <div className="grid grid-cols-2 grid-rows-[min-content_auto]">
+            <OrchestraHeader
+              instrumentGroup={instrumentGroup}
+              instrument={instrument}
+              instrumentParts={instrumentData[instrument]}
+              instrumentPart={instrumentPart}
+              setInstrument={setInstrument}
+              setInstrumentPart={setInstrumentPart}
+              instrumentVideos={instrumentVideos}
+            />
+            <div
+              style={{
+                display: "grid",
+                gridGap: "5px",
+                padding: "5px"
+              }}
+            >
+              {instrumentData.hasOwnProperty(instrument) &&
+                Object.keys(instrumentData[instrument])
+                  .sort()
+                  .map((instPart) => {
+                    return (
+                      <div
+                        style={{
+                          cursor: "pointer",
+                          width: "fit-content",
+                          boxSizing: "border-box",
+                          padding: "2px",
+                          border:
+                            instrumentPart === instPart
+                              ? "solid 2px purple"
+                              : "none"
+                        }}
+                        onClick={() => {
+                          setInstrumentPart(instPart);
+                        }}
+                      >
+                        {instPart} (
+                        {instrumentData[instrument][instPart].length})
+                      </div>
+                    );
+                  })}
+            </div>
           </div>
         </div>
       )}

@@ -8,15 +8,16 @@ from crawlWikipedia import crawlWikipedia
 from crawlBGCI import crawlBGCI
 from crawlCites import crawlCites
 from parseExcel import parsePhotos
+from crawlGBIF import query_species, query_occurrences
 
 offline_mode = False
-mode = "mixed" # "offline" # "online" # "dry" # "mixed"
+mode = "online dry" # "offline" # "online" # "dry" # "mixed"
 
 all_species = {}
 
 print(f"---- {mode} Mode ----")
 
-if "online dry" in mode or "mixed" in mode:
+if "offline" in mode or "mixed" in mode:
     with open("output/data.json", "r") as f:
         all_species = json.load(f)
 
@@ -48,22 +49,6 @@ if  "mixed" in mode or "online" in mode:
                 else:
                     powo_syns_by_id[str(powo_row["accepted_plant_name_id"])].append(powo_row)
 
-    try:
-        print(powo_syns_by_name["Dalbergia masoalensis"])
-    except:
-        pass
-    try:
-        print(powo_syns_by_name["Dalbergia bojery"])
-    except:
-        pass
-    try:
-        print(powo_syns_by_name["Loxodonta cyclotis"])
-    except:
-        pass
-    try:
-        print(powo_syns_by_name["Loxodonta africana"])
-    except:
-        pass
     parsedPhotos = parsePhotos(excelPhotos)
 
     if "dry" not in mode:
@@ -77,20 +62,16 @@ if  "mixed" in mode or "online" in mode:
         rows = list(csv_reader)  # Convert to a list to shuffle
 
         # Shuffle the list randomly
-        # random.shuffle(rows)
+    # random.shuffle(rows)
         
         counter = 0
         # Iterate through the rows
         for row in rows:
 
-            print(row)
             del row["Used synonym for distribution data "] # we do not need this column
             row["Ecosystem"] = row["Ecosystem"].replace("Freshwater", "F").replace("Marine", "M").replace("Terrestrial", "T")
             row["Domestication"] = row["Domestication"].replace("Domesticated", "D").replace("Wild", "W")
             speciesName = row["Scientific Name"]
-
-            if speciesName not in ["Dalbergia masoalensis", "Dalbergia bojery", "Loxodonta africana", "Loxodonta cyclotis"]:
-                continue
 
             if speciesName in all_species: # skip species if his already exists in the data in case of mixed mode
                 counter = counter + 1
@@ -115,31 +96,38 @@ if  "mixed" in mode or "online" in mode:
                 else:
                     print("MISSING SYN", pid)
 
-            ############ IUCN ############
-            print(" - IUCN")
+            ############ GBIF ############
+            # print(" - GBIF")
 
-            [timeAssessments, speciesLocations, populationTrend, commonNames] = crawlIUCN(row["Genus"], row["Species"], syns) 
-            all_species[speciesName]["timeIUCN"] = timeAssessments
-            all_species[speciesName]["iucnCountries"] = list(set(speciesLocations)) if speciesLocations is not None else []
-            all_species[speciesName]["populationTrend"] = populationTrend
-            all_species[speciesName]["commonNamesIUCN"] = commonNames
+            # gbif_search = query_species(speciesName)
+            # print(gbif_search)
+            # print(query_occurrences(gbif_search["speciesKey"]))
 
-            # ############ BGCI ############
-            print(" - BGCI")
-            all_species[speciesName].update(crawlBGCI(speciesName, syns))
+            # ############ IUCN ############
+            # print(" - IUCN")
 
-            # # ############ CITES ############
+            # [timeAssessments, speciesLocations, populationTrend, commonNames] = crawlIUCN(row["Genus"], row["Species"], syns) 
+            # all_species[speciesName]["timeIUCN"] = timeAssessments
+            # all_species[speciesName]["iucnCountries"] = list(set(speciesLocations)) if speciesLocations is not None else []
+            # all_species[speciesName]["populationTrend"] = populationTrend
+            # all_species[speciesName]["commonNamesIUCN"] = commonNames
+
+            # # ############ BGCI ############
+            # print(" - BGCI")
+            # all_species[speciesName].update(crawlBGCI(speciesName, syns))
+
+            # # # ############ CITES ############
             print(" - CITES")
             all_species[speciesName].update(crawlCites(speciesName, syns))
 
-            # # ############ WIKIPEDIA ############
+            # # # ############ WIKIPEDIA ############
 
-            print(" - WIKIPEDIA")
-            all_species[speciesName].update(crawlWikipedia(speciesName, syns))
+            # print(" - WIKIPEDIA")
+            # all_species[speciesName].update(crawlWikipedia(speciesName, syns))
 
-            # ############ PHOTOS ############
-            print(" - PHOTOS")
-            all_species[speciesName].update({'photos': parsedPhotos[speciesName] if speciesName in parsedPhotos else None})
+            # # ############ PHOTOS ############
+            # print(" - PHOTOS")
+            # all_species[speciesName].update({'photos': parsedPhotos[speciesName] if speciesName in parsedPhotos else None})
 
             if counter % 20 == 0:
                 if "dry" not in mode:
@@ -296,8 +284,14 @@ for species in all_species:
             commonNames[lang] = fixedCommonNames["wiki"][lang]
 
     all_species[species]["fixedCommonNames"] = commonNames
-    del all_species[species]["commonNamesCites"]
-    del all_species[species]["labels"]
+    try:
+        del all_species[species]["commonNamesCites"]
+    except:
+        pass
+    try:
+        del all_species[species]["labels"]
+    except:
+        pass
     # all_species[species]["commonNamesAll"] = fixedCommonNames
 
 if "dry" not in mode:

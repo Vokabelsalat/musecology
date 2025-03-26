@@ -128,6 +128,7 @@ export default function HomeNew(props) {
 
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedEcoregion, setSelectedEcoregion] = useState();
+  const [instrumentVideos, setInstrumentVideos] = useState();
 
   const [treeMapFilter, setTreeMapFilter] = useState({});
 
@@ -204,6 +205,15 @@ export default function HomeNew(props) {
       })
       .catch((error) => {
         console.log(`Couldn't find file allSpecies.json`, error);
+      });
+
+    fetch("/instrument_videos.json")
+      .then((res) => res.json())
+      .then(function (instrumentVideos) {
+        setInstrumentVideos(instrumentVideos);
+      })
+      .catch((error) => {
+        console.log(`Couldn't find instrument_videos.json`, error);
       });
 
     fetch("/countryDictionary.json")
@@ -394,6 +404,7 @@ export default function HomeNew(props) {
                       instrumentGroup={instrumentGroup}
                       instrumentPart={instrumentPart}
                       setInstrumentPart={setInstrumentPart}
+                      instrumentVideos={instrumentVideos}
                     />
                   </ResizeComponent>
                 )}

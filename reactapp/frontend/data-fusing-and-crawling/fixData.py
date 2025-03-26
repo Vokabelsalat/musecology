@@ -35,6 +35,22 @@ countriesDict = {}
 with open("../public/countryDictionary.json", "r") as f:
     countries = json.load(f)
 
+change_per_species = {}
+with open('./downloaded-data/Reason for changing red list category_2007-2024.csv', mode='r', encoding="utf-8-sig") as change_file:
+    change_file_reader = csv.DictReader(change_file, delimiter=",")
+    change_rows = list(change_file_reader)
+
+    for row in change_rows:
+        speciesName = row["Scientific name"]
+        year = row["Year"][0:4]
+        if speciesName in change_per_species:
+            if year in change_per_species[speciesName] and row["Reason for change"] != change_per_species[speciesName][year]:
+                print("Multiple assessments per year for", speciesName, row, change_per_species[speciesName][year])
+            change_per_species[speciesName][year] = row["Reason for change"]
+        else:
+            change_per_species[speciesName] = {year: row["Reason for change"]}
+
+
 for c in countries.values():
     countriesDict[c["ISO2"]] = c["ROMNAM"]
 
@@ -96,6 +112,17 @@ for species in all_species:
                 element["year"] = int(element["yearPublished"])
                 del element["yearPublished"]
 
+    ########## REASON OF CHANGE ##########
+    print("########## REASON OF CHANGE ##########")
+    if species in change_per_species:
+        print("Found", species)
+        if all_species[species]["timeIUCN"] is not None:
+            for assess in all_species[species]["timeIUCN"]:
+                print(assess, change_per_species[species])
+                if str(assess["year"]) in change_per_species[species]:
+                    print("FOUND AGAIN!")
+                    assess["reasonOfChange"] = change_per_species[species][str(assess["year"])]
+
     for element in all_species[species]["timeThreat"]:
         bgci_categories.add(element["threatened"])
 
@@ -147,12 +174,10 @@ for species in all_species:
                     if "iucnCountries" in all_species[species]:
                         zero_ecos[species]["iucn"] = all_species[species]["iucnCountries"]
 
-print(iucn_categories)
-print(bgci_categories)
-print(cites_categories)
 print("ZERO COUNTRIES", len(zero_country_species), zero_country_species)
 print("MISSING DISTRIBUTIONS", len(missingDistribution), missingDistribution)
 print("ZERO ECOS", len(zero_ecos.keys()), zero_ecos)
+
 
 allSpeciesFile = open('../public/data_merged.json', "w")
 allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
