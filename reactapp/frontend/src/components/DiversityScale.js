@@ -330,11 +330,12 @@ export default function DiversityScale(props) {
                 anchor="bottom end"
                 className="w-auto rounded-[4px] border border-gray-400 bg-white [--anchor-gap:var(--spacing-1)] focus:outline-none data-[leave]:data-[closed]:opacity-0 z-[9999]"
               >
-                {mapModeListOptions.map((e) => {
+                {mapModeListOptions.map((e, i) => {
                   if (e === "devider") {
                     return (
                       <div
                         className="my-[2px]"
+                        key={`devider-${i}`}
                         style={{
                           gridColumnStart: 1,
                           gridColumnEnd: "span 2",

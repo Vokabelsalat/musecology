@@ -31,8 +31,8 @@ export default function SpeciesIcon(props) {
   } else {
     return (
       <div className="h-[18px] w-[20px]">
-        <div class="pieContainer scale-[0.9]">
-          <div class="pieBackground"></div>
+        <div className="pieContainer scale-[0.9]">
+          <div className="pieBackground"></div>
           {/*         <div class="hold pieSlice4">
           <div class="pie" style={{ backgroundColor: neutralColor }}></div>
         </div>
@@ -45,16 +45,19 @@ export default function SpeciesIcon(props) {
         <div class="hold pieSlice7">
           <div class="pie" style={{ backgroundColor: redColor }}></div>
         </div> */}
-          <div class="hold pieSlice1">
-            <div class="pie" style={{ backgroundColor: neutralColor }}></div>
+          <div className="hold pieSlice1">
+            <div
+              className="pie"
+              style={{ backgroundColor: neutralColor }}
+            ></div>
           </div>
-          <div class="hold pieSlice2">
-            <div class="pie" style={{ backgroundColor: plantColor }}></div>
+          <div className="hold pieSlice2">
+            <div className="pie" style={{ backgroundColor: plantColor }}></div>
           </div>
-          <div class="hold pieSlice3">
-            <div class="pie" style={{ backgroundColor: animalColor }}></div>
+          <div className="hold pieSlice3">
+            <div className="pie" style={{ backgroundColor: animalColor }}></div>
           </div>
-          <div class="innerCircle" />
+          <div className="innerCircle" />
         </div>
       </div>
     );

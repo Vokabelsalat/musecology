@@ -147,7 +147,7 @@ const Map = forwardRef((props, ref) => {
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const [countriesGeoJsonTest, setCountriesGeoJsonTest] = useState(null);
   const [ecoRegionsGeoJson, setEcoRegionsGeoJson] = useState(null);
-  const [marineERegionsGeoJson, setMarineEcoRegionsGeoJson] = useState(null);
+  const [marineEcoRegionsGeoJson, setMarineEcoRegionsGeoJson] = useState(null);
   const [ecoRegionsGeoJsonTest, setEcoRegionsGeoJsonTest] = useState(null);
   const [orchestraGeoJson, setOrchestraGeoJson] = useState(null);
   const [capitalsGeoJSON, setCapitalsGeoJSON] = useState(null);
@@ -165,6 +165,9 @@ const Map = forwardRef((props, ref) => {
     useState(null);
   const [ecoregionHeatMap, setEcoregionHeatMap] = useState(null);
   const [ecoregionHeatMapMax, setEcoregionHeatMapMax] = useState(null);
+  const [marineEcoregionHeatMapMax, setMarineEcoregionHeatMapMax] =
+    useState(null);
+  const [marineEcoregionHeatMap, setMarineEcoregionHeatMap] = useState(null);
   const [countriesHeatMap, setCountriesHeatMap] = useState(null);
   const [countriesHeatMapMax, setCountriesHeatMapMax] = useState(null);
   const [hexagonHeatMap, setHexagonHeatMap] = useState(null);
@@ -554,18 +557,25 @@ const Map = forwardRef((props, ref) => {
     let tmpEcosToMyIDs = {};
     let tmpEcoregionHeatMapMax = 0;
     let tmpEcoRegionsGeoJson = { type: "FeatureCollection", features: [] };
-    if (ecoRegionsGeoJson) {
-      for (let ecoregion of ecoRegionsGeoJson.features) {
+    if (
+      (ecoRegionsGeoJson && isTerrestial) ||
+      (!isTerrestial && marineEcoRegionsGeoJson)
+    ) {
+      const idKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
+      for (let ecoregion of isTerrestial
+        ? ecoRegionsGeoJson.features
+        : marineEcoRegionsGeoJson.features) {
         let tmpEco = { ...ecoregion, properties: { ...ecoregion.properties } };
+
         tmpEco.properties.speciesCount =
-          tmpEcoToSpecies[tmpEco.properties["ECO_ID"].toString()] != null
-            ? tmpEcoToSpecies[tmpEco.properties["ECO_ID"].toString()].length
+          tmpEcoToSpecies[tmpEco.properties[idKey].toString()] != null
+            ? tmpEcoToSpecies[tmpEco.properties[idKey].toString()].length
             : 0;
 
-        tmpEcoregionHeatMap[tmpEco.properties["ECO_ID"].toString()] =
+        tmpEcoregionHeatMap[tmpEco.properties[idKey].toString()] =
           tmpEco.properties.speciesCount;
 
-        tmpEcosToMyIDs[tmpEco.properties["ECO_ID"].toString()] =
+        tmpEcosToMyIDs[tmpEco.properties[idKey].toString()] =
           tmpEco.properties.myID;
 
         if (tmpEco.properties.speciesCount > tmpEcoregionHeatMapMax) {
@@ -661,7 +671,7 @@ const Map = forwardRef((props, ref) => {
     setHexagonGeoJSONTest(tmpHexagonGeoJSON);
     setHexagonHeatMapMax(tmpHexagonHeatMapMax);
     setHexagonHeatMap(tmpHexagonHeatMap);
-  }, [hexagonGeoJSON, speciesHexas]);
+  }, [hexagonGeoJSON, speciesHexas, isTerrestial]);
 
   const colors = ["#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c"];
 
@@ -1420,6 +1430,36 @@ const Map = forwardRef((props, ref) => {
             />
           </Source>
         )}
+        {/* {marineEcoregionHeatMap && marineEcoregionHeatMapMax && (
+          <Source
+            type="geojson"
+            id="ecoregionsource"
+            data={marineEcoRegionsGeoJson}
+          >
+            <Layer
+              key={`ecoregionFillLayer`}
+              {...{
+                id: "ecoRegions",
+                type: "fill",
+                source: "ecoregionsource",
+                paint: {
+                  "fill-color": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "speciesCount"],
+                    ...scaleColors
+                  ]
+                },
+                layout: {
+                  visibility:
+                    mapMode === "ecoregions" && isTerrestial === false
+                      ? "visible"
+                      : "none"
+                }
+              }}
+            />
+          </Source>
+        )} */}
         <Source
           type="geojson"
           id="ecoregionProtectionsource"
@@ -1747,70 +1787,75 @@ const Map = forwardRef((props, ref) => {
             }}
           />
         </Source>
-        <div
-          className="mapboxgl-ctrl mapboxgl-ctrl-group"
-          style={{
-            position: "absolute",
-            top: 10,
-            right: 10,
-            borderRadius: "4px",
-            backgroundColor: "white",
-            width: "60px",
-            height: "29px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer"
-          }}
-          type="button"
-          onClick={(e) => {
-            setTerrestial(!isTerrestial);
-          }}
-        >
-          <div className="tools-box w-full h-full">
-            <div className="grid grid-cols-2 w-[60px] justify-items-center h-full">
-              <div
-                className={`border-r border-[#e5e7eb] rounded-[4px_0px_0px_4px] w-full h-full flex justify-center items-center delay-150 duration-500 ease-in-out transition-colors ${
-                  isTerrestial ? "bg-transparent" : "bg-[#f3f3f4]"
-                } hover:bg-[rgba(45,45,255,0.2)]`}
-                onMouseEnter={(e) => {
-                  setTooltip({
-                    tooltipText: "Terrestrial",
-                    tooltipMode: "text"
-                  });
-                }}
-                onMouseLeave={() => {
-                  setTooltip(null);
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faMountainSun}
-                  color={isTerrestial ? blueIconColor : "gray"}
-                  className="delay-150 duration-1000 ease-in-out transition-colors"
-                  size="lg"
-                />
-              </div>
-              <div
-                className={`flex items-center justify-center size-full delay-150 duration-500 ease-in-out transition-colors rounded-[0px_4px_4px_0px] ${
-                  isTerrestial ? "#f3f3f4" : "transparent"
-                } hover:bg-[rgba(45,45,255,0.2)]`}
-                onMouseEnter={(e) => {
-                  setTooltip({ tooltipText: "Marine", tooltipMode: "text" });
-                }}
-                onMouseLeave={() => {
-                  setTooltip(null);
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faDroplet}
-                  color={isTerrestial ? "gray" : blueIconColor}
-                  className="delay-150 duration-1000 ease-in-out transition-colors"
-                  size="lg"
-                />
+        {(mapMode === "ecoregions" || mapMode === "hexagons") && (
+          <div
+            className="mapboxgl-ctrl mapboxgl-ctrl-group"
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              borderRadius: "4px",
+              backgroundColor: "white",
+              width: "60px",
+              height: "29px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer"
+            }}
+            type="button"
+            onClick={(e) => {
+              setTerrestial(!isTerrestial);
+            }}
+          >
+            <div className="tools-box w-full h-full">
+              <div className="grid grid-cols-2 w-[60px] justify-items-center h-full">
+                <div
+                  className={`border-r border-[#e5e7eb] rounded-[4px_0px_0px_4px] w-full h-full flex justify-center items-center delay-150 duration-500 ease-in-out transition-colors ${
+                    isTerrestial ? "bg-transparent" : "bg-[#f3f3f4]"
+                  } hover:bg-[rgba(45,45,255,0.2)]`}
+                  onMouseEnter={(e) => {
+                    setTooltip({
+                      tooltipText: "Terrestrial",
+                      tooltipMode: "text"
+                    });
+                  }}
+                  onMouseLeave={() => {
+                    setTooltip(null);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faMountainSun}
+                    color={isTerrestial ? blueIconColor : "gray"}
+                    className="delay-150 duration-1000 ease-in-out transition-colors"
+                    size="lg"
+                  />
+                </div>
+                <div
+                  className={`flex items-center justify-center size-full delay-150 duration-500 ease-in-out transition-colors rounded-[0px_4px_4px_0px] ${
+                    isTerrestial ? "#f3f3f4" : "transparent"
+                  } hover:bg-[rgba(45,45,255,0.2)]`}
+                  onMouseEnter={(e) => {
+                    setTooltip({
+                      tooltipText: "Marine",
+                      tooltipMode: "text"
+                    });
+                  }}
+                  onMouseLeave={() => {
+                    setTooltip(null);
+                  }}
+                >
+                  <FontAwesomeIcon
+                    icon={faDroplet}
+                    color={isTerrestial ? "gray" : blueIconColor}
+                    className="delay-150 duration-1000 ease-in-out transition-colors"
+                    size="lg"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </ReactMapGL>
     </div>
   );
