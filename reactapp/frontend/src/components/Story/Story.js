@@ -3,7 +3,7 @@ import ContentWrapper from "./ContentWrapper";
 import { Content } from "./Content";
 import ResizeComponent from "../ResizeComponent";
 import StoryMap from "../StoryMapCleanUp";
-import Map from "../MapNew";
+import Map from "../Map";
 import bowContents from "./bowstory";
 import concertContents from "./concertstory";
 import { useTreeMapFilter } from "../Hooks/useTreeMapFilter";
@@ -27,7 +27,7 @@ import {
   returnImageLink,
   filterTreeMap,
   getSpeciesFromTreeMap
-} from "../HomeNew";
+} from "../Home";
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 

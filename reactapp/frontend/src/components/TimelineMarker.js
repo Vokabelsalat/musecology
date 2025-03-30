@@ -1,7 +1,15 @@
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { OverlayContext } from "./OverlayProvider";
 import { TooltipContext } from "./TooltipProvider";
 import { ThreatLevel } from "../utils/timelineUtils";
+
+function formatDate(dateString) {
+  if (dateString == null) {
+    return "2025";
+  }
+  const [year, month, day] = dateString.split("-"); // Split by "-"
+  return `${day}/${month}/${year}`; // Rearrange in DD/MM/YYYY format
+}
 
 export default function TimelineMarker(props) {
   const {
@@ -26,6 +34,41 @@ export default function TimelineMarker(props) {
 
   const [overlay, setOverlay] = useContext(OverlayContext);
   const { setTooltip } = useContext(TooltipContext);
+
+  const citation = useMemo(() => {
+    let date = "";
+    switch (assessment.assessmentType) {
+      case "CITES":
+        date = assessmentAndElement.element.accessDate;
+        return (
+          <div>{`UNEP (${
+            date != null ? date.substring(0, 4) : "2025"
+          }). The Species+ Website. Nairobi, Kenya. Compiled by UNEP-WCMC, Cambridge, UK. Available at: www.speciesplus.net. Accessed on ${formatDate(
+            date
+          )}.`}</div>
+        );
+      case "BGCI":
+        date = assessmentAndElement.element.accessDate;
+        return (
+          <div>{`BGCI. ${
+            date != null ? date.substring(0, 4) : "2025"
+          }. ThreatSearch online database. Botanic Gardens Conservation International. Richmond, UK. Available at https://tools.bgci.org/threat_search.php. Accessed on ${formatDate(
+            date
+          )}.`}</div>
+        );
+      case "IUCN":
+        return (
+          <div>
+            {`${assessmentAndElement.element.cite} `}
+            <a target="_blank" href={assessmentAndElement.element.url}>
+              {assessmentAndElement.element.url}
+            </a>
+          </div>
+        );
+      default:
+        break;
+    }
+  }, [assessmentAndElement, assessment]);
 
   const marker = useMemo(() => {
     if (assessment.assessmentType === "IUCN") {
@@ -69,7 +112,12 @@ export default function TimelineMarker(props) {
     <g
       onClick={(e) => {
         setOverlay(
-          <pre>{JSON.stringify(assessmentAndElement.element, null, 2)}</pre>
+          <div className="max-w-[80vw]">
+            <pre className="w-full text-wrap">
+              {JSON.stringify(assessmentAndElement.element, null, 2)}
+            </pre>
+            {citation}
+          </div>
         );
       }}
       onMouseEnter={(event) => {

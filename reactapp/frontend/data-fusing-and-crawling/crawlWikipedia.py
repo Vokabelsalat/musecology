@@ -74,12 +74,17 @@ def getMediaTitles(speciesName):
     
 def getMediaURL(mediaName):
     # https://en.wikipedia.org/w/api.php?action=query&titles=File:Albert%20Einstein%20Head.jpg&prop=imageinfo&iiprop=url
-    r = requests.get("https://en.wikipedia.org/w/api.php", headers=headers, params={"action": "query", "titles": mediaName, "prop": "imageinfo", 'iiprop': 'url', "format": "json"})
+    r = requests.get("https://en.wikipedia.org/w/api.php", headers=headers, params={"action": "query", "titles": mediaName, "prop": "imageinfo", 'iiprop': 'url|extmetadata', "format": "json"})
     result = r.json()
     
     if 'query' in result:
         if 'pages' in result['query']:
-            return list(map(lambda e: e['imageinfo'][0]['url'], list(result['query']['pages'].values())))
+            rtrList = []
+            for e in list(result['query']['pages'].values()):
+                if "status_iucn" not in e['imageinfo'][0]['url'].lower():
+                    rtrList.append({"link": e['imageinfo'][0]['url'], "license": e['imageinfo'][0]["extmetadata"]['UsageTerms']["value"] if "UsageTerms" in e['imageinfo'][0]["extmetadata"] else "", "author": e['imageinfo'][0]["extmetadata"]['Artist']["value"] if "Artist" in e['imageinfo'][0]["extmetadata"] else ""})
+            return rtrList
+            # return list(map(lambda e: {"link": e['imageinfo'][0]['url'], "licens": e['imageinfo'][0]['UsageTerms']["value"], "author": e['imageinfo'][0]['Artist']["value"]}, list(result['query']['pages'].values())))
     else:
         return []
         

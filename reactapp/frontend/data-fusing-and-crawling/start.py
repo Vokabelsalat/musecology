@@ -11,7 +11,7 @@ from parseExcel import parsePhotos
 from crawlGBIF import query_species, query_occurrences
 
 offline_mode = False
-mode = "online dry" # "offline" # "online" # "dry" # "mixed"
+mode = "offline" # "offline" # "online" # "dry" # "mixed"
 
 all_species = {}
 
@@ -96,38 +96,38 @@ if  "mixed" in mode or "online" in mode:
                 else:
                     print("MISSING SYN", pid)
 
-            ############ GBIF ############
+            ########### GBIF ############
             # print(" - GBIF")
 
             # gbif_search = query_species(speciesName)
             # print(gbif_search)
             # print(query_occurrences(gbif_search["speciesKey"]))
 
-            # ############ IUCN ############
-            # print(" - IUCN")
+            ############ IUCN ############
+            print(" - IUCN")
 
-            # [timeAssessments, speciesLocations, populationTrend, commonNames] = crawlIUCN(row["Genus"], row["Species"], syns) 
-            # all_species[speciesName]["timeIUCN"] = timeAssessments
-            # all_species[speciesName]["iucnCountries"] = list(set(speciesLocations)) if speciesLocations is not None else []
-            # all_species[speciesName]["populationTrend"] = populationTrend
-            # all_species[speciesName]["commonNamesIUCN"] = commonNames
+            [timeAssessments, speciesLocations, populationTrend, commonNames] = crawlIUCN(row["Genus"], row["Species"], syns) 
+            all_species[speciesName]["timeIUCN"] = timeAssessments
+            all_species[speciesName]["iucnCountries"] = list(set(speciesLocations)) if speciesLocations is not None else []
+            all_species[speciesName]["populationTrend"] = populationTrend
+            all_species[speciesName]["commonNamesIUCN"] = commonNames
 
-            # # ############ BGCI ############
-            # print(" - BGCI")
-            # all_species[speciesName].update(crawlBGCI(speciesName, syns))
+            ############ BGCI ############
+            print(" - BGCI")
+            all_species[speciesName].update(crawlBGCI(speciesName, syns))
 
-            # # # ############ CITES ############
+            ############ CITES ############
             print(" - CITES")
             all_species[speciesName].update(crawlCites(speciesName, syns))
 
-            # # # ############ WIKIPEDIA ############
+            ############ WIKIPEDIA ############
 
-            # print(" - WIKIPEDIA")
-            # all_species[speciesName].update(crawlWikipedia(speciesName, syns))
+            print(" - WIKIPEDIA")
+            all_species[speciesName].update(crawlWikipedia(speciesName, syns))
 
-            # # ############ PHOTOS ############
-            # print(" - PHOTOS")
-            # all_species[speciesName].update({'photos': parsedPhotos[speciesName] if speciesName in parsedPhotos else None})
+            ############ PHOTOS ############
+            print(" - PHOTOS")
+            all_species[speciesName].update({'photos': parsedPhotos[speciesName] if speciesName in parsedPhotos else None})
 
             if counter % 20 == 0:
                 if "dry" not in mode:
@@ -146,71 +146,71 @@ if  "mixed" in mode or "online" in mode:
         allSpeciesFile.write(json.dumps(all_species, indent=2).replace('NaN', 'null'))
         allSpeciesFile.close()  
 
-    # Open and read the CSV file
-    with open('./downloaded-data/Musical instrument parts to species.csv', mode='r', encoding="utf-8-sig") as file:
-        csv_reader = csv.DictReader(file, delimiter=",")
-        
-        # Iterate through the rows
-        for row in csv_reader:
-            specName = row["Scientific Name"]
-            if specName in all_species:
-                if "groups" in all_species[specName]:
-                    if row["Instrument groups"] not in all_species[specName]["groups"]:
-                        all_species[specName]["groups"].append(row["Instrument groups"])
-                else:
-                    all_species[specName]["groups"] = [row["Instrument groups"]]
-
-                row["Instrument families"] = row["Instrument families"].replace("Violin| Viola| Cello| Double Bass", "String instruments")
-                if "families" in all_species[specName]:
-                    all_species[specName]["families"].extend(row["Instrument families"].split("| "))
-                    all_species[specName]["families"] = list(set(all_species[specName]["families"]))
-                else:
-                    all_species[specName]["families"] = row["Instrument families"].split("| ")
-                    all_species[specName]["families"] = list(set(all_species[specName]["families"]))
-
-                if "instruments" in all_species[specName]:
-                    all_species[specName]["instruments"].extend(row["Instruments"].split("| "))
-                    all_species[specName]["instruments"] = list(set(all_species[specName]["instruments"]))
-                else:
-                    all_species[specName]["instruments"] = row["Instruments"].split("| ")
-                    all_species[specName]["instruments"] = list(set(all_species[specName]["instruments"]))
-
-                if "main_parts" in all_species[specName]:
-                    all_species[specName]["main_parts"].extend(row["Main part"].split("| "))
-                    all_species[specName]["main_parts"] = list(set(all_species[specName]["main_parts"]))
-                else:
-                    all_species[specName]["main_parts"] = row["Main part"].split("| ")
-                    all_species[specName]["main_parts"] = list(set(all_species[specName]["main_parts"]))
-
-                if "origMat" in all_species[specName]:
-                    all_species[specName]["origMat"].append(
-                        {
-                            "Subpart": row["Subpart"],
-                            "Main part": row["Main part"],
-                            "Instruments": row["Instruments"],
-                            "Instrument families": row["Instrument families"],
-                            "Instrument groups": row["Instrument groups"],
-                            "Musical instrument classification": row["Musical instrument classification"],
-                            "Source (Part - Unique species assignment)": row["Source (Part - Unique species assignment)"],
-                            "Source (Part - genus assignment)": row["Source (Part - genus assignment)"],
-                        }
-                    )
-                else:
-                    all_species[specName]["origMat"] = [
-                        {
-                            "Subpart": row["Subpart"],
-                            "Main part": row["Main part"],
-                            "Instruments": row["Instruments"],
-                            "Instrument families": row["Instrument families"],
-                            "Instrument groups": row["Instrument groups"],
-                            "Musical instrument classification": row["Musical instrument classification"],
-                            "Source (Part - Unique species assignment)": row["Source (Part - Unique species assignment)"],
-                            "Source (Part - genus assignment)": row["Source (Part - genus assignment)"],
-                        }
-                    ]
+# Open and read the CSV file
+with open('./downloaded-data/Musical instrument parts to species.csv', mode='r', encoding="utf-8-sig") as file:
+    csv_reader = csv.DictReader(file, delimiter=",")
+    
+    # Iterate through the rows
+    for row in csv_reader:
+        specName = row["Scientific Name"]
+        if specName in all_species:
+            if "groups" in all_species[specName]:
+                if row["Instrument groups"] not in all_species[specName]["groups"]:
+                    all_species[specName]["groups"].append(row["Instrument groups"])
             else:
-                # print("This species is not in the rest of the database!", specName)
-                pass
+                all_species[specName]["groups"] = [row["Instrument groups"]]
+
+            row["Instrument families"] = row["Instrument families"].replace("Violin| Viola| Cello| Double Bass", "String instruments")
+            if "families" in all_species[specName]:
+                all_species[specName]["families"].extend(row["Instrument families"].split("| "))
+                all_species[specName]["families"] = list(set(all_species[specName]["families"]))
+            else:
+                all_species[specName]["families"] = row["Instrument families"].split("| ")
+                all_species[specName]["families"] = list(set(all_species[specName]["families"]))
+
+            if "instruments" in all_species[specName]:
+                all_species[specName]["instruments"].extend(row["Instruments"].split("| "))
+                all_species[specName]["instruments"] = list(set(all_species[specName]["instruments"]))
+            else:
+                all_species[specName]["instruments"] = row["Instruments"].split("| ")
+                all_species[specName]["instruments"] = list(set(all_species[specName]["instruments"]))
+
+            if "main_parts" in all_species[specName]:
+                all_species[specName]["main_parts"].extend(row["Main part"].split("| "))
+                all_species[specName]["main_parts"] = list(set(all_species[specName]["main_parts"]))
+            else:
+                all_species[specName]["main_parts"] = row["Main part"].split("| ")
+                all_species[specName]["main_parts"] = list(set(all_species[specName]["main_parts"]))
+
+            if "origMat" in all_species[specName]:
+                all_species[specName]["origMat"].append(
+                    {
+                        "Subpart": row["Subpart"],
+                        "Main part": row["Main part"],
+                        "Instruments": row["Instruments"],
+                        "Instrument families": row["Instrument families"],
+                        "Instrument groups": row["Instrument groups"],
+                        "Musical instrument classification": row["Musical instrument classification"],
+                        "Source (Part - Unique species assignment)": row["Source (Part - Unique species assignment)"],
+                        "Source (Part - genus assignment)": row["Source (Part - genus assignment)"],
+                    }
+                )
+            else:
+                all_species[specName]["origMat"] = [
+                    {
+                        "Subpart": row["Subpart"],
+                        "Main part": row["Main part"],
+                        "Instruments": row["Instruments"],
+                        "Instrument families": row["Instrument families"],
+                        "Instrument groups": row["Instrument groups"],
+                        "Musical instrument classification": row["Musical instrument classification"],
+                        "Source (Part - Unique species assignment)": row["Source (Part - Unique species assignment)"],
+                        "Source (Part - genus assignment)": row["Source (Part - genus assignment)"],
+                    }
+                ]
+        else:
+            # print("This species is not in the rest of the database!", specName)
+            pass
 
         
 # Fix and unify the common names with the priority IUCN, CITES and than Wikipedia

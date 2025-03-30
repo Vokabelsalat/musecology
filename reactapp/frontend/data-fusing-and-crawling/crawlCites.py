@@ -12,6 +12,7 @@ headers = {"X-Authentication-Token": citesApiToken}
 import pandas as pd
 import time
 import random
+from datetime import datetime
 
 import requests
 
@@ -39,7 +40,7 @@ def getListingHistory(taxon_id):
     result = r.json()
     
     if 'cites_listings' in result and len(result['cites_listings']) > 0:
-        return list(map(lambda e: {'year': int(e['effective_at'][:4]), **e}, result['cites_listings']))
+        return list(map(lambda e: {'year': int(e['effective_at'][:4]), 'accessDate': datetime.today().strftime('%Y-%m-%d'), **e}, result['cites_listings']))
     
     return []
 

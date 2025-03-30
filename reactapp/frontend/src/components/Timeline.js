@@ -1,126 +1,141 @@
-import React, { Component } from "react";
-import TimelineHelper from "./TimelineHelper";
-import TimelineElement from "./TimelineElement";
-import "../utils/utils";
+import TimelineHeader from "./TimelineHeader";
+import TimelineFront from "./TimelineFront";
+import TimelineRows from "./TimelineRows";
+import { useCallback, useContext } from "react";
+import { TooltipContext } from "./TooltipProvider";
 
-class Timeline extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: this.props.id,
-      zoomLevel: this.props.zoomLevel
-    };
-  }
+export default function TimelineNew(props) {
+  const {
+    species,
+    data,
+    x,
+    width,
+    colorBlind,
+    populationTrend,
+    getTreeThreatLevel,
+    imageLink,
+    dummyImageLink,
+    isAnimal,
+    timeFrame,
+    setTreeMapFilter
+  } = props;
 
-  setZoomLevel(setValue) {
-    if (setValue > 0) {
-      this.props.addUnmutedSpecies(this.props.speciesName);
-      this.setState({ zoomLevel: setValue });
-    } else {
-      this.props.removeUnmutedSpecies(this.props.speciesName);
-      this.setState({ zoomLevel: setValue, muted: true });
-    }
-  }
+  const { speciesName, genusName, kingdomName, familyName } = species;
+  const sciName = `${genusName} ${speciesName}`;
 
-  componentDidMount() {
-    /* TimelineHelper.draw({
-      id: this.state.id,
-      initWidth: this.props.initWidth,
-      data: this.props.data,
-      sourceColorMap: this.props.sourceColorMap,
-      domainYears: this.props.domainYears,
-      zoomLevel: this.state.zoomLevel,
-      setZoomLevel: this.setZoomLevel.bind(this),
-      speciesName: this.props.speciesName,
-      maxPerYear: this.props.maxPerYear,
-      pieStyle: this.props.pieStyle,
-      groupSame: this.props.groupSame,
-      sortGrouped: this.props.sortGrouped,
-      heatStyle: this.props.heatStyle,
-      justTrade: this.props.justTrade,
-      justGenus: this.props.justGenus,
-      setSpeciesSignThreats: this.props.setSpeciesSignThreats,
-      getSpeciesSignThreats: this.props.getSpeciesSignThreats,
-      getTreeThreatLevel: this.props.getTreeThreatLevel,
-      addSpeciesToMap: this.props.addSpeciesToMap,
-      removeSpeciesFromMap: this.props.removeSpeciesFromMap,
-      muted: this.props.muted !== undefined ? this.props.muted : false,
-      treeImageLinks: this.props.treeImageLinks,
-      dummyImageLinks: this.props.dummyImageLinks,
-      setHover: this.props.setHover,
-      setTimeFrame: this.props.setTimeFrame,
-      timeFrame: this.props.timeFrame,
-      colorBlind: this.props.colorBlind,
-      setFilter: this.props.setFilter,
-      species: this.props.species,
-      getPlantIcon: this.props.getPlantIcon,
-      getAnimalIcon: this.props.getAnimalIcon,
-      lastSpeciesSigns: this.props.lastSpeciesSigns,
-      lastSpeciesThreats: this.props.lastSpeciesThreats
-    }); */
-  }
+  const tradeThreat = getTreeThreatLevel(sciName, "economically");
+  const threatThreat = getTreeThreatLevel(sciName, "ecologically");
 
-  componentDidUpdate(prevProps) {
-    /* if (
-      (JSON.stringify(prevProps.timeFrame) !==
-        JSON.stringify(this.props.timeFrame) &&
-        !this.state.id.includes("scale")) ||
-      JSON.stringify(prevProps.colorBlind) !==
-        JSON.stringify(this.props.colorBlind) ||
-      JSON.stringify(prevProps.data) !== JSON.stringify(this.props.data) ||
-      JSON.stringify(prevProps.domainYears) !==
-        JSON.stringify(this.props.domainYears) ||
-      JSON.stringify(prevProps.lastSpeciesSigns) !==
-        JSON.stringify(this.props.lastSpeciesSigns) ||
-      JSON.stringify(prevProps.lastSpeciesThreats) !==
-        JSON.stringify(this.props.lastSpeciesThreats)
-    ) {
-      TimelineHelper.draw({
-        id: this.state.id,
-        initWidth: this.props.initWidth,
-        data: this.props.data,
-        sourceColorMap: this.props.sourceColorMap,
-        domainYears: this.props.domainYears,
-        zoomLevel: this.state.zoomLevel,
-        setZoomLevel: this.setZoomLevel.bind(this),
-        speciesName: this.props.speciesName,
-        maxPerYear: this.props.maxPerYear,
-        pieStyle: this.props.pieStyle,
-        groupSame: this.props.groupSame,
-        sortGrouped: this.props.sortGrouped,
-        heatStyle: this.props.heatStyle,
-        justTrade: this.props.justTrade,
-        justGenus: this.props.justGenus,
-        setSpeciesSignThreats: this.props.setSpeciesSignThreats,
-        getSpeciesSignThreats: this.props.getSpeciesSignThreats,
-        getTreeThreatLevel: this.props.getTreeThreatLevel,
-        addSpeciesToMap: this.props.addSpeciesToMap,
-        removeSpeciesFromMap: this.props.removeSpeciesFromMap,
-        muted: this.props.muted !== undefined ? this.props.muted : false,
-        treeImageLinks: this.props.treeImageLinks,
-        dummyImageLinks: this.props.dummyImageLinks,
-        setHover: this.props.setHover,
-        setTimeFrame: this.props.setTimeFrame,
-        timeFrame: this.props.timeFrame,
-        colorBlind: this.props.colorBlind,
-        setFilter: this.props.setFilter,
-        species: this.props.species,
-        getPlantIcon: this.props.getPlantIcon,
-        getAnimalIcon: this.props.getAnimalIcon,
-        lastSpeciesSigns: this.props.lastSpeciesSigns,
-        lastSpeciesThreats: this.props.lastSpeciesThreats
-      });
-    } */
-  }
+  const leftIconColor = tradeThreat.getColor(colorBlind);
 
-  render() {
-    return (
-      <div key={this.state.id}>
-        <TimelineElement {...this.props} />
+  const rightIconColor = threatThreat.getColor(colorBlind);
+
+  const { setTooltip } = useContext(TooltipContext);
+
+  const onMouseEnter = (event) => {
+    setTooltip({
+      tooltipText: sciName,
+      tooltipMode: "species",
+      tooltipOptions: {
+        imageLink: imageLink,
+        dummyLink: dummyImageLink,
+        isAnimal,
+        bgci: data.bgci,
+        iucn: data.iucn,
+        cites: data.cites,
+        colorBlind,
+        tradeThreat,
+        threatThreat
+      }
+    });
+    event.stopPropagation();
+    event.preventDefault();
+    // setHover(true);
+  };
+
+  const onMouseLeave = (event) => {
+    setTooltip(null);
+  };
+
+  const onClick = useCallback(() => {
+    setTreeMapFilter({
+      kingdom: kingdomName,
+      family: familyName,
+      genus: genusName,
+      species: sciName
+    });
+  }, [familyName, genusName, kingdomName, sciName, setTreeMapFilter]);
+
+  return (
+    <div
+      key={`timelineNew${sciName}`}
+      style={{
+        display: "grid",
+        width: "100%",
+        height: "100%",
+        gridTemplateColumns: "100px auto",
+        gridTemplateRows: "auto auto"
+      }}
+      className="p-[2px] hover:p-0 hover:border-2 hover:border-[var(--highlightpurple)]"
+    >
+      <div
+        style={{
+          gridColumnStart: 1,
+          gridColumnEnd: "span 2",
+          gridRowStart: 1,
+          gridRowEnd: 1,
+          width: "fit-content"
+        }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <TimelineHeader
+          species={species}
+          getTreeThreatLevel={getTreeThreatLevel}
+          colorBlind={colorBlind}
+          isAnimal={isAnimal}
+          leftColor={leftIconColor}
+          rightColor={rightIconColor}
+          setTreeMapFilter={setTreeMapFilter}
+        />
       </div>
-    );
-    //return <div id={this.state.id} className="timelineVis"></div>;
-  }
+      <div
+        style={{
+          gridColumnStart: 1,
+          gridColumnEnd: 1,
+          gridRowStart: 2,
+          gridRowEnd: 2
+        }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <TimelineFront
+          speciesName={sciName}
+          imageLink={imageLink}
+          dummyLink={dummyImageLink}
+          onClick={onClick}
+        />
+      </div>
+      <div
+        style={{
+          gridColumnStart: 2,
+          gridColumnEnd: 2,
+          gridRowStart: 2,
+          gridRowEnd: 2
+        }}
+      >
+        {data !== null && (
+          <TimelineRows
+            width={width - 20}
+            data={data}
+            speciesName={sciName}
+            x={x}
+            colorBlind={colorBlind}
+            populationTrend={populationTrend}
+            timeFrame={timeFrame}
+          />
+        )}
+      </div>
+    </div>
+  );
 }
-
-export default Timeline;

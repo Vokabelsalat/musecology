@@ -12,6 +12,7 @@ import requests
 import re  
 import time
 import random
+from datetime import datetime
 
 def getTreeSearch(species):
     splitArray = species.split(" ")
@@ -91,13 +92,14 @@ def crawlBGCI(speciesName, speciesSynonyms):
     tmpThreats = []
     
     for threat in threatSearch:
+        threat["accessDate"] = datetime.today().strftime('%Y-%m-%d')
         if threat["bgciScope"] == "Global" and ((threat["taxonName"] == found["taxonName"] if found is not None else "") or threat["taxonName"] == speciesName):
             if found is not None:
                 threat["foundBy"] = found
             if threat['reference'] == 'NationalRL_0915' or threat['reference'] == 'National Red List':
                 country = getNationalRedList(threat)
                 threat['country'] = country
-            tmpThreats.append({key: threat[key] for key in ["reference", "taxonName", "threatened", "assessmentYear", "bgciScope", "foundBy"] if key in threat})
+            tmpThreats.append({key: threat[key] for key in ["reference", "taxonName", "threatened", "assessmentYear", "bgciScope", "foundBy", "accessDate"] if key in threat})
 
     treeSearch = getTreeSearch(speciesName)
 
@@ -116,6 +118,7 @@ def crawlBGCI(speciesName, speciesSynonyms):
         
     return {
             'treeCountries': filterOutCountryNames(treeSearch), 
+            'treeAccess': datetime.today().strftime('%Y-%m-%d'),
             'timeThreat': tmpThreats,
             "treeCountriesFoundBy": found
             }

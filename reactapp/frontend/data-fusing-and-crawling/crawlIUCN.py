@@ -28,7 +28,9 @@ def query_assessment_information(assessmentID):
                     "code": data["red_list_category"]["code"], 
                     "yearPublished": int(data["year_published"]),
                     "category": data["red_list_category"]["description"]["en"],
-                    "assessmentDate": data["assessment_date"]
+                    "assessmentDate": data["assessment_date"],
+                    "cite": data["citation"],
+                    "url": data["url"]
                 }, 
                 [e["code"] for e in data["locations"] if len(e["code"]) == 2] if data["latest"] == True else [], # the locations need to be extracted from the latest assessment
                 int(data["population_trend"]["code"]) if data["latest"] == True and data["population_trend"] is not None else None, # population trend

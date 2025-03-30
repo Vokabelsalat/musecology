@@ -5,7 +5,7 @@ import {
   bgciAssessment,
   citesAssessment
 } from "../../utils/timelineUtils";
-import { returnImageLink, returnDummyLink, returnImageLinks } from "../HomeNew";
+import { returnImageLink, returnDummyLink, returnImageLinks } from "../Home";
 
 export function useParseSpeciesJSON(i_speciesData, slice) {
   return useMemo(() => {
@@ -97,6 +97,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       };
 
       if (speciesObj.origMat == null) {
+        console.log("Skip species", spec);
         continue;
       }
 
@@ -259,10 +260,6 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         terrestrial: speciesObj.terEcos != null ? speciesObj.terEcos : [],
         marine: speciesObj.marEcos != null ? speciesObj.marEcos : []
       };
-
-      if (genusSpecies === "Haliotis asinina") {
-        console.log("Haliotis asinina", speciesObj);
-      }
 
       tmpSpeciesHexas[genusSpecies] = {
         terrestrial: speciesObj.terHexagons ?? [],

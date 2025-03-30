@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Story from "./components/Story/Story";
 import ResizeComponent from "./components/ResizeComponent";
-import HomeNew from "./components/HomeNew";
+import HomeNew from "./components/Home";
 import StoryEditor from "./components/StoryEditor";
 import StoryWrapper from "./components/StoryWrapper";
 

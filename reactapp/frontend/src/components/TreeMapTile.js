@@ -1,5 +1,17 @@
 import { Fragment, useCallback, useMemo, useState } from "react";
 
+const transformWikimediaURL = (url) => {
+  if (url.includes("/")) {
+    const lastSlashIndex = url.lastIndexOf("/"); // Find the last "/"
+    if (lastSlashIndex === -1) return null;
+
+    const filename = url.substring(lastSlashIndex + 1); // Extract filename
+    return `https://commons.wikimedia.org/wiki/File:${filename}`;
+  } else {
+    return url;
+  }
+};
+
 export default function TreeMapTile(props) {
   const { node, parentTop = 0, parentLeft = 0 } = props;
 
@@ -76,20 +88,29 @@ export default function TreeMapTile(props) {
 
     if (max.data.image) {
       for (const photo of max.data.image) {
-        ph.push({ type: "cover", src: photo.link });
+        ph.push({ type: "cover", src: photo.link, author: photo.source });
       }
     } else if (max.data.proxy) {
-      ph.push({ type: "proxy", src: max.data.proxy.link });
+      ph.push({
+        type: "proxy",
+        src: max.data.proxy.link,
+        author: max.data.proxy.source
+      });
     }
 
     if (speciesLevel && max.data.mediaUrls) {
       ph.push(
         ...max.data.mediaUrls
           .filter((e) => {
-            return imageExtensions.test(e);
+            return imageExtensions.test(e.link);
           })
           .map((e) => {
-            return { type: "wiki", src: e };
+            return {
+              type: "wiki",
+              src: e.link,
+              author: e.author,
+              license: e.license
+            };
           })
       );
     }
@@ -144,6 +165,37 @@ export default function TreeMapTile(props) {
           >
             <div className="chevronRight"></div>
           </div>
+          {photos[visibleIndex] !== undefined && (
+            <div className="absolute bottom-1 right-1 text-lg bg-slate-50 rounded-full h-[20px] w-[20px] hover:w-fit flex items-center justify-center group transition-all duration-500 hover:p-1">
+              <span className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-500 text-sm">
+                {photos[visibleIndex].type === "wiki" ? (
+                  <a
+                    target="_blank"
+                    href={transformWikimediaURL(photos[visibleIndex].src ?? "")}
+                    className="text-black"
+                  >
+                    {photos[visibleIndex].author != null &&
+                      photos[visibleIndex].author !== "" && (
+                        <>
+                          {photos[visibleIndex].author.replace(/<[^>]+>/g, "")}
+                        </>
+                      )}
+                    {photos[visibleIndex].license != null &&
+                      photos[visibleIndex].license !== "" && (
+                        <>
+                          ,{" "}
+                          {photos[visibleIndex].license.replace(/<[^>]+>/g, "")}
+                          ,{" Wikipedia"}
+                        </>
+                      )}
+                  </a>
+                ) : (
+                  <>{photos[visibleIndex].author}</>
+                )}
+              </span>
+              &copy;
+            </div>
+          )}
         </>
       )}
     </div>
