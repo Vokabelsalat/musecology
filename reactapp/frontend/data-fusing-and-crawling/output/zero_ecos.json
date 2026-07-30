@@ -1,0 +1,2995 @@
+{
+  "Acer saccharum subsp. nigrum": {
+    "powo": [
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Canada"
+    ],
+    "iucn": [
+      "CA",
+      "US"
+    ]
+  },
+  "Agathis dammara": {
+    "bgci": [
+      "Indonesia",
+      "Philippines"
+    ],
+    "iucn": [
+      "PH",
+      "ID"
+    ]
+  },
+  "Ailanthus altissima": {
+    "powo": [
+      "Taiwan",
+      "China"
+    ],
+    "bgci": [
+      "China",
+      "Taiwan, Province of China"
+    ],
+    "iucn": [
+      "TW",
+      "VN",
+      "CN"
+    ]
+  },
+  "Ailanthus altissima var. altissima": {
+    "powo": [
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Alkanna tinctoria": {
+    "powo": [
+      "Tunisia",
+      "Ukraine",
+      "Egypt",
+      "Italy",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "Slovenia",
+      "Bulgaria",
+      "Cyprus",
+      "Syrian Arab Republic",
+      "Algeria",
+      "Libya",
+      "Jordan",
+      "Slovakia",
+      "Spain",
+      "Turkey",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Araucaria bidwillii": {
+    "powo": [
+      "Australia"
+    ],
+    "bgci": [
+      "Australia"
+    ],
+    "iucn": [
+      "AU"
+    ]
+  },
+  "Berberis vulgaris": {
+    "powo": [
+      "Belarus",
+      "Ukraine",
+      "Italy",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "France",
+      "Slovenia",
+      "Iran (Islamic Republic of)",
+      "Armenia",
+      "Germany",
+      "Russian Federation",
+      "Bulgaria",
+      "Liechtenstein",
+      "Algeria",
+      "Luxembourg",
+      "Poland",
+      "Slovakia",
+      "Spain",
+      "Switzerland",
+      "Turkey",
+      "Uzbekistan",
+      "Lithuania",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Betula pendula subsp. pendula": {
+    "powo": [
+      "Finland",
+      "Belarus",
+      "Ukraine",
+      "Italy",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "Kyrgyzstan",
+      "Norway",
+      "Sweden",
+      "Argentina",
+      "France",
+      "Slovenia",
+      "Iran (Islamic Republic of)",
+      "United Kingdom of Great Britain & Northern Ireland",
+      "Armenia",
+      "Germany",
+      "Russian Federation",
+      "Bulgaria",
+      "Liechtenstein",
+      "Iraq",
+      "Denmark",
+      "Mongolia",
+      "Kazakhstan",
+      "Luxembourg",
+      "Poland",
+      "Portugal",
+      "Slovakia",
+      "Spain",
+      "Switzerland",
+      "Turkey",
+      "Netherlands",
+      "Uzbekistan",
+      "Lithuania",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": [
+      "UA"
+    ]
+  },
+  "Caesalpinia brasiliensis": {
+    "powo": [
+      "Dominican Republic",
+      "Puerto Rico"
+    ],
+    "bgci": [
+      "Haiti",
+      "Dominican Republic"
+    ],
+    "iucn": []
+  },
+  "Ticanto crista": {
+    "powo": [
+      "Vanuatu",
+      "New Caledonia",
+      "Australia",
+      "Indonesia",
+      "Taiwan",
+      "Tonga",
+      "Sri Lanka",
+      "India",
+      "Christmas Island",
+      "Philippines",
+      "Malaysia",
+      "Viet Nam",
+      "China",
+      "Thailand",
+      "Bangladesh",
+      "Myanmar",
+      "Solomon Islands",
+      "Palau",
+      "Singapore",
+      "Papua New Guinea",
+      "Cambodia",
+      "Japan"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus caesius": {
+    "powo": [
+      "Philippines",
+      "Malaysia",
+      "Singapore",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "TH",
+      "PH",
+      "ID",
+      "MY"
+    ]
+  },
+  "Calamus crinitus": {
+    "powo": [
+      "Thailand",
+      "Singapore",
+      "Indonesia",
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus crinitus subsp. sabut": {
+    "powo": [
+      "Thailand",
+      "Singapore",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus exilis": {
+    "powo": [
+      "Thailand",
+      "Singapore",
+      "Indonesia",
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus inermis": {
+    "powo": [
+      "Myanmar",
+      "India",
+      "Viet Nam",
+      "Lao People's Democratic Republic",
+      "China",
+      "Thailand",
+      "Bangladesh"
+    ],
+    "bgci": [],
+    "iucn": [
+      "MM",
+      "IN",
+      "BT",
+      "VN",
+      "LA",
+      "CN",
+      "TH"
+    ]
+  },
+  "Calamus javensis": {
+    "powo": [
+      "Myanmar",
+      "Philippines",
+      "Malaysia",
+      "Singapore",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "MM",
+      "BN",
+      "MY",
+      "PH",
+      "SG",
+      "TH",
+      "ID"
+    ]
+  },
+  "Calamus latifolius": {
+    "powo": [
+      "Myanmar",
+      "India",
+      "Nepal",
+      "Viet Nam",
+      "Singapore",
+      "Lao People's Democratic Republic",
+      "Cambodia",
+      "Thailand",
+      "Bangladesh"
+    ],
+    "bgci": [],
+    "iucn": [
+      "MM",
+      "IN",
+      "MY",
+      "NP",
+      "VN",
+      "LA",
+      "KH",
+      "TH",
+      "BD"
+    ]
+  },
+  "Calamus manan": {
+    "powo": [
+      "Thailand",
+      "Singapore",
+      "Indonesia",
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus melanochaetes": {
+    "powo": [
+      "Taiwan",
+      "Bangladesh",
+      "Myanmar",
+      "India",
+      "Papua New Guinea",
+      "Philippines",
+      "Malaysia",
+      "Viet Nam",
+      "Singapore",
+      "Lao People's Democratic Republic",
+      "Cambodia",
+      "China",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "ID"
+    ]
+  },
+  "Calamus moseleyanus": {
+    "powo": [
+      "Philippines",
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus optimus": {
+    "powo": [
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus ornatus": {
+    "powo": [
+      "Philippines",
+      "Malaysia",
+      "Singapore",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "BN",
+      "MY",
+      "PH",
+      "SG",
+      "TH",
+      "ID"
+    ]
+  },
+  "Calamus ovoideus": {
+    "powo": [
+      "Sri Lanka"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus pogonacanthus": {
+    "powo": [
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "MY",
+      "ID",
+      "BN"
+    ]
+  },
+  "Calamus scipionum": {
+    "powo": [
+      "Philippines",
+      "Malaysia",
+      "Singapore",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus tetradactylus": {
+    "powo": [
+      "Viet Nam",
+      "Lao People's Democratic Republic",
+      "Cambodia",
+      "China",
+      "Thailand"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus trachycoleus": {
+    "powo": [
+      "Malaysia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus tumidus": {
+    "powo": [
+      "Singapore",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus validus": {
+    "powo": [
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus zollingeri": {
+    "powo": [
+      "Philippines",
+      "Papua New Guinea",
+      "Indonesia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Calamus zollingeri subsp. merrillii": {
+    "powo": [
+      "Philippines"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Callitropsis nootkatensis": {
+    "powo": [
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Canada"
+    ],
+    "iucn": [
+      "CA",
+      "US"
+    ]
+  },
+  "Carya tomentosa": {
+    "powo": [
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States"
+    ],
+    "iucn": [
+      "US"
+    ]
+  },
+  "Cedrus libani var. brevifolia": {
+    "powo": [
+      "Cyprus"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Chamaecyparis thyoides var. thyoides": {
+    "powo": [
+      "United States of America"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Citrus x limon": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Connarus lambertii": {
+    "powo": [
+      "Saint Vincent and the Grenadines",
+      "Honduras",
+      "Colombia",
+      "Trinidad and Tobago",
+      "Mexico",
+      "Brazil",
+      "Costa Rica",
+      "Panama",
+      "Guatemala",
+      "Belize",
+      "Venezuela",
+      "Guyana",
+      "Nicaragua"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Cordia gerascanthus": {
+    "powo": [
+      "Honduras",
+      "Jamaica",
+      "Mexico",
+      "Costa Rica",
+      "Cuba",
+      "Puerto Rico",
+      "Cayman Islands",
+      "Guatemala",
+      "Belize",
+      "Dominican Republic",
+      "El Salvador",
+      "Nicaragua"
+    ],
+    "bgci": [
+      "Honduras",
+      "Belize",
+      "Cuba",
+      "El Salvador",
+      "Mexico",
+      "Cayman Islands",
+      "Puerto Rico",
+      "Dominican Republic",
+      "Haiti",
+      "Nicaragua",
+      "Jamaica",
+      "Costa Rica",
+      "Guatemala"
+    ],
+    "iucn": [
+      "HN",
+      "JM",
+      "MX",
+      "CR",
+      "CU",
+      "GT",
+      "DO",
+      "NI"
+    ]
+  },
+  "Crocus sativus": {
+    "powo": [
+      "Greece"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Curcuma longa": {
+    "powo": [
+      "India"
+    ],
+    "bgci": [],
+    "iucn": [
+      "IN"
+    ]
+  },
+  "Dalbergia antsirananae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Dalbergia manongarivensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Dalbergia masoalensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Dalbergia poolii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Dalbergia pseudoviguieri": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Dalbergia scorpioides": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Diospyros ambanjensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros amborelloides": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros andohahelensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros angulata": {
+    "powo": [
+      "Mauritius"
+    ],
+    "bgci": [
+      "Mauritius"
+    ],
+    "iucn": [
+      "MU"
+    ]
+  },
+  "Diospyros antakaranae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros antongilensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros antsirananae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros arenicola": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros bardotiae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros beankensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros beberonnii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros betamponensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros callmanderi": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros chitoniophora": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros courrierensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros crassifolia": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros crassipedicellata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros darainensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros decaryoides": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros discocalyx": {
+    "powo": [
+      "Malaysia"
+    ],
+    "bgci": [
+      "Indonesia",
+      "Malaysia"
+    ],
+    "iucn": []
+  },
+  "Diospyros diversifolia": {
+    "powo": [
+      "Mauritius"
+    ],
+    "bgci": [
+      "Mauritius"
+    ],
+    "iucn": [
+      "MU"
+    ]
+  },
+  "Diospyros falyi": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros fasimainty": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros ferrea": {
+    "powo": [
+      "Zimbabwe",
+      "Vanuatu",
+      "Democratic Republic of the Congo",
+      "Indonesia",
+      "Guinea-Bissau",
+      "Taiwan",
+      "Sri Lanka",
+      "Sao Tome and Principe",
+      "India",
+      "Liberia",
+      "Sierra Leone",
+      "Japan",
+      "Philippines",
+      "Malaysia",
+      "Viet Nam",
+      "Lao People's Democratic Republic",
+      "Nigeria",
+      "Thailand",
+      "Bangladesh",
+      "Central African Republic",
+      "Kenya",
+      "Myanmar",
+      "Gabon",
+      "United Republic of Tanzania",
+      "Solomon Islands",
+      "Ghana",
+      "Singapore",
+      "Cameroon",
+      "Burkina Faso",
+      "Madagascar",
+      "Senegal",
+      "Mali",
+      "Guinea",
+      "Papua New Guinea",
+      "Benin",
+      "Sudan",
+      "C\u00f4te d'Ivoire",
+      "Cambodia",
+      "Mozambique",
+      "Angola"
+    ],
+    "bgci": [
+      "Malaysia",
+      "Central African Republic",
+      "Madagascar",
+      "Burkina Faso",
+      "Mali",
+      "C\u00f4te d'Ivoire",
+      "Benin",
+      "Guinea-Bissau",
+      "Philippines",
+      "Nigeria",
+      "Thailand",
+      "Cambodia",
+      "Senegal",
+      "Indonesia",
+      "Papua New Guinea",
+      "Ghana",
+      "Rwanda",
+      "Mozambique",
+      "Lao People's Democratic Republic",
+      "Viet Nam",
+      "Sierra Leone",
+      "Liberia",
+      "Congo, The Democratic Republic of the",
+      "Zimbabwe",
+      "Guinea",
+      "Gabon",
+      "Cameroon",
+      "Sao Tom\u00e9 and Principe",
+      "Vanuatu",
+      "Bangladesh",
+      "Angola",
+      "Japan",
+      "Myanmar",
+      "Taiwan, Province of China",
+      "Burundi",
+      "Sri Lanka",
+      "Sudan",
+      "Solomon Islands",
+      "Kenya",
+      "Tanzania, United Republic of",
+      "India"
+    ],
+    "iucn": []
+  },
+  "Diospyros grandiflora": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros hongwae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros kamerunensis": {
+    "powo": [
+      "Gabon",
+      "Liberia",
+      "Ghana",
+      "C\u00f4te d'Ivoire",
+      "Cameroon"
+    ],
+    "bgci": [
+      "C\u00f4te d'Ivoire",
+      "Cameroon",
+      "Gabon",
+      "Liberia",
+      "Ghana"
+    ],
+    "iucn": [
+      "GA",
+      "LR",
+      "GH",
+      "CI",
+      "CM"
+    ]
+  },
+  "Diospyros kely": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros kurzii": {
+    "powo": [
+      "Myanmar",
+      "India",
+      "Philippines",
+      "Malaysia",
+      "Singapore",
+      "Thailand",
+      "Indonesia"
+    ],
+    "bgci": [
+      "Myanmar",
+      "Malaysia",
+      "Thailand",
+      "India"
+    ],
+    "iucn": [
+      "MM",
+      "IN",
+      "PH",
+      "MY",
+      "TH",
+      "ID"
+    ]
+  },
+  "Diospyros orientalis": {
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros littoralis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros lowryi": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros maculata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros malandy": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros mandenensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros manongarivensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros marmorata": {
+    "powo": [
+      "Myanmar"
+    ],
+    "bgci": [
+      "India"
+    ],
+    "iucn": []
+  },
+  "Diospyros melanocarpa": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros mimusops": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros montisgallicarum": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros mun": {
+    "powo": [
+      "Viet Nam",
+      "Cambodia"
+    ],
+    "bgci": [
+      "Lao People's Democratic Republic",
+      "Viet Nam"
+    ],
+    "iucn": [
+      "VN",
+      "LA"
+    ]
+  },
+  "Diospyros nitidifolia": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros obscurinerva": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros olivieri": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros orbicularis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros phillipsonii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros plicaticalyx": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros pseudolanceolata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros pubiramulis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros quadrangularis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros rabehevitrae": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros rakotovaoi": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros ramisonii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros ranirisonii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros ratovosonii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros retusa": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros rubripetiolata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros sennenii": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": []
+  },
+  "Diospyros silicea": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros suarezensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros subbullata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros taikintana": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros tampolensis": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Diospyros ultima": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [
+      "Madagascar"
+    ],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Dyera costulata": {
+    "powo": [
+      "Thailand",
+      "Singapore",
+      "Indonesia",
+      "Malaysia"
+    ],
+    "bgci": [
+      "Malaysia",
+      "Thailand",
+      "Brunei Darussalam",
+      "Singapore",
+      "Indonesia"
+    ],
+    "iucn": [
+      "BN",
+      "MY",
+      "SG",
+      "TH",
+      "ID"
+    ]
+  },
+  "Eucalyptus camaldulensis subsp. camaldulensis": {
+    "powo": [
+      "Australia"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Eucalyptus globulus subsp. globulus": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Falcataria falcata": {
+    "powo": [
+      "Solomon Islands",
+      "Papua New Guinea",
+      "Indonesia"
+    ],
+    "bgci": [
+      "Indonesia",
+      "Solomon Islands",
+      "Papua New Guinea"
+    ],
+    "iucn": [
+      "ZW",
+      "JM",
+      "CK",
+      "BN",
+      "RE",
+      "VU",
+      "CL",
+      "NC",
+      "ID",
+      "GW",
+      "TO",
+      "HN",
+      "LK",
+      "ST",
+      "IN",
+      "SC",
+      "CU",
+      "MY",
+      "PH",
+      "VN",
+      "LA",
+      "NG",
+      "NF",
+      "TH",
+      "TL",
+      "CN",
+      "UG",
+      "BD",
+      "KE",
+      "US",
+      "GU",
+      "MM",
+      "SB",
+      "SG",
+      "CM",
+      "WF",
+      "AS",
+      "MG",
+      "FJ",
+      "PF",
+      "PG",
+      "NU",
+      "VE",
+      "KH",
+      "MZ",
+      "AO"
+    ]
+  },
+  "Gardenia latifolia": {
+    "powo": [
+      "India",
+      "Bangladesh"
+    ],
+    "bgci": [
+      "Bangladesh",
+      "India"
+    ],
+    "iucn": [
+      "IN",
+      "BD"
+    ]
+  },
+  "Gossypium arboreum": {
+    "powo": [
+      "India",
+      "Sri Lanka"
+    ],
+    "bgci": [
+      "Sri Lanka",
+      "India"
+    ],
+    "iucn": []
+  },
+  "Guadua angustifolia": {
+    "powo": [
+      "Colombia",
+      "Trinidad and Tobago",
+      "Ecuador",
+      "Venezuela",
+      "Peru"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Handroanthus billbergii": {
+    "powo": [
+      "Colombia",
+      "Ecuador",
+      "Aruba",
+      "Cuba",
+      "Venezuela",
+      "Peru"
+    ],
+    "bgci": [
+      "Peru",
+      "Cuba",
+      "Cura\u00e7ao",
+      "Aruba",
+      "Venezuela, Bolivarian Republic of",
+      "Colombia",
+      "Ecuador"
+    ],
+    "iucn": []
+  },
+  "Handroanthus lapacho": {
+    "powo": [
+      "Argentina",
+      "Bolivia (Plurinational State of)"
+    ],
+    "bgci": [
+      "Bolivia, Plurinational State of",
+      "Argentina"
+    ],
+    "iucn": [
+      "AR",
+      "BO"
+    ]
+  },
+  "Heliodendron xanthoxylon": {
+    "powo": [
+      "Australia"
+    ],
+    "bgci": [
+      "Australia"
+    ],
+    "iucn": []
+  },
+  "Hordeum vulgare": {
+    "powo": [
+      "Tadjikistan",
+      "Saudi Arabia",
+      "Egypt",
+      "Pakistan",
+      "Yemen",
+      "Greece",
+      "Kyrgyzstan",
+      "China",
+      "Iran (Islamic Republic of)",
+      "Armenia",
+      "Turkmenistan",
+      "Afghanistan",
+      "Iraq",
+      "Cyprus",
+      "Syrian Arab Republic",
+      "Libya",
+      "Kazakhstan",
+      "Jordan",
+      "Turkey",
+      "Uzbekistan"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Kalopanax septemlobus subsp. septemlobus": {
+    "powo": [
+      "Russian Federation",
+      "Republic of Korea",
+      "Japan",
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Linum usitatissimum": {
+    "powo": [
+      "Armenia",
+      "Russian Federation",
+      "Iraq",
+      "Turkey",
+      "Syrian Arab Republic",
+      "Iran (Islamic Republic of)"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Lonicera xylosteum": {
+    "powo": [
+      "Finland",
+      "Belarus",
+      "Ukraine",
+      "Italy",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "Norway",
+      "Sweden",
+      "Slovenia",
+      "Germany",
+      "Russian Federation",
+      "Bulgaria",
+      "Liechtenstein",
+      "Denmark",
+      "Luxembourg",
+      "Poland",
+      "Slovakia",
+      "Switzerland",
+      "Spain",
+      "Turkey",
+      "Netherlands",
+      "Lithuania",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Malus domestica": {
+    "powo": [
+      "Kazakhstan",
+      "Tadjikistan",
+      "Afghanistan",
+      "Kyrgyzstan",
+      "Uzbekistan",
+      "China",
+      "Pakistan"
+    ],
+    "bgci": [
+      "Kyrgyzstan",
+      "China",
+      "Afghanistan",
+      "Tajikistan",
+      "Kazakhstan",
+      "Uzbekistan",
+      "Pakistan"
+    ],
+    "iucn": [
+      "KZ",
+      "TJ",
+      "KG",
+      "UZ",
+      "CN"
+    ]
+  },
+  "Mangifera indica": {
+    "powo": [
+      "Myanmar",
+      "India",
+      "Belize",
+      "China",
+      "Thailand"
+    ],
+    "bgci": [
+      "Nepal",
+      "India"
+    ],
+    "iucn": [
+      "LK",
+      "MM",
+      "IN",
+      "MY",
+      "PH",
+      "VN",
+      "ID",
+      "CN",
+      "TH",
+      "BD"
+    ]
+  },
+  "Microberlinia bisulcata": {
+    "powo": [
+      "Congo",
+      "Cameroon"
+    ],
+    "bgci": [
+      "Cameroon"
+    ],
+    "iucn": [
+      "NG",
+      "CM"
+    ]
+  },
+  "Mitragyna parvifolia": {
+    "powo": [
+      "Sri Lanka",
+      "Myanmar",
+      "India",
+      "Nepal",
+      "Cambodia",
+      "Bangladesh"
+    ],
+    "bgci": [
+      "Bangladesh",
+      "Myanmar",
+      "Nepal",
+      "Sri Lanka",
+      "Pakistan",
+      "India"
+    ],
+    "iucn": [
+      "LK",
+      "MM",
+      "IN",
+      "NP",
+      "LA",
+      "KH",
+      "TH",
+      "BD"
+    ]
+  },
+  "Morus alba": {
+    "powo": [
+      "China"
+    ],
+    "bgci": [
+      "China"
+    ],
+    "iucn": [
+      "CN"
+    ]
+  },
+  "Morus nigra": {
+    "powo": [
+      "Iran (Islamic Republic of)"
+    ],
+    "bgci": [
+      "Kyrgyzstan"
+    ],
+    "iucn": [
+      "IR"
+    ]
+  },
+  "Ochroma pyramidale": {
+    "powo": [
+      "Jamaica",
+      "Colombia",
+      "Guatemala",
+      "Dominican Republic",
+      "Bolivia (Plurinational State of)",
+      "United States Virgin Islands",
+      "Honduras",
+      "Trinidad and Tobago",
+      "Ecuador",
+      "Mexico",
+      "Cuba",
+      "Panama",
+      "Belize",
+      "Saint Vincent and the Grenadines",
+      "El Salvador",
+      "Costa Rica",
+      "Brazil",
+      "Puerto Rico",
+      "French Guiana",
+      "Venezuela",
+      "Peru"
+    ],
+    "bgci": [
+      "French Guiana",
+      "Belize",
+      "Martinique",
+      "Dominica",
+      "Haiti",
+      "Nicaragua",
+      "Bolivia, Plurinational State of",
+      "Saint Kitts and Nevis",
+      "Dominican Republic",
+      "Venezuela, Bolivarian Republic of",
+      "Guadeloupe",
+      "El Salvador",
+      "Costa Rica",
+      "Montserrat",
+      "Saint Vincent and the Grenadines",
+      "Brazil",
+      "Jamaica",
+      "Colombia",
+      "Panama",
+      "Peru",
+      "Honduras",
+      "Saint Martin",
+      "Cuba",
+      "Mexico",
+      "Puerto Rico",
+      "Trinidad and Tobago",
+      "Guyana",
+      "Grenada",
+      "Saint Lucia",
+      "Ecuador",
+      "Guatemala"
+    ],
+    "iucn": [
+      "JM",
+      "LC",
+      "CO",
+      "MS",
+      "KN",
+      "GT",
+      "DO",
+      "GY",
+      "BO",
+      "HN",
+      "MF",
+      "TT",
+      "EC",
+      "MX",
+      "CU",
+      "PA",
+      "BZ",
+      "NI",
+      "HT",
+      "VC",
+      "GP",
+      "GD",
+      "SV",
+      "DM",
+      "CR",
+      "BR",
+      "PR",
+      "MQ",
+      "GF",
+      "VE",
+      "PE"
+    ]
+  },
+  "Ocotea porosa": {
+    "powo": [
+      "Brazil",
+      "Paraguay"
+    ],
+    "bgci": [
+      "Brazil"
+    ],
+    "iucn": [
+      "BR",
+      "AR",
+      "PY"
+    ]
+  },
+  "Olea capensis": {
+    "powo": [
+      "Burundi",
+      "Rwanda",
+      "Democratic Republic of the Congo",
+      "Sao Tome and Principe",
+      "Liberia",
+      "Sierra Leone",
+      "Nigeria",
+      "Uganda",
+      "Kenya",
+      "Ethiopia",
+      "United Republic of Tanzania",
+      "South Africa",
+      "Cameroon",
+      "Malawi",
+      "Madagascar",
+      "Somalia",
+      "Mayotte",
+      "Guinea",
+      "Sudan",
+      "C\u00f4te d'Ivoire",
+      "Eswatini"
+    ],
+    "bgci": [
+      "South Sudan",
+      "Ethiopia",
+      "Madagascar",
+      "Uganda",
+      "Somalia",
+      "C\u00f4te d'Ivoire",
+      "Nigeria",
+      "Equatorial Guinea",
+      "Rwanda",
+      "Sierra Leone",
+      "Liberia",
+      "Congo, The Democratic Republic of the",
+      "Guinea",
+      "Eswatini",
+      "Cameroon",
+      "Sao Tom\u00e9 and Principe",
+      "Tanzania, United Republic of",
+      "Comoros",
+      "Burundi",
+      "South Africa",
+      "Sudan",
+      "Kenya",
+      "Malawi"
+    ],
+    "iucn": [
+      "BI",
+      "RW",
+      "SS",
+      "CD",
+      "KM",
+      "ST",
+      "LR",
+      "SL",
+      "NG",
+      "UG",
+      "KE",
+      "ET",
+      "TZ",
+      "ZA",
+      "CM",
+      "MW",
+      "MG",
+      "SO",
+      "GQ",
+      "GN",
+      "SD",
+      "CI",
+      "SZ"
+    ]
+  },
+  "Olea capensis subsp. capensis": {
+    "powo": [
+      "South Africa"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Papaver somniferum": {
+    "powo": [
+      "Libya",
+      "Portugal",
+      "Tunisia",
+      "France",
+      "Spain",
+      "Algeria",
+      "Italy"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Paulownia tomentosa": {
+    "powo": [
+      "Republic of Korea",
+      "China"
+    ],
+    "bgci": [
+      "China"
+    ],
+    "iucn": [
+      "KR",
+      "JP",
+      "CN"
+    ]
+  },
+  "Paulownia tomentosa var. tomentosa": {
+    "powo": [
+      "Republic of Korea",
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Peltogyne paniculata subsp. pubescens": {
+    "powo": [
+      "Colombia",
+      "Suriname",
+      "Brazil",
+      "French Guiana",
+      "Venezuela",
+      "Guyana"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Phyllostachys edulis": {
+    "powo": [
+      "Taiwan",
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Picea abies var. abies": {
+    "powo": [
+      "Finland",
+      "Belarus",
+      "Ukraine",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "Norway",
+      "Sweden",
+      "Slovenia",
+      "Germany",
+      "Russian Federation",
+      "Bulgaria",
+      "Liechtenstein",
+      "Poland",
+      "Slovakia",
+      "Switzerland",
+      "Turkey",
+      "Lithuania",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Picea laxa": {
+    "powo": [
+      "Saint Pierre et Miquelon",
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Canada"
+    ],
+    "iucn": [
+      "CA",
+      "US"
+    ]
+  },
+  "Pinus pinaster subsp. pinaster": {
+    "powo": [
+      "Spain",
+      "Portugal"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Platanus xhispanica": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Platymiscium pinnatum var. ulei": {
+    "powo": [
+      "Colombia",
+      "Suriname",
+      "Brazil",
+      "French Guiana",
+      "Bolivia (Plurinational State of)"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Plectrocarpa arborea": {
+    "powo": [
+      "Venezuela",
+      "Colombia"
+    ],
+    "bgci": [
+      "Colombia",
+      "Venezuela, Bolivarian Republic of"
+    ],
+    "iucn": [
+      "GP",
+      "VE",
+      "CO"
+    ]
+  },
+  "Populus x canadensis": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Populus alba": {
+    "powo": [
+      "Tadjikistan",
+      "Tunisia",
+      "Ukraine",
+      "Pakistan",
+      "Italy",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "India",
+      "France",
+      "China",
+      "Slovenia",
+      "Iran (Islamic Republic of)",
+      "Armenia",
+      "Germany",
+      "Turkmenistan",
+      "Russian Federation",
+      "Afghanistan",
+      "Bulgaria",
+      "Liechtenstein",
+      "Syrian Arab Republic",
+      "Algeria",
+      "Libya",
+      "Kazakhstan",
+      "Poland",
+      "Portugal",
+      "Slovakia",
+      "Spain",
+      "Switzerland",
+      "Turkey",
+      "Uzbekistan",
+      "Romania"
+    ],
+    "bgci": [
+      "Latvia",
+      "Switzerland",
+      "Slovakia",
+      "Syrian Arab Republic",
+      "Spain",
+      "Estonia",
+      "Andorra",
+      "Bosnia and Herzegovina",
+      "Algeria",
+      "Turkey",
+      "Malta",
+      "Albania",
+      "Azerbaijan",
+      "Belarus",
+      "Croatia",
+      "Ukraine",
+      "Serbia",
+      "Austria",
+      "France",
+      "Kazakhstan",
+      "Bulgaria",
+      "Israel",
+      "Morocco",
+      "Poland",
+      "China",
+      "Czechia",
+      "Romania",
+      "Germany",
+      "Iran, Islamic Republic of",
+      "Montenegro",
+      "Italy",
+      "Moldova",
+      "Pakistan",
+      "Lithuania",
+      "Georgia",
+      "Portugal",
+      "Russian Federation",
+      "Libya",
+      "Egypt",
+      "Armenia",
+      "Liechtenstein",
+      "Iraq",
+      "Hungary",
+      "North Macedonia",
+      "Slovenia",
+      "Tunisia"
+    ],
+    "iucn": [
+      "BA",
+      "TN",
+      "BY",
+      "UA",
+      "BE",
+      "EG",
+      "RS",
+      "PK",
+      "ME",
+      "IT",
+      "HU",
+      "AL",
+      "GR",
+      "NO",
+      "SE",
+      "FR",
+      "MK",
+      "CN",
+      "IE",
+      "SI",
+      "IR",
+      "AD",
+      "GB",
+      "IL",
+      "AM",
+      "DE",
+      "RU",
+      "EE",
+      "BG",
+      "MT",
+      "LI",
+      "IQ",
+      "LV",
+      "DK",
+      "AZ",
+      "SY",
+      "CY",
+      "AT",
+      "DZ",
+      "MA",
+      "GE",
+      "LY",
+      "MD",
+      "PL",
+      "KZ",
+      "LU",
+      "PT",
+      "SK",
+      "ES",
+      "CH",
+      "TR",
+      "NL",
+      "HR",
+      "LT",
+      "RO",
+      "CZ"
+    ]
+  },
+  "Populus deltoides subsp. monilifera": {
+    "powo": [
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Canada"
+    ],
+    "iucn": [
+      "CA",
+      "US"
+    ]
+  },
+  "Populus nigra f. italica": {
+    "powo": [
+      "Poland"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Populus x canescens": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Prunus cerasus": {
+    "powo": [
+      "Russian Federation"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Prunus domestica": {
+    "powo": [
+      "Iran (Islamic Republic of)",
+      "Armenia"
+    ],
+    "bgci": [],
+    "iucn": [
+      "FI",
+      "BE",
+      "IT",
+      "HU",
+      "AL",
+      "GR",
+      "SE",
+      "FR",
+      "IE",
+      "IR",
+      "GB",
+      "AM",
+      "DE",
+      "RU",
+      "BG",
+      "AZ",
+      "DK",
+      "AT",
+      "GE",
+      "PT",
+      "SK",
+      "ES",
+      "TR",
+      "NL",
+      "RO",
+      "CZ"
+    ]
+  },
+  "Prunus serotina": {
+    "powo": [
+      "Honduras",
+      "Mexico",
+      "Panama",
+      "Guatemala",
+      "Canada",
+      "El Salvador",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Mexico",
+      "Guatemala",
+      "Canada"
+    ],
+    "iucn": [
+      "GT",
+      "CA",
+      "US",
+      "MX"
+    ]
+  },
+  "Pseudosasa amabilis": {
+    "powo": [
+      "Viet Nam",
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Pseudotsuga menziesii var. menziesii": {
+    "powo": [
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Pterocarpus erinaceus": {
+    "powo": [
+      "Mali",
+      "Central African Republic",
+      "Chad",
+      "Liberia",
+      "Gabon",
+      "Guinea",
+      "Sierra Leone",
+      "Togo",
+      "Benin",
+      "Ghana",
+      "Gambia",
+      "C\u00f4te d'Ivoire",
+      "Niger",
+      "Nigeria",
+      "Cameroon",
+      "Burkina Faso",
+      "Senegal",
+      "Guinea-Bissau"
+    ],
+    "bgci": [
+      "C\u00f4te d'Ivoire",
+      "Chad",
+      "Benin",
+      "Cameroon",
+      "Gabon",
+      "Guinea-Bissau",
+      "Nigeria",
+      "Ghana",
+      "Sierra Leone",
+      "Liberia",
+      "Senegal",
+      "Togo",
+      "Central African Republic",
+      "Gambia",
+      "Guinea",
+      "Niger",
+      "Burkina Faso",
+      "Mali"
+    ],
+    "iucn": [
+      "ML",
+      "TD",
+      "GA",
+      "LR",
+      "GN",
+      "SL",
+      "TG",
+      "GW",
+      "GM",
+      "BJ",
+      "CI",
+      "GH",
+      "NG",
+      "CM",
+      "BF",
+      "NE",
+      "SN",
+      "CF"
+    ]
+  },
+  "Pterocarpus santalinus": {
+    "powo": [
+      "India"
+    ],
+    "bgci": [
+      "India"
+    ],
+    "iucn": [
+      "IN"
+    ]
+  },
+  "Pterocarpus vidalianus": {
+    "powo": [
+      "Philippines"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Pycnanthus angolensis subsp. angolensis": {
+    "powo": [
+      "Central African Republic",
+      "Liberia",
+      "Gabon",
+      "Sao Tome and Principe",
+      "Guinea",
+      "Burundi",
+      "Sierra Leone",
+      "Democratic Republic of the Congo",
+      "Togo",
+      "Benin",
+      "Ghana",
+      "C\u00f4te d'Ivoire",
+      "Nigeria",
+      "Cameroon",
+      "Guinea-Bissau",
+      "Senegal",
+      "Congo",
+      "Angola"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Quercus mongolica var. crispula": {
+    "powo": [
+      "Russian Federation",
+      "Japan",
+      "Republic of Korea",
+      "China"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Roupala montana": {
+    "powo": [
+      "Colombia",
+      "Guatemala",
+      "Guyana",
+      "Bolivia (Plurinational State of)",
+      "Honduras",
+      "Trinidad and Tobago",
+      "Ecuador",
+      "Mexico",
+      "Argentina",
+      "Panama",
+      "Belize",
+      "Nicaragua",
+      "Suriname",
+      "El Salvador",
+      "Costa Rica",
+      "Brazil",
+      "French Guiana",
+      "Venezuela",
+      "Peru"
+    ],
+    "bgci": [
+      "French Guiana",
+      "Belize",
+      "Nicaragua",
+      "Bolivia, Plurinational State of",
+      "Venezuela, Bolivarian Republic of",
+      "El Salvador",
+      "Costa Rica",
+      "Suriname",
+      "Paraguay",
+      "Brazil",
+      "Colombia",
+      "Panama",
+      "Argentina",
+      "Peru",
+      "Honduras",
+      "Mexico",
+      "Trinidad and Tobago",
+      "Guyana",
+      "Ecuador",
+      "Guatemala"
+    ],
+    "iucn": [
+      "CO",
+      "GT",
+      "GY",
+      "BO",
+      "HN",
+      "TT",
+      "EC",
+      "MX",
+      "AR",
+      "PA",
+      "BZ",
+      "NI",
+      "SR",
+      "PY",
+      "SV",
+      "CR",
+      "BR",
+      "GF",
+      "VE",
+      "PE"
+    ]
+  },
+  "Rubia tinctorum": {
+    "powo": [
+      "Tadjikistan",
+      "Ukraine",
+      "Pakistan",
+      "Italy",
+      "Albania",
+      "Greece",
+      "Kyrgyzstan",
+      "India",
+      "Viet Nam",
+      "China",
+      "Slovenia",
+      "Iran (Islamic Republic of)",
+      "Armenia",
+      "Turkmenistan",
+      "Russian Federation",
+      "Afghanistan",
+      "Iraq",
+      "Cyprus",
+      "Syrian Arab Republic",
+      "Kazakhstan",
+      "Jordan",
+      "Turkey",
+      "Uzbekistan"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Senegalia senegal": {
+    "powo": [
+      "Zimbabwe",
+      "Chad",
+      "Saudi Arabia",
+      "Rwanda",
+      "Gambia",
+      "Pakistan",
+      "Democratic Republic of the Congo",
+      "Yemen",
+      "India",
+      "Nigeria",
+      "Namibia",
+      "Uganda",
+      "Central African Republic",
+      "Kenya",
+      "Zambia",
+      "Ethiopia",
+      "United Republic of Tanzania",
+      "Ghana",
+      "Niger",
+      "South Africa",
+      "Cameroon",
+      "Burkina Faso",
+      "Botswana",
+      "Malawi",
+      "Senegal",
+      "Mali",
+      "Somalia",
+      "Eritrea",
+      "Oman",
+      "Benin",
+      "Sudan",
+      "C\u00f4te d'Ivoire",
+      "Mauritania",
+      "Mozambique",
+      "Eswatini",
+      "Angola"
+    ],
+    "bgci": [
+      "Botswana",
+      "Central African Republic",
+      "South Sudan",
+      "Ethiopia",
+      "Uganda",
+      "Burkina Faso",
+      "Mali",
+      "C\u00f4te d'Ivoire",
+      "Namibia",
+      "Benin",
+      "Chad",
+      "Oman",
+      "Somalia",
+      "Nigeria",
+      "Senegal",
+      "Niger",
+      "Ghana",
+      "Mauritania",
+      "Rwanda",
+      "Mozambique",
+      "Yemen",
+      "Congo, The Democratic Republic of the",
+      "Eritrea",
+      "Zimbabwe",
+      "Saudi Arabia",
+      "Pakistan",
+      "Eswatini",
+      "Cameroon",
+      "Tanzania, United Republic of",
+      "Angola",
+      "South Africa",
+      "Gambia",
+      "Sudan",
+      "Zambia",
+      "Kenya",
+      "Malawi",
+      "India"
+    ],
+    "iucn": [
+      "ZW",
+      "TD",
+      "SA",
+      "RW",
+      "GM",
+      "PK",
+      "SS",
+      "CD",
+      "YE",
+      "IN",
+      "NG",
+      "CG",
+      "NA",
+      "UG",
+      "CF",
+      "KE",
+      "ZM",
+      "ET",
+      "TZ",
+      "GH",
+      "NE",
+      "ZA",
+      "CM",
+      "BF",
+      "BW",
+      "MW",
+      "SN",
+      "ML",
+      "SO",
+      "ER",
+      "BJ",
+      "OM",
+      "SD",
+      "CI",
+      "MR",
+      "MZ",
+      "SZ",
+      "AO"
+    ]
+  },
+  "Rubroshorea polysperma": {
+    "powo": [
+      "Philippines",
+      "Palau"
+    ],
+    "bgci": [
+      "Philippines"
+    ],
+    "iucn": [
+      "PH"
+    ]
+  },
+  "Staudtia kamerunensis": {
+    "powo": [
+      "Zambia",
+      "Central African Republic",
+      "Gabon",
+      "Sao Tome and Principe",
+      "Burundi",
+      "Democratic Republic of the Congo",
+      "Nigeria",
+      "Cameroon",
+      "Congo",
+      "Uganda",
+      "Angola"
+    ],
+    "bgci": [
+      "Cameroon",
+      "Nigeria",
+      "Angola",
+      "Equatorial Guinea",
+      "Congo, The Democratic Republic of the",
+      "Central African Republic",
+      "Congo",
+      "Zambia",
+      "Uganda",
+      "Gabon"
+    ],
+    "iucn": [
+      "ZM",
+      "GQ",
+      "GA",
+      "UG",
+      "NG",
+      "AO",
+      "CG",
+      "CD",
+      "CM",
+      "CF"
+    ]
+  },
+  "Staudtia kamerunensis var. gabonensis": {
+    "powo": [
+      "Zambia",
+      "Central African Republic",
+      "Gabon",
+      "Sao Tome and Principe",
+      "Burundi",
+      "Democratic Republic of the Congo",
+      "Nigeria",
+      "Cameroon",
+      "Congo",
+      "Uganda",
+      "Angola"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Styphnolobium japonicum": {
+    "powo": [
+      "China"
+    ],
+    "bgci": [
+      "Japan"
+    ],
+    "iucn": [
+      "CN"
+    ]
+  },
+  "Swartzia panacoco var. panacoco": {
+    "powo": [
+      "French Guiana"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Terminalia elliptica": {
+    "powo": [
+      "Sri Lanka",
+      "Myanmar",
+      "India",
+      "Nepal",
+      "Viet Nam",
+      "Lao People's Democratic Republic",
+      "Cambodia",
+      "Thailand",
+      "Bangladesh"
+    ],
+    "bgci": [
+      "Lao People's Democratic Republic",
+      "Bangladesh",
+      "Myanmar",
+      "Viet Nam",
+      "Nepal",
+      "Cambodia",
+      "Thailand",
+      "Sri Lanka",
+      "Bhutan",
+      "India"
+    ],
+    "iucn": [
+      "MM",
+      "IN",
+      "BT",
+      "NP",
+      "VN",
+      "LA",
+      "KH",
+      "TH"
+    ]
+  },
+  "Tilia xeuropaea": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Tilia americana": {
+    "powo": [
+      "Mexico",
+      "Canada",
+      "United States of America"
+    ],
+    "bgci": [
+      "United States",
+      "Mexico",
+      "Canada"
+    ],
+    "iucn": [
+      "MX",
+      "CA",
+      "US"
+    ]
+  },
+  "Ulmus x hollandica": {
+    "bgci": [],
+    "iucn": []
+  },
+  "Ulmus minor subsp. minor": {
+    "powo": [
+      "Tadjikistan",
+      "Tunisia",
+      "Belarus",
+      "Ukraine",
+      "Hungary",
+      "Albania",
+      "Greece",
+      "Sweden",
+      "France",
+      "Slovenia",
+      "Iran (Islamic Republic of)",
+      "United Kingdom of Great Britain & Northern Ireland",
+      "Armenia",
+      "Germany",
+      "Turkmenistan",
+      "Russian Federation",
+      "Bulgaria",
+      "Liechtenstein",
+      "Iraq",
+      "Denmark",
+      "Algeria",
+      "Libya",
+      "Kazakhstan",
+      "Luxembourg",
+      "Poland",
+      "Portugal",
+      "Slovakia",
+      "Spain",
+      "Switzerland",
+      "Turkey",
+      "Netherlands",
+      "Uzbekistan",
+      "Lithuania",
+      "Romania"
+    ],
+    "bgci": [],
+    "iucn": []
+  },
+  "Vachellia seyal": {
+    "powo": [
+      "Chad",
+      "Saudi Arabia",
+      "Burundi",
+      "Gambia",
+      "Egypt",
+      "Yemen",
+      "Nigeria",
+      "Uganda",
+      "Central African Republic",
+      "Kenya",
+      "Zambia",
+      "Ethiopia",
+      "United Republic of Tanzania",
+      "Niger",
+      "Cameroon",
+      "Burkina Faso",
+      "Algeria",
+      "Djibouti",
+      "Senegal",
+      "Mali",
+      "Somalia",
+      "Eritrea",
+      "Guinea",
+      "Benin",
+      "Sudan",
+      "C\u00f4te d'Ivoire",
+      "Mauritania",
+      "Mozambique"
+    ],
+    "bgci": [
+      "Central African Republic",
+      "Ethiopia",
+      "Uganda",
+      "Mali",
+      "Burkina Faso",
+      "C\u00f4te d'Ivoire",
+      "Algeria",
+      "Benin",
+      "Chad",
+      "Nigeria",
+      "Djibouti",
+      "Senegal",
+      "Niger",
+      "Ghana",
+      "Mauritania",
+      "Yemen",
+      "Eritrea",
+      "Egypt",
+      "Cameroon",
+      "Tanzania, United Republic of",
+      "Burundi",
+      "Gambia",
+      "Sudan",
+      "Zambia",
+      "Kenya",
+      "Malawi",
+      "Saudi Arabia"
+    ],
+    "iucn": [
+      "ZW",
+      "TD",
+      "SA",
+      "BI",
+      "GM",
+      "PK",
+      "SS",
+      "BO",
+      "CD",
+      "GW",
+      "HN",
+      "YE",
+      "IN",
+      "NG",
+      "UG",
+      "CF",
+      "KE",
+      "ZM",
+      "ET",
+      "TZ",
+      "TG",
+      "GH",
+      "NE",
+      "CM",
+      "BF",
+      "DZ",
+      "DJ",
+      "MA",
+      "MW",
+      "SN",
+      "ML",
+      "SO",
+      "ER",
+      "GN",
+      "BJ",
+      "SD",
+      "CI",
+      "MR",
+      "MZ",
+      "US"
+    ]
+  },
+  "Acer nigrum": {
+    "bgci": [
+      "United States",
+      "Canada"
+    ],
+    "iucn": [
+      "CA",
+      "US"
+    ]
+  },
+  "Dalbergia obcordata": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": [
+      "MG"
+    ]
+  },
+  "Dalbergia hildebrandtii var. scorpioides": {
+    "powo": [
+      "Madagascar"
+    ],
+    "bgci": [],
+    "iucn": []
+  }
+}

@@ -198,7 +198,8 @@ export default function HomeNew(props) {
   };
 
   useEffect(() => {
-    fetch("/data_merged.json")
+    // fetch("/data_merged.json")
+    fetch("/data_merged_diss_filtered.json")
       .then((res) => res.json())
       .then(function (speciesData) {
         setSpeciesData(speciesData);
@@ -243,6 +244,8 @@ export default function HomeNew(props) {
     speciesLabels,
     kingdomData
   } = useParseSpeciesJSON(speciesData, slice);
+
+  console.log(Object.values(speciesCountries), Object.values(timelineData));
 
   //FilterSection
   /*  const filteredSpeciesFromOrchestra = useMemo(() => {

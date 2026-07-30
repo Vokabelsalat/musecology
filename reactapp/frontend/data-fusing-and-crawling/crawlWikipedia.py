@@ -9,13 +9,48 @@ Created on Mon Apr  3 19:51:42 2023
 import requests
 import time
 import random
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+from urllib.parse import quote
 
-headers = {"Content-Type": "application/json"}
+headers = {
+    # Use a descriptive User-Agent for Wikimedia APIs.
+    "User-Agent": "musecology-data-bot/1.0 (contact: jakob.kusnick@uib.no)",
+    "Accept": "application/json",
+}
+
+session = requests.Session()
+retry = Retry(
+    total=5,
+    backoff_factor=1,
+    status_forcelist=[429, 500, 502, 503, 504],
+    allowed_methods=["GET"],
+)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount("https://", adapter)
+session.mount("http://", adapter)
+
+
+def get_json(url, params=None):
+    try:
+        r = session.get(url, headers=headers, params=params, timeout=20)
+        r.raise_for_status()
+        return r.json()
+    except requests.RequestException as e:
+        print(f"Request failed: {e}")
+        return None
+    except ValueError:
+        print("Could not parse JSON response.")
+        return None
 
 def getQID(speciesName):
-    
-    r = requests.get("https://www.wikidata.org/w/api.php", headers=headers, params={"action": "wbgetentities", "sites": "specieswiki", "titles": speciesName, "format": "json"})
-    result = r.json()
+
+    result = get_json(
+        "https://www.wikidata.org/w/api.php",
+        {"action": "wbgetentities", "sites": "specieswiki", "titles": speciesName, "format": "json"},
+    )
+    if result is None:
+        return
     
     if 'entities' in result and len(result['entities']) > 0:
         for qID in result['entities']:
@@ -27,8 +62,12 @@ def getQID(speciesName):
                     return qID
                 
 def getLabels(speciesName):
-    r = requests.get("https://www.wikidata.org/w/api.php", headers=headers, params={"action": "wbgetentities", "sites": "specieswiki", "titles": speciesName, "format": "json"})
-    result = r.json()
+    result = get_json(
+        "https://www.wikidata.org/w/api.php",
+        {"action": "wbgetentities", "sites": "specieswiki", "titles": speciesName, "format": "json"},
+    )
+    if result is None:
+        return
     
     if 'entities' in result and len(result['entities']) > 0:
         for qID in result['entities']:
@@ -39,12 +78,14 @@ def getLabels(speciesName):
 
 def getImages(speciesName):
     # https://commons.wikimedia.org/w/api.php?action=query&prop=images&imlimit=10&redirects=1&titles=Cedrus%20deodara
-    
-    r = requests.get("https://commons.wikimedia.org/w/api.php", headers=headers, params={"action": "query", "format": "json", "imlimit": 10,
-                                                                                         "prop": "images", "redirects": 1, "titles": speciesName})
-    
-    # print(r.url)
-    result = r.json()
+
+    result = get_json(
+        "https://commons.wikimedia.org/w/api.php",
+        {"action": "query", "format": "json", "imlimit": 10, "prop": "images", "redirects": 1, "titles": speciesName},
+    )
+    if result is None:
+        return []
+
     # print(result)
     
     if 'query' in result:
@@ -62,9 +103,10 @@ def getImages(speciesName):
     
 def getMediaTitles(speciesName):
     # https://en.wikipedia.org/w/api.php?action=query&titles=File:Albert%20Einstein%20Head.jpg&prop=imageinfo
-    url = "https://en.wikipedia.org/api/rest_v1/page/media-list/"+speciesName
-    r = requests.get(url, headers=headers, params={"redirect": "true", "format": "json"})
-    result = r.json()
+    url = "https://en.wikipedia.org/api/rest_v1/page/media-list/" + quote(speciesName, safe="")
+    result = get_json(url, {"redirect": "true", "format": "json"})
+    if result is None:
+        return []
     
     if 'items' in result:
         return list(map(lambda e: e['title'], result['items']))
@@ -74,8 +116,12 @@ def getMediaTitles(speciesName):
     
 def getMediaURL(mediaName):
     # https://en.wikipedia.org/w/api.php?action=query&titles=File:Albert%20Einstein%20Head.jpg&prop=imageinfo&iiprop=url
-    r = requests.get("https://en.wikipedia.org/w/api.php", headers=headers, params={"action": "query", "titles": mediaName, "prop": "imageinfo", 'iiprop': 'url|extmetadata', "format": "json"})
-    result = r.json()
+    result = get_json(
+        "https://en.wikipedia.org/w/api.php",
+        {"action": "query", "titles": mediaName, "prop": "imageinfo", "iiprop": "url|extmetadata", "format": "json"},
+    )
+    if result is None:
+        return []
     
     if 'query' in result:
         if 'pages' in result['query']:

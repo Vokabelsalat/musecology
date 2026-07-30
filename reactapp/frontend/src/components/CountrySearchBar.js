@@ -20,6 +20,10 @@ export default function CountrySearchBar(props) {
 
   const [value, setValue] = useState();
 
+  useEffect(() => {
+    setValue(selectedCountry);
+  }, [selectedCountry]);
+
   const [countryOptions, ecoRegionOptions] = useMemo(() => {
     let tmpCountryOptions = [];
     let tmpEcoRegionOptions = [];

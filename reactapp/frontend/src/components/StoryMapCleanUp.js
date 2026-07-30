@@ -18,6 +18,7 @@ import ReactMapGL, {
 } from "react-map-gl";
 
 import { bgciAssessment } from "../utils/timelineUtils";
+import mapboxAccessToken from "../config/mapbox";
 
 const StoryMap = forwardRef((props, ref) => {
   const {
@@ -857,7 +858,7 @@ const StoryMap = forwardRef((props, ref) => {
         //projection="globe"
         projection="equalEarth"
         //mapLib={maplibregl}
-        mapboxAccessToken="pk.eyJ1IjoiamFrb2JrdXNuaWNrIiwiYSI6ImNsYTAzYjQ2NjBrdnQzcWx0d2EyajFzbHQifQ.LQN-NvTn6PbHEbXHJO0CTw"
+        mapboxAccessToken={mapboxAccessToken}
         interactiveLayerIds={interactiveLayerIds}
         // onMouseMove={(event) => {
         //   /* let cluster = ref.current.queryRenderedFeatures(event.point, {

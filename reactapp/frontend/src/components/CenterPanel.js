@@ -25,6 +25,8 @@ export default function CenterPanel(props) {
     setSelectedEcoregion
   } = props;
 
+  console.log("piechartdata", Object.values(data));
+
   return (
     <div
       style={{

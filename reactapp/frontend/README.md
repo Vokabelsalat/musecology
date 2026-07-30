@@ -1,5 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment variables
+
+Copy `.env.example` to `.env.local` for local development and set:
+
+```sh
+REACT_APP_MAPBOX_ACCESS_TOKEN=pk.your_restricted_public_token
+```
+
+For deployment, add `REACT_APP_MAPBOX_ACCESS_TOKEN` to the hosting provider's
+environment variables before running `npm run build`. Create React App embeds
+this public browser token in the built JavaScript, so it is not a server-side
+secret. Restrict the token to the production and preview URLs in the Mapbox
+dashboard, and never use a secret (`sk.`) token in this variable.
+
 ## Available Scripts
 
 In the project directory, you can run:

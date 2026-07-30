@@ -7,7 +7,11 @@ Created on Tue Mar 28 00:11:52 2023
 """
 
 citesApiToken = 'PWYVqDSjjfzgSqj6wvQ7Dwtt'
-headers = {"X-Authentication-Token": citesApiToken}
+headers = {
+    "X-Authentication-Token": citesApiToken,
+    "Accept": "application/json",
+    "User-Agent": "musecology-data-bot/1.0 (contact: jakob.kusnick@uib.no)",
+}
 
 import pandas as pd
 import time
@@ -16,11 +20,35 @@ from datetime import datetime
 
 import requests
 
+session = requests.Session()
+
+
+def request_json(url, params=None):
+    response = session.get(url, headers=headers, params=params, timeout=20)
+    print("Request URL:", response.url)
+
+    if not response.ok:
+        print(f"HTTP {response.status_code} for {response.url}")
+        print("Response preview:", response.text[:500])
+        return None
+
+    try:
+        return response.json()
+    except ValueError:
+        print(f"Invalid JSON response for {response.url}")
+        print("Response preview:", response.text[:500])
+        return None
+
+
 def getTaxon(species):
     global headers
     
-    r = requests.get("https://api.speciesplus.net/api/v1/taxon_concepts.json", headers=headers, params={"name": species})
-    result = r.json()
+    result = request_json(
+        "https://api.speciesplus.net/api/v1/taxon_concepts.json",
+        {"name": species},
+    )
+    if result is None:
+        return None
     
     if 'taxon_concepts' in result and len(result['taxon_concepts']) > 0:
         return result['taxon_concepts'][0]['id']
@@ -34,10 +62,9 @@ def getListingHistory(taxon_id):
         return []
     
     url = "https://api.speciesplus.net/api/v1/taxon_concepts/" + str(taxon_id )+ "/cites_legislation.json"
-    print(url)
-
-    r = requests.get(url, headers=headers, params={"scope": "all"})
-    result = r.json()
+    result = request_json(url, {"scope": "all"})
+    if result is None:
+        return []
     
     if 'cites_listings' in result and len(result['cites_listings']) > 0:
         return list(map(lambda e: {'year': int(e['effective_at'][:4]), 'accessDate': datetime.today().strftime('%Y-%m-%d'), **e}, result['cites_listings']))
@@ -48,9 +75,9 @@ def getCommonNames(species):
     global headers
     params = {"name": species}
 
-    r = requests.get("https://api.speciesplus.net/api/v1/taxon_concepts.json", params=params, headers=headers)
-    
-    result = r.json()
+    result = request_json("https://api.speciesplus.net/api/v1/taxon_concepts.json", params)
+    if result is None:
+        return {}
     
     commonNamesCites = {}
     

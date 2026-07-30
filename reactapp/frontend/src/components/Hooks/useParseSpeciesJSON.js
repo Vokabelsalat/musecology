@@ -38,6 +38,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
     let families = {};
     let genera = {};
     let speciesTreeMapData = {};
+    let noCountries = {};
 
     for (const spec of Object.keys(speciesData)) {
       const speciesObj = speciesData[spec];
@@ -97,7 +98,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       };
 
       if (speciesObj.origMat == null) {
-        console.log("Skip species", spec);
+        // console.log("Skip species", spec);
         continue;
       }
 
@@ -145,6 +146,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         let assessmentPerYear = {};
         for (let element of speciesObj.timeIUCN) {
           tmpYears.add(parseInt(element.year));
+          
           let year = element.year.toString();
           let assessment = iucnAssessment.get(element.code);
 
@@ -239,22 +241,42 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       };
 
       let tmpCountries = [];
+      // if (spec === "Dalbergia scorpioides") {
+      //   console.log("HERE", spec, speciesObj);
+      // }
+
       if (
-        speciesObj.hasOwnProperty("treeCountries") &&
+        speciesObj.hasOwnProperty("treeCountries") && //bgci
         speciesObj["treeCountries"].length > 0
       ) {
         tmpCountries = speciesObj["treeCountries"];
       } else {
-        if (speciesObj.hasOwnProperty("iucnCountries")) {
+        if (
+          speciesObj.hasOwnProperty("iucnCountries") &&
+          speciesObj["iucnCountries"].length > 0
+        ) {
           tmpCountries = speciesObj["iucnCountries"];
         } else {
-          if (speciesObj.hasOwnProperty("allCountries")) {
-            tmpCountries = speciesObj["allCountries"];
+          // console.log("HERE using POWO countries", speciesObj, spec);
+
+          if (speciesObj.hasOwnProperty("powoCountries") && speciesObj["powoCountries"].length > 0) {
+            // console.log(spec, speciesObj["powoCountries"]);
+            tmpCountries = speciesObj["powoCountries"];
+          }
+          else {
+           if (speciesObj.hasOwnProperty("manualCountries") && speciesObj["manualCountries"].length > 0) {
+              tmpCountries = speciesObj["manualCountries"];
+            } 
           }
         }
       }
 
       tmpSpeciesCountries[genusSpecies] = tmpCountries;
+
+      if (tmpCountries.length === 0) {
+        // console.log(genusSpecies, tmpCountries);
+        noCountries[genusSpecies] = 1;
+      }
 
       tmpSpeciesEcos[genusSpecies] = {
         terrestrial: speciesObj.terEcos != null ? speciesObj.terEcos : [],
@@ -265,6 +287,9 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         terrestrial: speciesObj.terHexagons ?? [],
         marine: speciesObj.marHexagons ?? []
       };
+
+      console.log('here', genusSpecies, tmpSpeciesHexas[genusSpecies]);
+      
 
       // Labels as Common Names from Wikipedia
       tmpSpeciesLabels[genusSpecies] = speciesObj.fixedCommonNames;
@@ -348,6 +373,8 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         filterDepth: 1
       });
     }
+
+    // console.log("noCountries", Object.keys(noCountries));
 
     return {
       imageLinks: tmpImageLinks,

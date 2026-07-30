@@ -1,4 +1,8 @@
-import { faDroplet, faMountainSun } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDroplet,
+  faMountainSun,
+  faFence
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as turf from "@turf/turf";
 import colorsys from "colorsys";
@@ -26,6 +30,7 @@ import { useContext } from "react";
 import { TooltipContext } from "./TooltipProvider";
 
 import { bgciAssessment } from "../utils/timelineUtils";
+import mapboxAccessToken from "../config/mapbox";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
 
@@ -445,10 +450,21 @@ const Map = forwardRef((props, ref) => {
     const tmpIsoToSpecies = {};
     let tmpCountriesHeatMap = {};
     let tmpCountriesHeatMapMax = 0;
+
+    console.log(
+      "speciesCountries",
+      Object.values(speciesCountries).filter((e) => e.length > 0).length
+    );
+
     for (let species of Object.keys(speciesCountries)) {
       const countries = speciesCountries[species];
       /* console.log(species, countries); */
       for (let speciesCountry of countries) {
+        /* if (tmpIsoToSpecies.hasOwnProperty(speciesCountry)) {
+          tmpIsoToSpecies[speciesCountry].push(species);
+        } else {
+          tmpIsoToSpecies[speciesCountry] = [species];
+        } */
         if (countriesDictionary) {
           for (let country of Object.values(countriesDictionary)) {
             if (Object.values(country).includes(speciesCountry)) {
@@ -462,8 +478,6 @@ const Map = forwardRef((props, ref) => {
         }
       }
     }
-
-    /* console.log("tmpIsoToSpecies", tmpIsoToSpecies); */
 
     const tmpIsoToCountryID = {};
     const tmpCountriesGeoJson = { ...countriesGeoJson, features: [] };
@@ -535,6 +549,20 @@ const Map = forwardRef((props, ref) => {
   const [ecosToSpecies, setEcosToSpecies] = useState(null);
 
   useEffect(() => {
+    console.log(
+      "speciesEcos",
+
+      Object.values(speciesEcos).filter((e) => {
+        if (Array.isArray(e)) {
+          return false;
+        } else {
+          return isTerrestial
+            ? e["terrestrial"].length > 0
+            : e["marine"].length > 0;
+        }
+      })
+    );
+
     const tmpEcoToSpecies = {};
     for (let species of Object.keys(speciesEcos)) {
       const ecos = speciesEcos[species];
@@ -542,9 +570,7 @@ const Map = forwardRef((props, ref) => {
         continue;
       }
 
-      for (let speciesEco of isTerrestial
-        ? ecos["terrestrial"]
-        : ecos["marine"]) {
+      for (let speciesEco of isTerrestial ? ecos["terrestrial"] : ecos["marine"]) {
         if (tmpEcoToSpecies.hasOwnProperty(speciesEco)) {
           tmpEcoToSpecies[speciesEco].push(species);
         } else {
@@ -561,22 +587,28 @@ const Map = forwardRef((props, ref) => {
       (ecoRegionsGeoJson && isTerrestial) ||
       (!isTerrestial && marineEcoRegionsGeoJson)
     ) {
-      const idKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
-      for (let ecoregion of isTerrestial
-        ? ecoRegionsGeoJson.features
-        : marineEcoRegionsGeoJson.features) {
+      // const idKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
+      // for (let ecoregion of [
+      //   ...marineEcoRegionsGeoJson.features,
+      //   ...ecoRegionsGeoJson.features
+      // ]) {
+      for (let ecoregion of isTerrestial ? ecoRegionsGeoJson.features :marineEcoRegionsGeoJson.features) {
         let tmpEco = { ...ecoregion, properties: { ...ecoregion.properties } };
 
-        tmpEco.properties.speciesCount =
-          tmpEcoToSpecies[tmpEco.properties[idKey].toString()] != null
-            ? tmpEcoToSpecies[tmpEco.properties[idKey].toString()].length
-            : 0;
+        for (const idKey of ["ECO_ID", "ECO_CODE"]) {
+          if (tmpEco.properties.hasOwnProperty(idKey)) {
+            tmpEco.properties.speciesCount =
+              tmpEcoToSpecies[tmpEco.properties[idKey].toString()] != null
+                ? tmpEcoToSpecies[tmpEco.properties[idKey].toString()].length
+                : 0;
 
-        tmpEcoregionHeatMap[tmpEco.properties[idKey].toString()] =
-          tmpEco.properties.speciesCount;
+            tmpEcoregionHeatMap[tmpEco.properties[idKey].toString()] =
+              tmpEco.properties.speciesCount;
 
-        tmpEcosToMyIDs[tmpEco.properties[idKey].toString()] =
-          tmpEco.properties.myID;
+            tmpEcosToMyIDs[tmpEco.properties[idKey].toString()] =
+              tmpEco.properties.myID;
+          }
+        }
 
         if (tmpEco.properties.speciesCount > tmpEcoregionHeatMapMax) {
           tmpEcoregionHeatMapMax = tmpEco.properties.speciesCount;
@@ -1308,7 +1340,7 @@ const Map = forwardRef((props, ref) => {
         projection={projection}
         //projection="equalEarth"
         //mapLib={maplibregl}
-        mapboxAccessToken="pk.eyJ1IjoiamFrb2JrdXNuaWNrIiwiYSI6ImNsYTAzYjQ2NjBrdnQzcWx0d2EyajFzbHQifQ.LQN-NvTn6PbHEbXHJO0CTw"
+        mapboxAccessToken={mapboxAccessToken}
         /* interactiveLayerIds={[
           "countriesSpecies",
           "ecoRegions",
@@ -1335,6 +1367,13 @@ const Map = forwardRef((props, ref) => {
           setHoveredStateIds([]);
         }}
         onClick={(event) => {
+          console.log(
+            "CLICK EVENT",
+            event,
+            event.features[0].properties,
+            countriesToSpecies
+          );
+
           if (event.features.length > 0) {
             if (event.features[0].properties.hasOwnProperty("ROMNAM")) {
               setSelectedCountry(event.features[0].properties.ROMNAM);
@@ -1684,7 +1723,7 @@ const Map = forwardRef((props, ref) => {
               </Marker>
             );
           })}
-        {ecoThreatMarkers &&
+        {/* {ecoThreatMarkers &&
           showThreatDonuts &&
           ["hexagons", "ecoregions", "protection"].includes(mapMode) &&
           ecoThreatMarkers.map((element, index) => {
@@ -1709,7 +1748,7 @@ const Map = forwardRef((props, ref) => {
                 </div>
               </Marker>
             );
-          })}
+          })} */}
         {extraPolygonGeoJSON && extraPolygon && (
           <Source
             type="geojson"
