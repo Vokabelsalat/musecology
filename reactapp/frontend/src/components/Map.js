@@ -33,8 +33,21 @@ import { bgciAssessment } from "../utils/timelineUtils";
 import mapboxAccessToken from "../config/mapbox";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
+const MAX_MARKER_CACHE_SIZE = 256;
 
-const Map = forwardRef((props, ref) => {
+const cacheMarker = (cache, key, createMarker) => {
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+  const marker = createMarker();
+  cache.set(key, marker);
+  if (cache.size > MAX_MARKER_CACHE_SIZE) {
+    cache.delete(cache.keys().next().value);
+  }
+  return marker;
+};
+
+const MapComponent = forwardRef((props, ref) => {
   const {
     width: newWidth,
     height: newHeight,
@@ -162,8 +175,8 @@ const Map = forwardRef((props, ref) => {
   const [orchestraHeatMap, setOrchestraHeatMap] = useState(null);
   const [orchestraHeatMapMax, setOrchestraHeatMapMax] = useState(null);
   const [capitalThreatMarkers, setCapitalThreatMarkers] = useState(null);
-  const [ecoThreatMarkersCache, setEcoThreatMarkersCache] = useState({});
-  const [capitalMarkerCache, setCapitalMarkerCache] = useState({});
+  const ecoThreatMarkersCache = useRef(new Map());
+  const capitalMarkerCache = useRef(new Map());
   const [ecoThreatMarkers, setEcoThreatMarkers] = useState(null);
   const [centroidsOfEcoregions, setCentroidsOfEcoregions] = useState(null);
   const [centroidsOfMarineEcoregions, setCentroidsOfMarineEcoregions] =
@@ -410,6 +423,16 @@ const Map = forwardRef((props, ref) => {
 
   const [extraPolygonPaint, setExtraPolygonPaint] = useState(null);
 
+  const countryNameToIso = useMemo(() => {
+    const index = new Map();
+    for (const country of Object.values(countriesDictionary ?? {})) {
+      for (const name of Object.values(country)) {
+        index.set(name, country.ISO3);
+      }
+    }
+    return index;
+  }, [countriesDictionary]);
+
   useEffect(() => {
     let tmpExtraPolygonPaint = null;
 
@@ -451,29 +474,15 @@ const Map = forwardRef((props, ref) => {
     let tmpCountriesHeatMap = {};
     let tmpCountriesHeatMapMax = 0;
 
-    console.log(
-      "speciesCountries",
-      Object.values(speciesCountries).filter((e) => e.length > 0).length
-    );
-
     for (let species of Object.keys(speciesCountries)) {
       const countries = speciesCountries[species];
-      /* console.log(species, countries); */
       for (let speciesCountry of countries) {
-        /* if (tmpIsoToSpecies.hasOwnProperty(speciesCountry)) {
-          tmpIsoToSpecies[speciesCountry].push(species);
-        } else {
-          tmpIsoToSpecies[speciesCountry] = [species];
-        } */
-        if (countriesDictionary) {
-          for (let country of Object.values(countriesDictionary)) {
-            if (Object.values(country).includes(speciesCountry)) {
-              if (tmpIsoToSpecies.hasOwnProperty(country.ISO3)) {
-                tmpIsoToSpecies[country.ISO3].push(species);
-              } else {
-                tmpIsoToSpecies[country.ISO3] = [species];
-              }
-            }
+        const iso = countryNameToIso.get(speciesCountry);
+        if (iso != null) {
+          if (tmpIsoToSpecies.hasOwnProperty(iso)) {
+            tmpIsoToSpecies[iso].push(species);
+          } else {
+            tmpIsoToSpecies[iso] = [species];
           }
         }
       }
@@ -528,7 +537,7 @@ const Map = forwardRef((props, ref) => {
     setCountriesHeatMap(tmpCountriesHeatMap);
     setCountriesHeatMapMax(tmpCountriesHeatMapMax);
     setCountriesGeoJsonTest({ ...tmpCountriesGeoJson });
-  }, [speciesCountries, countriesDictionary, countriesGeoJson]);
+  }, [speciesCountries, countryNameToIso, countriesGeoJson]);
 
   /* useEffect(() => {
     console.log(
@@ -549,20 +558,6 @@ const Map = forwardRef((props, ref) => {
   const [ecosToSpecies, setEcosToSpecies] = useState(null);
 
   useEffect(() => {
-    console.log(
-      "speciesEcos",
-
-      Object.values(speciesEcos).filter((e) => {
-        if (Array.isArray(e)) {
-          return false;
-        } else {
-          return isTerrestial
-            ? e["terrestrial"].length > 0
-            : e["marine"].length > 0;
-        }
-      })
-    );
-
     const tmpEcoToSpecies = {};
     for (let species of Object.keys(speciesEcos)) {
       const ecos = speciesEcos[species];
@@ -641,7 +636,12 @@ const Map = forwardRef((props, ref) => {
     setEcoregionHeatMapMax(tmpEcoregionHeatMapMax);
     setEcoregionHeatMap(tmpEcoregionHeatMap);
     setEcosToMyIDs(tmpEcosToMyIDs);
-  }, [speciesEcos, ecoRegionsGeoJson, isTerrestial]);
+  }, [
+    speciesEcos,
+    ecoRegionsGeoJson,
+    marineEcoRegionsGeoJson,
+    isTerrestial
+  ]);
 
   useEffect(() => {
     const tmpHexasToSpecies = {};
@@ -786,7 +786,6 @@ const Map = forwardRef((props, ref) => {
 
   function updateEcoregions() {
     const newMarkers = [];
-    const tmpEcoThreatMarkersCache = ecoThreatMarkersCache;
     const features =
       ref.current != null
         ? ref.current.querySourceFeatures("ecoregionsourceCentroid")
@@ -838,11 +837,11 @@ const Map = forwardRef((props, ref) => {
         timeFrame
       )}`;
 
-      let markerElement = ecoThreatMarkersCache[markerKey];
-      if (!markerElement) {
-        markerElement = createDonutChart(props);
-        tmpEcoThreatMarkersCache[markerKey] = markerElement;
-      }
+      const markerElement = cacheMarker(
+        ecoThreatMarkersCache.current,
+        markerKey,
+        () => createDonutChart(props)
+      );
       newMarkers.push({
         element: markerElement,
         lng: coords[0],
@@ -851,7 +850,6 @@ const Map = forwardRef((props, ref) => {
       });
     }
     setEcoThreatMarkers(newMarkers);
-    setEcoThreatMarkersCache(tmpEcoThreatMarkersCache);
   }
 
   function highlight(array) {
@@ -874,7 +872,6 @@ const Map = forwardRef((props, ref) => {
 
   function updateMarkers() {
     const newMarkers = [];
-    const tmpCapitalMarkerCache = capitalMarkerCache;
     //const features = ref.current.querySourceFeatures("capitalssource");
     const features =
       ref.current != null
@@ -925,11 +922,11 @@ const Map = forwardRef((props, ref) => {
         .sort()
         .join()}${threatType}${colorBlind}${JSON.stringify(timeFrame)}`;
 
-      let markerElement = tmpCapitalMarkerCache[markerKey];
-      if (!markerElement) {
-        markerElement = createDonutChart(props);
-        tmpCapitalMarkerCache[markerKey] = markerElement;
-      }
+      const markerElement = cacheMarker(
+        capitalMarkerCache.current,
+        markerKey,
+        () => createDonutChart(props)
+      );
       newMarkers.push({
         element: markerElement,
         lng: coords[0],
@@ -938,7 +935,6 @@ const Map = forwardRef((props, ref) => {
       });
     }
     setCapitalThreatMarkers(newMarkers);
-    setCapitalMarkerCache(tmpCapitalMarkerCache);
   }
 
   function groupBy(xs, key) {
@@ -1723,7 +1719,7 @@ const Map = forwardRef((props, ref) => {
               </Marker>
             );
           })}
-        {/* {ecoThreatMarkers &&
+        {ecoThreatMarkers &&
           showThreatDonuts &&
           ["hexagons", "ecoregions", "protection"].includes(mapMode) &&
           ecoThreatMarkers.map((element, index) => {
@@ -1748,7 +1744,7 @@ const Map = forwardRef((props, ref) => {
                 </div>
               </Marker>
             );
-          })} */}
+          })}
         {extraPolygonGeoJSON && extraPolygon && (
           <Source
             type="geojson"
@@ -1900,4 +1896,4 @@ const Map = forwardRef((props, ref) => {
   );
 });
 
-export default Map;
+export default MapComponent;

@@ -23,6 +23,13 @@ export default function TimelineRow(props) {
   const rowHeight = 20;
 
   const { setTooltip } = useContext(TooltipContext);
+  const sortedData = useMemo(
+    () =>
+      [...data].sort((a, b) => {
+        return parseInt(a.element.year) - parseInt(b.element.year);
+      }),
+    [data]
+  );
 
   const [populationTrendColor, populationTrendIcon, populationTrendText] =
     useMemo(() => {
@@ -88,11 +95,7 @@ export default function TimelineRow(props) {
         {type.toUpperCase()}
       </div>
       <svg height={`${rowHeight}`} width={width}>
-        {data
-          .sort((a, b) => {
-            return parseInt(a.element.year) - parseInt(b.element.year);
-          })
-          .map((assessmentAndElement, index) => {
+        {sortedData.map((assessmentAndElement, index) => {
             let xVal = x(parseInt(assessmentAndElement.element.year));
             if (xVal < 0) {
               return;

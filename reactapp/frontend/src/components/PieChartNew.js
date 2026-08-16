@@ -24,7 +24,15 @@ export default function PieChartNew(props) {
       height: size,
       showThreatDonuts: showThreatDonuts
     });
-  }, [id, data, getThreatLevel, colorBlind, size, showThreatDonuts]);
+  }, [
+    id,
+    data,
+    getThreatLevel,
+    threatType,
+    colorBlind,
+    size,
+    showThreatDonuts
+  ]);
 
   return (
     <div

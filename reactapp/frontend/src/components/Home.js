@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import FullScreenButton from "./FullScreenButton";
 import Tooltip from "./Tooltip";
 import TimelineViewNew from "./TimelineView";
@@ -34,7 +34,7 @@ import Footer from "./Footer";
 
 export const returnDummyLink = (speciesObj) => {
   if (speciesObj["photos"] != null) {
-    let sortedPhotos = speciesObj["photos"].sort((pA, pB) => {
+    let sortedPhotos = [...speciesObj["photos"]].sort((pA, pB) => {
       return pA.Priority - pB.Priority;
     });
 
@@ -52,7 +52,7 @@ export const returnDummyLink = (speciesObj) => {
 
 export const returnImageLinks = (speciesObj) => {
   if (speciesObj["photos"] != null) {
-    let sortedPhotos = speciesObj["photos"].sort((pA, pB) => {
+    let sortedPhotos = [...speciesObj["photos"]].sort((pA, pB) => {
       return pA.Priority - pB.Priority;
     });
 
@@ -82,12 +82,16 @@ export const getSpeciesFromTreeMap = (treeMapData) => {
   });
 };
 
+const findLatestAssessment = (assessments, endYear) => {
+  for (let index = assessments.length - 1; index >= 0; index -= 1) {
+    if (endYear === undefined || assessments[index].element.year < endYear) {
+      return assessments[index];
+    }
+  }
+  return undefined;
+};
+
 export const filterTreeMap = (node, keys, filterLevel) => {
-  // console.log("NODE", node);
-  let test = node.filter((e) => {
-    // console.log("FILTER", e);
-  });
-  // console.log(test);
   return node.filter((el) => {
     if (el.filterDepth === filterLevel) {
       return keys.includes(el.name);
@@ -136,8 +140,10 @@ export default function HomeNew(props) {
   const mapRef = useRef(null);
 
   const slice = false;
+  const parsedSpecies = useParseSpeciesJSON(speciesData, slice);
+  const { timelineData } = parsedSpecies;
 
-  const getSpeciesSignThreat = (species, type = null) => {
+  const getSpeciesSignThreat = useCallback((species, type = null) => {
     if (type === null) {
       type = threatType;
     }
@@ -149,11 +155,7 @@ export default function HomeNew(props) {
     }
 
     if (type === "economically") {
-      let lastElement = [...speciesObj["cites"]]
-        .filter((e) =>
-          timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-        )
-        .pop();
+      let lastElement = findLatestAssessment(speciesObj["cites"], timeFrame[1]);
       if (lastElement) {
         return ThreatLevel.revive(lastElement.assessment);
         /* return JSON.parse(lastElement.assessment, function (key, value) {
@@ -165,11 +167,10 @@ export default function HomeNew(props) {
         return citesAssessment.dataDeficient;
       }
     } else {
-      let lastElementIUCN = [...speciesObj["iucn"]]
-        .filter((e) =>
-          timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-        )
-        .pop();
+      let lastElementIUCN = findLatestAssessment(
+        speciesObj["iucn"],
+        timeFrame[1]
+      );
       if (lastElementIUCN) {
         /* return JSON.parse(lastElementIUCN.assessment, function (key, value) {
           return key === "" && value.hasOwnProperty("__type")
@@ -178,11 +179,10 @@ export default function HomeNew(props) {
         }); */
         return ThreatLevel.revive(lastElementIUCN.assessment);
       } else {
-        let lastElementBGCI = [...speciesObj["bgci"]]
-          .filter((e) =>
-            timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-          )
-          .pop();
+        let lastElementBGCI = findLatestAssessment(
+          speciesObj["bgci"],
+          timeFrame[1]
+        );
         if (lastElementBGCI) {
           /* return JSON.parse(lastElementBGCI.assessment, function (key, value) {
             return key === "" && value.hasOwnProperty("__type")
@@ -195,7 +195,7 @@ export default function HomeNew(props) {
         }
       }
     }
-  };
+  }, [threatType, timeFrame, timelineData]);
 
   useEffect(() => {
     // fetch("/data_merged.json")
@@ -233,7 +233,6 @@ export default function HomeNew(props) {
     imageLinks,
     dummyImageLinks,
     speciesSignThreats,
-    timelineData,
     species,
     domainYears,
     instrumentData,
@@ -243,9 +242,7 @@ export default function HomeNew(props) {
     speciesHexas,
     speciesLabels,
     kingdomData
-  } = useParseSpeciesJSON(speciesData, slice);
-
-  console.log(Object.values(speciesCountries), Object.values(timelineData));
+  } = parsedSpecies;
 
   //FilterSection
   /*  const filteredSpeciesFromOrchestra = useMemo(() => {
@@ -321,12 +318,22 @@ export default function HomeNew(props) {
     getSpeciesSignThreat
   );
 
-  const intersectedSpecies = filteredSpeciesFromMap.filter(
-    (value) =>
-      filteredSpeciesFromTreeMap.includes(value) &&
-      filteredSpeciesFromOrchestra.includes(value) &&
-      filteredSpeciesFromTimeline.includes(value)
-  );
+  const intersectedSpecies = useMemo(() => {
+    const treeMapSpecies = new Set(filteredSpeciesFromTreeMap);
+    const orchestraSpecies = new Set(filteredSpeciesFromOrchestra);
+    const timelineSpecies = new Set(filteredSpeciesFromTimeline);
+    return filteredSpeciesFromMap.filter(
+      (value) =>
+        treeMapSpecies.has(value) &&
+        orchestraSpecies.has(value) &&
+        timelineSpecies.has(value)
+    );
+  }, [
+    filteredSpeciesFromMap,
+    filteredSpeciesFromOrchestra,
+    filteredSpeciesFromTimeline,
+    filteredSpeciesFromTreeMap
+  ]);
 
   /* console.log("filteredSpeciesFromOrchestra", filteredSpeciesFromOrchestra);
   console.log("filteredSpeciesFromTreeMap", filteredSpeciesFromTreeMap);
@@ -341,23 +348,23 @@ export default function HomeNew(props) {
     visibleSpeciesEcos,
     visibleSpeciesHexas
   } = useFilterSpecies(
-    JSON.stringify(kingdomData),
+    kingdomData,
     filterTreeMap,
-    JSON.stringify(instrumentData),
-    JSON.stringify(speciesCountries),
-    JSON.stringify(timelineData),
-    JSON.stringify(intersectedSpecies),
-    JSON.stringify(speciesEcos),
-    JSON.stringify(speciesHexas)
+    instrumentData,
+    speciesCountries,
+    timelineData,
+    intersectedSpecies,
+    speciesEcos,
+    speciesHexas
   );
 
-  const getPopulationTrend = (speciesName) => {
+  const getPopulationTrend = useCallback((speciesName) => {
     if (visibleSpeciesTimelineData.hasOwnProperty(speciesName)) {
       return visibleSpeciesTimelineData[speciesName].populationTrend;
     } else {
       return null;
     }
-  };
+  }, [visibleSpeciesTimelineData]);
 
   return (
     <>

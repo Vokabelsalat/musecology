@@ -62,7 +62,7 @@ export default function OrchestraNew(props) {
         setScale(tmpScale);
       }
     }
-  }, [width, height, scale, instrumentGroupData]);
+  }, [width, height, instrumentGroupData]);
 
   const zoomInto = useCallback(
     (i_zoom) => {

@@ -1,5 +1,5 @@
 import { transform } from "proj4";
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
 import PieChartNew from "./PieChartNew";
 import { replaceSpecialCharacters } from "../utils/utils";
 
@@ -20,40 +20,26 @@ export default function InstrumentThreatPieChart(props) {
   const width = 12;
   const height = 12;
 
-  const [processedSpecies, setProcessedSpecies] = useState({});
-  const [transformString, setTransformString] = useState();
-
-  const threatTextRef = useRef(null);
-
-  useEffect(() => {
+  const processedSpecies = useMemo(() => {
     let tmpData = {};
     for (const spec of species[instrument]) {
       tmpData[spec] = {};
     }
-    setProcessedSpecies(tmpData);
-  }, [species]);
+    return tmpData;
+  }, [instrument, species]);
 
-  useEffect(() => {
-    let x = position.x;
-    let y = position.y;
-    let cx = width / 2;
-    let cy = height / 2;
-
-    const tmpTransformString =
-      "translate(" +
-      x +
-      " " +
-      y +
-      ") rotate(" +
-      angle +
-      ") translate(" +
-      -cx +
-      " " +
-      -cy +
-      ")";
-
-    setTransformString(tmpTransformString);
-  }, [threatTextRef]);
+  const transformString =
+    "translate(" +
+    position.x +
+    " " +
+    position.y +
+    ") rotate(" +
+    angle +
+    ") translate(" +
+    -width / 2 +
+    " " +
+    -height / 2 +
+    ")";
 
   return (
     <>

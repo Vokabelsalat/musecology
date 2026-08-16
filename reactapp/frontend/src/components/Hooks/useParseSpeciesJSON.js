@@ -288,9 +288,6 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         marine: speciesObj.marHexagons ?? []
       };
 
-      console.log('here', genusSpecies, tmpSpeciesHexas[genusSpecies]);
-      
-
       // Labels as Common Names from Wikipedia
       tmpSpeciesLabels[genusSpecies] = speciesObj.fixedCommonNames;
     }

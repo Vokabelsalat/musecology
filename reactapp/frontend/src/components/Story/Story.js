@@ -39,6 +39,15 @@ import { ThreatLevel } from "../../utils/timelineUtils";
 
 const storyScripts = { bowstory: bowContents, concertstory: concertContents };
 
+const findLatestAssessment = (assessments, endYear) => {
+  for (let index = assessments.length - 1; index >= 0; index -= 1) {
+    if (endYear === undefined || assessments[index].element.year < endYear) {
+      return assessments[index];
+    }
+  }
+  return undefined;
+};
+
 export default function Story(props) {
   const { width, height, storyName, contents: i_contents = null } = props;
 
@@ -82,8 +91,10 @@ export default function Story(props) {
   const [threatType, setThreatType] = useState("economically");
 
   const [overlayContent, setOverlayContent] = useState(null);
+  const parsedSpecies = useParseSpeciesJSON(speciesData);
+  const { timelineData } = parsedSpecies;
 
-  const getSpeciesSignThreat = (species, type = null) => {
+  const getSpeciesSignThreat = useCallback((species, type = null) => {
     if (type === null) {
       type = threatType;
     }
@@ -95,11 +106,7 @@ export default function Story(props) {
     }
 
     if (type === "economically") {
-      let lastElement = [...speciesObj["cites"]]
-        .filter((e) =>
-          timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-        )
-        .pop();
+      let lastElement = findLatestAssessment(speciesObj["cites"], timeFrame[1]);
       if (lastElement) {
         return ThreatLevel.revive(lastElement.assessment);
         /* return JSON.parse(lastElement.assessment, function (key, value) {
@@ -111,11 +118,10 @@ export default function Story(props) {
         return citesAssessment.dataDeficient;
       }
     } else {
-      let lastElementIUCN = [...speciesObj["iucn"]]
-        .filter((e) =>
-          timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-        )
-        .pop();
+      let lastElementIUCN = findLatestAssessment(
+        speciesObj["iucn"],
+        timeFrame[1]
+      );
       if (lastElementIUCN) {
         /* return JSON.parse(lastElementIUCN.assessment, function (key, value) {
           return key === "" && value.hasOwnProperty("__type")
@@ -124,11 +130,10 @@ export default function Story(props) {
         }); */
         return ThreatLevel.revive(lastElementIUCN.assessment);
       } else {
-        let lastElementBGCI = [...speciesObj["bgci"]]
-          .filter((e) =>
-            timeFrame[1] !== undefined ? e.element.year < timeFrame[1] : true
-          )
-          .pop();
+        let lastElementBGCI = findLatestAssessment(
+          speciesObj["bgci"],
+          timeFrame[1]
+        );
         if (lastElementBGCI) {
           /* return JSON.parse(lastElementBGCI.assessment, function (key, value) {
             return key === "" && value.hasOwnProperty("__type")
@@ -141,7 +146,7 @@ export default function Story(props) {
         }
       }
     }
-  };
+  }, [threatType, timeFrame, timelineData]);
 
   function flyToMapPosition(flyTo) {
     if (mapRef.current) {
@@ -182,8 +187,8 @@ export default function Story(props) {
     scrollToHashElement();
 
     window.addEventListener("hashchange", scrollToHashElement);
-    return window.removeEventListener("hashchange", scrollToHashElement);
-  }, [trigger]);
+    return () => window.removeEventListener("hashchange", scrollToHashElement);
+  }, [offset, trigger]);
 
   useIntersection(
     ref,
@@ -447,7 +452,6 @@ export default function Story(props) {
     imageLinks,
     dummyImageLinks,
     speciesSignThreats,
-    timelineData,
     species,
     domainYears,
     instrumentData,
@@ -457,7 +461,7 @@ export default function Story(props) {
     speciesHexas,
     speciesLabels,
     kingdomData
-  } = useParseSpeciesJSON(speciesData);
+  } = parsedSpecies;
 
   function arrayIntersection(a, b) {
     const setA = new Set(a);
@@ -547,12 +551,22 @@ export default function Story(props) {
     getSpeciesSignThreat
   );
 
-  const intersectedSpecies = filteredSpeciesFromMap.filter(
-    (value) =>
-      filteredSpeciesFromTreeMap.includes(value) &&
-      filteredSpeciesFromOrchestra.includes(value) &&
-      filteredSpeciesFromTimeline.includes(value)
-  );
+  const intersectedSpecies = useMemo(() => {
+    const treeMapSpecies = new Set(filteredSpeciesFromTreeMap);
+    const orchestraSpecies = new Set(filteredSpeciesFromOrchestra);
+    const timelineSpecies = new Set(filteredSpeciesFromTimeline);
+    return filteredSpeciesFromMap.filter(
+      (value) =>
+        treeMapSpecies.has(value) &&
+        orchestraSpecies.has(value) &&
+        timelineSpecies.has(value)
+    );
+  }, [
+    filteredSpeciesFromMap,
+    filteredSpeciesFromOrchestra,
+    filteredSpeciesFromTimeline,
+    filteredSpeciesFromTreeMap
+  ]);
 
   const {
     filteredKingdomData,
@@ -562,19 +576,18 @@ export default function Story(props) {
     visibleSpeciesEcos,
     visibleSpeciesHexas
   } = useFilterSpecies(
-    JSON.stringify(kingdomData),
+    kingdomData,
     filterTreeMap,
-    JSON.stringify(instrumentData),
-    JSON.stringify(speciesCountries),
-    JSON.stringify(timelineData),
-    JSON.stringify(intersectedSpecies),
-    JSON.stringify(speciesEcos),
-    JSON.stringify(speciesHexas)
+    instrumentData,
+    speciesCountries,
+    timelineData,
+    intersectedSpecies,
+    speciesEcos,
+    speciesHexas
   );
 
   useEffect(() => {
-    window.removeEventListener("keydown", () => {});
-    window.addEventListener("keydown", (e) => {
+    const handleKeyDown = (e) => {
       if (e.key === "ArrowLeft") {
         let idx = Math.min(
           contents.length,
@@ -588,8 +601,10 @@ export default function Story(props) {
         );
         window.location.replace(`${storyName}#${idx}`);
       }
-    });
-  }, []);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [contents.length, storyName]);
 
   /*  const processedContents = useMemo(() => {
     const processed = [];

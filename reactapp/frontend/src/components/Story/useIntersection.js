@@ -1,18 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const useIntersection = (ref, selector, handler, options) => {
+  const handlerRef = useRef(handler);
+  handlerRef.current = handler;
+  const { rootMargin, threshold } = options;
+
   useEffect(() => {
     const observers = [];
 
     if (ref.current && typeof IntersectionObserver === "function") {
       const handleIntersect = (idx) => (entries) => {
-        handler(entries[0], idx);
+        handlerRef.current(entries[0], idx);
       };
 
       ref.current.querySelectorAll(selector).forEach((node, idx) => {
         const observer = new IntersectionObserver(
           handleIntersect(idx),
-          options
+          { rootMargin, threshold }
         );
         observer.observe(node);
         observers.push(observer);
@@ -25,5 +29,5 @@ export const useIntersection = (ref, selector, handler, options) => {
       };
     }
     return () => {};
-  }, [ref.current, options.threshold, options.rootMargin]);
+  }, [ref, selector, threshold, rootMargin]);
 };

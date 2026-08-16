@@ -1,5 +1,5 @@
 import "mapbox-gl/dist/mapbox-gl.css";
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Story from "./components/Story/Story";
@@ -12,7 +12,6 @@ const appHeight = () => {
   const doc = document.documentElement;
   doc.style.setProperty("--app-height", `${window.innerHeight}px`);
 };
-window.addEventListener("resize", appHeight);
 
 /* function HomeWithParams({ match }) {
   let { instrumentGroup } = match.params;
@@ -33,6 +32,12 @@ window.addEventListener("resize", appHeight);
 } */
 
 function App() {
+  useEffect(() => {
+    appHeight();
+    window.addEventListener("resize", appHeight);
+    return () => window.removeEventListener("resize", appHeight);
+  }, []);
+
   return (
     <div className="App relative">
       <div className=" absolute top-0 z-[9999] flex items-center">
