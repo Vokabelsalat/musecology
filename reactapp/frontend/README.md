@@ -14,6 +14,9 @@ this public browser token in the built JavaScript, so it is not a server-side
 secret. Restrict the token to the production and preview URLs in the Mapbox
 dashboard, and never use a secret (`sk.`) token in this variable.
 
+For an Ubuntu deployment using systemd, port 3050, and Caddy, see
+[`docs/ubuntu-caddy-deployment.md`](docs/ubuntu-caddy-deployment.md).
+
 ## Available Scripts
 
 In the project directory, you can run:

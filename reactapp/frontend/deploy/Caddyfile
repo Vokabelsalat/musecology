@@ -1,0 +1,12 @@
+# Replace app.example.com with the real DNS name pointing at this server.
+app.example.com {
+	encode zstd gzip
+
+	reverse_proxy 127.0.0.1:3050
+
+	header {
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+	}
+}

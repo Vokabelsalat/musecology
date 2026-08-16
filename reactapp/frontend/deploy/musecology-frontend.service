@@ -1,0 +1,29 @@
+[Unit]
+Description=Musecology React frontend
+After=network.target
+
+[Service]
+Type=simple
+User=musecology
+Group=musecology
+WorkingDirectory=/opt/musecology/frontend
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3050
+ExecStart=/usr/bin/node scripts/serve-build.js
+Restart=on-failure
+RestartSec=5s
+
+# The frontend only needs read access to its deployed files.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
