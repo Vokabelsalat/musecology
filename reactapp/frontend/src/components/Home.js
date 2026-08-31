@@ -1,36 +1,32 @@
-import { useCallback, useEffect, useState, useMemo, useRef } from "react";
-import FullScreenButton from "./FullScreenButton";
-import Tooltip from "./Tooltip";
-import TimelineViewNew from "./TimelineView";
-import ResizeComponent from "./ResizeComponent";
-import CenterPanel from "./CenterPanel";
-import OrchestraNew from "./Orchestra";
-import TreeMapView from "./TreeMapViewNew";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ThreatLevel } from "../utils/timelineUtils";
+import CenterPanel from "./CenterPanel";
+import FullScreenButton from "./FullScreenButton";
+import OrchestraNew from "./Orchestra";
+import ResizeComponent from "./ResizeComponent";
+import TimelineViewNew from "./TimelineView";
+import TreeMapView from "./TreeMapViewNew";
 //import Map from "./MapNewTest";
-import Map from "./Map";
-import { getOrCreate, pushOrCreateWithoutDuplicates } from "../utils/utils";
 import {
   bgciAssessment,
-  citesAssessment,
-  iucnAssessment
+  citesAssessment
 } from "../utils/timelineUtils";
+import Map from "./Map";
 import Overlay from "./Overlay";
 
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
 
-import { HoverProvider } from "./HoverProvider";
-import { TooltipProvider } from "./TooltipProvider";
-import { OverlayProvider } from "./OverlayProvider";
-import { filter, tree } from "d3";
-import { useTreeMapFilter } from "./Hooks/useTreeMapFilter";
-import { useMapFilter } from "./Hooks/useMapFilter";
-import { useTimelineFilter } from "./Hooks/useTimelineFilter";
 import { useFilterSpecies } from "./Hooks/useFilterSpecies";
-import { useParseSpeciesJSON } from "./Hooks/useParseSpeciesJSON";
+import { useMapFilter } from "./Hooks/useMapFilter";
 import { useOrchestraFilter } from "./Hooks/useOrchestraFilter";
-import Footer from "./Footer";
+import { useParseSpeciesJSON } from "./Hooks/useParseSpeciesJSON";
+import { useTimelineFilter } from "./Hooks/useTimelineFilter";
+import { useTreeMapFilter } from "./Hooks/useTreeMapFilter";
+import { HoverProvider } from "./HoverProvider";
+import Navbar from "./Navbar";
+import { OverlayProvider } from "./OverlayProvider";
+import { TooltipProvider } from "./TooltipProvider";
 
 export const returnDummyLink = (speciesObj) => {
   if (speciesObj["photos"] != null) {
@@ -380,19 +376,20 @@ export default function HomeNew(props) {
                 width: "100%",
                 height: "100%",
                 gridTemplateColumns: "50% 50%",
-                gridTemplateRows: "calc(50% - 55px) 90px calc(50% - 55px) 20px",
+                gridTemplateRows: "40px calc(50% - 65px) 90px calc(50% - 65px)",
                 transformOrigin: zoomOrigin,
                 transform: zoomTransform,
                 transitionProperty: "transform",
                 transitionDuration: "0.4s"
               }}
             >
+              <Navbar />
               <div
                 style={{
                   gridColumnStart: 1,
                   gridColumnEnd: 1,
-                  gridRowStart: 1,
-                  gridRowEnd: 1,
+                  gridRowStart: 2,
+                  gridRowEnd: 2,
                   position: "relative"
                 }}
               >
@@ -430,8 +427,8 @@ export default function HomeNew(props) {
                 style={{
                   gridColumnStart: 2,
                   gridColumnEnd: 2,
-                  gridRowStart: 1,
-                  gridRowEnd: 1,
+                  gridRowStart: 2,
+                  gridRowEnd: 2,
                   position: "relative"
                 }}
               >
@@ -464,8 +461,8 @@ export default function HomeNew(props) {
                 style={{
                   gridColumnStart: 1,
                   gridColumnEnd: "span 2",
-                  gridRowStart: 2,
-                  gridRowEnd: 2
+                  gridRowStart: 3,
+                  gridRowEnd: 3
                 }}
               >
                 {
@@ -494,8 +491,8 @@ export default function HomeNew(props) {
                 style={{
                   gridColumnStart: 1,
                   gridColumnEnd: 1,
-                  gridRowStart: 3,
-                  gridRowEnd: 3,
+                  gridRowStart: 4,
+                  gridRowEnd: 4,
                   position: "relative",
                   height: "100%"
                 }}
@@ -533,8 +530,8 @@ export default function HomeNew(props) {
                 style={{
                   gridColumnStart: 2,
                   gridColumnEnd: 2,
-                  gridRowStart: 3,
-                  gridRowEnd: 3,
+                  gridRowStart: 4,
+                  gridRowEnd: 4,
                   position: "relative"
                 }}
               >
@@ -573,7 +570,6 @@ export default function HomeNew(props) {
                   }}
                 />
               </div>
-              <Footer />
             </div>
           </OverlayProvider>
         </TooltipProvider>

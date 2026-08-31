@@ -40,7 +40,7 @@ function App() {
 
   return (
     <div className="App relative">
-      <div className=" absolute top-0 z-[9999] flex items-center">
+      <div className=" absolute top-0 right-0 z-[9999] flex items-center">
         <div className="px-4 bg-orange-400 text-white">
           <span className="font-bold">&#9888;</span> Under Maintanance
         </div>

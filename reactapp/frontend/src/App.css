@@ -762,9 +762,11 @@ path.handle:focus {
   line-height: 11px; */
 }
 
-.copyrightQuote > * > a:-webkit-any-link,
-a:any-link {
-  color: gray !important;
+.copyrightQuote {
+   a:-webkit-any-link,
+    a:any-link {
+      color: gray !important;
+    }
 }
 
 .contentWrapper {
@@ -1038,9 +1040,9 @@ a:any-link {
 }
 
 .storyMapWrapper {
-  box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 6px 0px 5px -2px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 6px 0px 5px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 6px 0px 5px -2px rgba(0, 0, 0, 0.75);
   z-index: 99;
 }
 

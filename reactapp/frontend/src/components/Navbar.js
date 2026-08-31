@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { OverlayContext } from "./OverlayProvider";
 
-export default function Footer() {
+export default function Navbar() {
   const [overlay, setOverlay] = useContext(OverlayContext);
 
   return (
@@ -9,19 +9,81 @@ export default function Footer() {
       style={{
         gridColumnStart: 1,
         gridColumnEnd: "span 2",
-        gridRowStart: 4,
-        gridRowEnd: 4
       }}
-      className="grid grid-cols-4 w-full grid-rows-1 px-7 text-sm border-t border-gray-200"
+      className="grid grid-cols-5 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[40px]"
     >
-      <a className="hover:font-bold" href="/">
-        &copy; MusEcology
+      <a className="hover:font-bold text-xl text-black" href="/">
+        MusEcology
       </a>
       <div
-        className="cursor-pointer hover:font-bold px-4"
+        className="cursor-pointer hover:font-bold px-4 border-r text-center"
         onClick={() => {
           setOverlay(
-            <div className="max-w-[50vw] max-h-[80vh] p-4">
+            <div className="max-w-[50vw] p-4 flex flex-col gap-4 shadow-xl rounded-md">
+              <div className="font-bold text-xl">MusEcology Stories</div>
+              <div>
+                <a href="/bowstory" target="_blank">
+                The Story of Stringed Instrument Bows
+                </a>
+              </div>
+            </div>
+          );
+        }}
+      >
+        Stories
+      </div>
+      <div
+        className="cursor-pointer hover:font-bold px-4 border-r text-center"
+        onClick={() => {
+          setOverlay(
+            <div className="max-w-[50vw] p-4 flex flex-col gap-4 shadow-xl rounded-md">
+              <div className="font-bold text-xl">Publications</div>
+              <div>
+                Lichtenberg, S., Nehren, U., Anhuf, D., Brémaud, I., de Oliveira
+                Pinto, T., Fonseca‐Kruel, V. S., ... & Rosa, P. (2025). <br />
+                Protecting threatened species and music traditions. <br />
+                Frontiers in Ecology and the Environment, e2837.{" "}
+                <a href="https://doi.org/10.1002/fee.2837" target="_blank">
+                  https://doi.org/10.1002/fee.2837
+                </a>
+              </div>
+              <div>
+                Kusnick, J., Lichtenberg, S., Wiegreffe, D., Huber-Sannwald, E.,
+                Nehren, U., & Jänicke, S. (2024). <br /> Visual analysis of
+                diversity and threat status of natural materials for musical
+                instruments. <br />
+                Frontiers in Environmental Science, 12, 1406376.{" "}
+                <a
+                  href="https://doi.org/10.3389/fenvs.2024.1406376"
+                  target="_blank"
+                >
+                  https://doi.org/10.3389/fenvs.2024.1406376
+                </a>
+              </div>{" "}
+              <div>
+                Kusnick, J., Lichtenberg, S., & Jänicke, S. (2023).
+                <br /> Visualization-based Scrollytelling of Coupled Threats for
+                Biodiversity, Species and Music Cultures. <br />
+                In Workshop on Visualisation in Environmental Sciences. The
+                Eurographics Association.{" "}
+                <a
+                  href="https://findresearcher.sdu.dk/ws/portalfiles/portal/263852266/099-106.pdf"
+                  target="_blank"
+                >
+                  https://doi.org/10.2312/envirvis.20231112
+                </a>
+              </div>{" "}
+            </div>
+          );
+        }}
+      >
+        Publications
+      </div>
+      <div
+        className="cursor-pointer hover:font-bold px-4 border-r text-center"
+        onClick={() => {
+          setOverlay(
+            <div className="max-w-[50vw] max-h-[80vh] p-4 shadow-xl rounded-md">
               <div className="font-bold text-xl mb-4">About MusEcology</div>
               <div>
                 A classical symphony orchestra consists of up to 29 musical
@@ -66,7 +128,7 @@ export default function Footer() {
                   <div>
                     <div className="font-bold">Jakob Kusnick</div>
                     <div>Postdoctoral Student</div>
-                    <div>University of Southern Denmark</div>
+                    <div>University of Bergen</div>
                   </div>
                 </div>
               </div>
@@ -77,57 +139,10 @@ export default function Footer() {
         About
       </div>
       <div
-        className="cursor-pointer hover:font-bold px-4"
+        className="cursor-pointer hover:font-bold px-4 border-r text-center"
         onClick={() => {
           setOverlay(
-            <div className="max-w-[50vw] p-4 flex flex-col gap-4">
-              <div className="font-bold text-xl">Publications</div>
-              <div>
-                Lichtenberg, S., Nehren, U., Anhuf, D., Brémaud, I., de Oliveira
-                Pinto, T., Fonseca‐Kruel, V. S., ... & Rosa, P. (2025). <br />
-                Protecting threatened species and music traditions. <br />
-                Frontiers in Ecology and the Environment, e2837.{" "}
-                <a href="https://doi.org/10.1002/fee.2837" target="_blank">
-                  https://doi.org/10.1002/fee.2837
-                </a>
-              </div>
-              <div>
-                Kusnick, J., Lichtenberg, S., Wiegreffe, D., Huber-Sannwald, E.,
-                Nehren, U., & Jänicke, S. (2024). <br /> Visual analysis of
-                diversity and threat status of natural materials for musical
-                instruments. <br />
-                Frontiers in Environmental Science, 12, 1406376.{" "}
-                <a
-                  href="https://doi.org/10.3389/fenvs.2024.1406376"
-                  target="_blank"
-                >
-                  https://doi.org/10.3389/fenvs.2024.1406376
-                </a>
-              </div>{" "}
-              <div>
-                Kusnick, J., Lichtenberg, S., & Jänicke, S. (2023).
-                <br /> Visualization-based Scrollytelling of Coupled Threats for
-                Biodiversity, Species and Music Cultures. <br />
-                In Workshop on Visualisation in Environmental Sciences. The
-                Eurographics Association.{" "}
-                <a
-                  href="https://findresearcher.sdu.dk/ws/portalfiles/portal/263852266/099-106.pdf"
-                  target="_blank"
-                >
-                  https://doi.org/10.2312/envirvis.20231112
-                </a>
-              </div>{" "}
-            </div>
-          );
-        }}
-      >
-        Publications
-      </div>
-      <div
-        className="cursor-pointer hover:font-bold px-4"
-        onClick={() => {
-          setOverlay(
-            <div className="max-w-[50vw] p-4">
+            <div className="max-w-[50vw] p-4 shadow-xl rounded-md">
               <div className="font-bold text-xl mb-4">Imprint</div>
               <div>We are working on this...</div>
             </div>

@@ -27,6 +27,7 @@ import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useIntersection } from "./useIntersection";
 import Overlay from "../Overlay/Overlay";
 import { ThreatLevel } from "../../utils/timelineUtils";
+import Navbar from "../Navbar";
 
 const storyScripts = { bowstory: bowContents, concertstory: concertContents };
 
@@ -640,7 +641,7 @@ export default function Story(props) {
                 display: "grid",
                 gridTemplateRows: mobile
                   ? "repeat(2, minmax(0, 1fr))"
-                  : "minmax(0, 1fr)",
+                  : "40px minmax(0, 1fr)",
                 gridTemplateColumns: mobile
                   ? "minmax(0, 1fr)"
                   : "repeat(2, minmax(0, 1fr))",
@@ -648,6 +649,9 @@ export default function Story(props) {
               }}
               ref={wrapperRef}
             >
+              <div className="col-span-2">
+                <Navbar/>
+              </div>
               <div
                 className="storyMapWrapper"
                 style={{
@@ -655,7 +659,7 @@ export default function Story(props) {
                   height: "100%",
                   minWidth: 0,
                   minHeight: 0,
-                  position: "relative"
+                  position: "relative",
                 }}
               >
                 <ResizeComponent>
