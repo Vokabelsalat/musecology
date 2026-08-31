@@ -41,6 +41,8 @@ export const Content = (props) => {
 
   const audioRef = useRef(null);
   const htmlParser = new Parser();
+  const renderRichContent = (value) =>
+    typeof value === "string" ? htmlParser.parse(value) : value;
 
   const replaceThreatCodes = (elementArray) => {
     const newElements = [];
@@ -88,6 +90,7 @@ export const Content = (props) => {
             instrumentPart={vis.instrumentPart}
             setInstrumentPart={vis.setInstrumentPart}
             showThreatDonuts={vis.showThreatDonuts}
+            instrumentVideos={vis.instrumentVideos}
           />
         );
       case "timeline":
@@ -184,7 +187,7 @@ export const Content = (props) => {
                 //marginTop: "-50%"
               }}
             >
-              {htmlParser.parse(title)}
+              {renderRichContent(title)}
             </div>
             {subtitle !== undefined && (
               <div
@@ -193,7 +196,7 @@ export const Content = (props) => {
                   fontSize: mobile ? "initial" : "larger"
                 }}
               >
-                {htmlParser.parse(subtitle)}
+                {renderRichContent(subtitle)}
               </div>
             )}
             {authors !== undefined && (
@@ -203,7 +206,7 @@ export const Content = (props) => {
                   fontSize: mobile ? "initial" : "larger"
                 }}
               >
-                {htmlParser.parse(authors)}
+                {renderRichContent(authors)}
               </div>
             )}
             <div
@@ -292,7 +295,7 @@ export const Content = (props) => {
                     fontFamily: titlePrimary
                   }}
                 >
-                  {htmlParser.parse(quote.text)}
+                  {renderRichContent(quote.text)}
                 </div>
                 <div
                   style={{
@@ -301,7 +304,7 @@ export const Content = (props) => {
                     fontFamily: titleSecondary
                   }}
                 >
-                  "{htmlParser.parse(quote.translation)}"
+                  "{renderRichContent(quote.translation)}"
                 </div>
                 <div
                   style={{
@@ -311,7 +314,7 @@ export const Content = (props) => {
                     fontSize: "large"
                   }}
                 >
-                  {htmlParser.parse(quote.author)}
+                  {renderRichContent(quote.author)}
                 </div>
               </div>
             </div>
@@ -339,7 +342,7 @@ export const Content = (props) => {
                 marginBottom: "5px"
               }}
             >
-              {htmlParser.parse(title)}
+              {renderRichContent(title)}
             </div>
             <div
               style={{
@@ -348,7 +351,7 @@ export const Content = (props) => {
                 textAlign: blockText ? "justify" : "center"
               }}
             >
-              {replaceThreatCodes(htmlParser.parse(text))}
+              {replaceThreatCodes(renderRichContent(text))}
             </div>
             {image !== undefined && (
               <div
@@ -366,13 +369,13 @@ export const Content = (props) => {
                   <img style={{ width: "100%" }} src={image.url}></img>
                 </OverlayLink>
                 <div style={{ width: "100%", fontSize: "large" }}>
-                  {htmlParser.parse(image.caption)}
+                  {renderRichContent(image.caption)}
                 </div>
                 <div
                   className="copyrightQuote"
                   style={{ width: "100%", color: "gray" }}
                 >
-                  {htmlParser.parse(image.copyright)}
+                  {renderRichContent(image.copyright)}
                 </div>
               </div>
             )}
@@ -420,7 +423,7 @@ export const Content = (props) => {
                           fontSize: "large"
                         }}
                       >
-                        {htmlParser.parse(image.caption)}
+                        {renderRichContent(image.caption)}
                       </div>
                       <div
                         key={`copyright${JSON.stringify(image)}${index}`}
@@ -432,7 +435,7 @@ export const Content = (props) => {
                           gridRow: 3
                         }}
                       >
-                        {htmlParser.parse(image.copyright)}
+                        {renderRichContent(image.copyright)}
                       </div>
                     </>
                   );
@@ -458,13 +461,13 @@ export const Content = (props) => {
                   preload="auto"
                 />
                 <div style={{ width: "100%", fontSize: "large" }}>
-                  {htmlParser.parse(audio.caption)}
+                  {renderRichContent(audio.caption)}
                 </div>
                 <div
                   className="copyrightQuote"
                   style={{ width: "100%", color: "gray" }}
                 >
-                  {htmlParser.parse(audio.copyright)}
+                  {renderRichContent(audio.copyright)}
                 </div>
               </div>
             )}

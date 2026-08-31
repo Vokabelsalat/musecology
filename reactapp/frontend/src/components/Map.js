@@ -318,7 +318,7 @@ const MapComponent = forwardRef((props, ref) => {
           type: "FeatureCollection",
           features: tmpCentroids
         });
-        setEcoRegionSearchOptions(newEcoRegionSearchOptions);
+        setEcoRegionSearchOptions?.(newEcoRegionSearchOptions);
       });
 
     fetch("/Marine_ecoregions.json")
@@ -349,7 +349,7 @@ const MapComponent = forwardRef((props, ref) => {
           type: "FeatureCollection",
           features: tmpCentroids
         });
-        setMarineEcoRegionSearchOptions(newEcoRegionSearchOptions);
+        setMarineEcoRegionSearchOptions?.(newEcoRegionSearchOptions);
       });
 
     fetch("/WWF_Terrestrial_Ecoregions2017-3-5_lines.json")
@@ -1061,25 +1061,6 @@ const MapComponent = forwardRef((props, ref) => {
     ref
   ]);
 
-  /* const { newWidth, newHeight } = useMemo(() => {
-    let tmpWidth = width;
-    let tmpHeight = height;
-
-    if (keepAspectRatio) {
-      if (height <= width) {
-        tmpHeight = width / (16 / 9);
-      } else {
-        tmpWidth = (16 / 9) * height;
-      }
-    }
-
-    if (activeMapLayer == null) {
-      tmpHeight = tmpHeight - 40;
-    }
-
-    return { newWidth: tmpWidth, newHeight: tmpHeight };
-  }, [width, height, activeMapLayer, keepAspectRatio]); */
-
   const onPolygonHover = useCallback(
     (event) => {
       if (event.features.length > 0) {
@@ -1158,11 +1139,14 @@ const MapComponent = forwardRef((props, ref) => {
 
   return (
     <div
-      className="grid grid-cols-1 grid-rows-[min-content_1fr]"
+      className="grid grid-cols-1"
       style={{
         border: keepAspectRatio ? "1px solid black" : "",
         width: `${newWidth}px`,
-        height: `${newHeight}px`
+        height: `${newHeight}px`,
+        gridTemplateRows: isStory
+          ? "minmax(0, 1fr)"
+          : "min-content minmax(0, 1fr)"
       }}
     >
       {
@@ -1370,7 +1354,7 @@ const MapComponent = forwardRef((props, ref) => {
           console.log(
             "CLICK EVENT",
             event,
-            event.features[0].properties,
+            event?.features[0]?.properties,
             countriesToSpecies
           );
 

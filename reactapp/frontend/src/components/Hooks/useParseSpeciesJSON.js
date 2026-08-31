@@ -48,12 +48,14 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         !Object.keys(kingdoms).includes(speciesObj.Kingdom)
       ) {
         let tempKingdom = null;
-        for (let mat of speciesObj.origMat) {
-          if (
-            mat.Kingdom != null &&
-            Object.keys(kingdoms).includes(mat.Kingdom)
-          ) {
-            tempKingdom = mat.Kingdom;
+        if(speciesObj.origMat) {
+          for (let mat of speciesObj.origMat) {
+            if (
+              mat.Kingdom != null &&
+              Object.keys(kingdoms).includes(mat.Kingdom)
+            ) {
+              tempKingdom = mat.Kingdom;
+            }
           }
         }
         speciesObj.Kingdom = tempKingdom;
@@ -69,12 +71,12 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         speciesObj.Family = tempFamily;
       }
 
-      let family = speciesObj.Family != null ? speciesObj.Family.trim() : "";
-      let genus = speciesObj.Genus.trim();
-      let species = speciesObj.Species.trim();
-      let genusSpecies = `${genus.trim()} ${species.trim()}`;
+      let family = speciesObj.Family != null ? speciesObj.Family?.trim() : "";
+      let genus = speciesObj.Genus?.trim();
+      let species = speciesObj.Species?.trim();
+      let genusSpecies = `${genus?.trim()} ${species?.trim()}`;
 
-      kingdoms[speciesObj.Kingdom].push(family);
+      kingdoms[speciesObj.Kingdom]?.push(family);
       if (families.hasOwnProperty(family)) {
         families[family].push(genus);
       } else {

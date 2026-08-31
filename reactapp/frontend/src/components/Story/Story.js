@@ -2,7 +2,6 @@ import ContentPanel from "./ContentPanel";
 import ContentWrapper from "./ContentWrapper";
 import { Content } from "./Content";
 import ResizeComponent from "../ResizeComponent";
-import StoryMap from "../StoryMapCleanUp";
 import Map from "../Map";
 import bowContents from "./bowstory";
 import concertContents from "./concertstory";
@@ -18,22 +17,14 @@ import { OverlayProvider } from "../OverlayProvider";
 
 import {
   bgciAssessment,
-  citesAssessment,
-  iucnAssessment
+  citesAssessment
 } from "../../utils/timelineUtils";
 
-import {
-  returnDummyLink,
-  returnImageLink,
-  filterTreeMap,
-  getSpeciesFromTreeMap
-} from "../Home";
+import { filterTreeMap, getSpeciesFromTreeMap } from "../Home";
 
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 
 import { useIntersection } from "./useIntersection";
-import { active } from "d3";
-import { padding } from "@mui/system";
 import Overlay from "../Overlay/Overlay";
 import { ThreatLevel } from "../../utils/timelineUtils";
 
@@ -56,9 +47,15 @@ export default function Story(props) {
   const ref = useRef(null);
 
   const { hash } = window.location;
-  const idx = parseInt(hash.replace("#", ""));
+  const requestedFigure = Number.parseInt(hash.replace("#", ""), 10);
+  const initialFigure =
+    Number.isInteger(requestedFigure) &&
+    requestedFigure >= 0 &&
+    requestedFigure < (contents?.length ?? 0)
+      ? requestedFigure
+      : 0;
 
-  const [activeFigure, setActiveFigure] = useState(idx);
+  const [activeFigure, setActiveFigure] = useState(initialFigure);
   const activeFigureRef = useRef();
   activeFigureRef.current = activeFigure;
 
@@ -70,7 +67,6 @@ export default function Story(props) {
     useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
 
-  const [trigger, setTrigger] = useState(true);
   const [isIntro, setIsIntro] = useState(true);
   const [enableAutoPlay, setEnableAutoPlay] = useState(false);
   const offset = 0;
@@ -80,9 +76,13 @@ export default function Story(props) {
   const fontStyle = "classic"; // "modern" | "classic"
   const alignment = "centerBlockText"; // "center" | "left" | "right" | "centerBlockText"
   const [effect, setEffect] = useState("");
-  const [mapMode, setMapMode] = useState("light");
   const [showCountries, setShowCountries] = useState(true);
-  const [mapFilter, setMapFilter] = useState({});
+  const [mapFilter, setMapFilter] = useState({ country: null });
+  const [formMapMode, setFormMapMode] = useState("countries");
+
+  const [countriesDictionary, setCountriesDictionary] = useState(null);
+  const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
+  const [instrumentVideos, setInstrumentVideos] = useState({});
 
   const mapRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -91,7 +91,7 @@ export default function Story(props) {
   const [threatType, setThreatType] = useState("economically");
 
   const [overlayContent, setOverlayContent] = useState(null);
-  const parsedSpecies = useParseSpeciesJSON(speciesData);
+  const parsedSpecies = useParseSpeciesJSON(speciesData, false);
   const { timelineData } = parsedSpecies;
 
   const getSpeciesSignThreat = useCallback((species, type = null) => {
@@ -167,6 +167,9 @@ export default function Story(props) {
     }
   }, [width]);
 
+  const storyHeight =
+    Number.isFinite(height) && height > 0 ? height : window.innerHeight;
+
   useEffect(() => {
     const scrollToHashElement = () => {
       const { hash } = window.location;
@@ -182,13 +185,11 @@ export default function Story(props) {
       setActiveFigure(parseInt(idx));
     };
 
-    if (!trigger) return;
-
     scrollToHashElement();
 
     window.addEventListener("hashchange", scrollToHashElement);
     return () => window.removeEventListener("hashchange", scrollToHashElement);
-  }, [offset, trigger]);
+  }, [offset]);
 
   useIntersection(
     ref,
@@ -233,7 +234,6 @@ export default function Story(props) {
   function applyContentEffect(effect) {
     switch (effect.type) {
       case "black":
-        setMapMode("dark");
         setEffect(effect.type);
         break;
       default:
@@ -317,10 +317,9 @@ export default function Story(props) {
       applyContentEffect(contents[activeFigure].effect);
     } else {
       setEffect("");
-      setMapMode("light");
     }
 
-    /*     if (
+    if (
       activeFigure != null &&
       contents != null &&
       contents[activeFigure] != null &&
@@ -329,7 +328,7 @@ export default function Story(props) {
       setSpeciesFilter(contents[activeFigure].speciesFilter);
     } else {
       setSpeciesFilter([]);
-    } */
+    }
 
     if (
       activeFigure != null &&
@@ -367,17 +366,6 @@ export default function Story(props) {
       contents[activeFigure].threatType != null
     ) {
       setThreatType(contents[activeFigure].threatType);
-    }
-
-    if (
-      activeFigure != null &&
-      contents != null &&
-      contents[activeFigure] != null &&
-      contents[activeFigure].countriesFilter != null
-    ) {
-      setCountriesFilter(contents[activeFigure].countriesFilter);
-    } else {
-      setCountriesFilter([]);
     }
 
     if (
@@ -430,7 +418,7 @@ export default function Story(props) {
     ) {
       flyToMapPosition(contents[activeFigure].flyTo);
     }
-  }, [activeFigure]);
+  }, [activeFigure, contents]);
 
   const [instrument, setInstrument] = useState();
   const [instrumentGroup, setInstrumentGroup] = useState();
@@ -438,20 +426,42 @@ export default function Story(props) {
   const [colorBlind, setColorBlind] = useState(false);
 
   useEffect(() => {
-    fetch("./generatedOutput/allSpecies.json")
+    fetch("/data_merged_diss_filtered.json")
       .then((res) => res.json())
       .then(function (speciesData) {
         setSpeciesData(speciesData);
       })
       .catch((error) => {
-        console.log(`Couldn't find file allSpecies.json`, error);
+        console.log(`Couldn't find data_merged_diss_filtered.json`, error);
+      });
+
+    fetch("/instrument_videos.json")
+      .then((res) => res.json())
+      .then(function (videos) {
+        setInstrumentVideos(videos);
+      })
+      .catch((error) => {
+        console.log(`Couldn't find instrument_videos.json`, error);
+      });
+
+    fetch("/countryDictionary.json")
+      .then((res) => res.json())
+      .then(function (dictionary) {
+        const orchestraCountries = {};
+        for (const country of Object.values(dictionary)) {
+          orchestraCountries[country.orchestraCountry] = country.ISO3;
+        }
+        setCountriesDictionary(dictionary);
+        setOrchestrasToISO3(orchestraCountries);
+      })
+      .catch((error) => {
+        console.log(`Couldn't find countryDictionary.json`, error);
       });
   }, []);
 
   const {
     imageLinks,
     dummyImageLinks,
-    speciesSignThreats,
     species,
     domainYears,
     instrumentData,
@@ -463,19 +473,13 @@ export default function Story(props) {
     kingdomData
   } = parsedSpecies;
 
-  function arrayIntersection(a, b) {
-    const setA = new Set(a);
-    return b.filter((value) => setA.has(value));
-  }
-
+  const [speciesFilter, setSpeciesFilter] = useState([]);
   const [treeMapFilter, setTreeMapFilter] = useState({
     species: null,
     genus: null,
     kingdom: null,
     family: null
   });
-  const [hexaFilter, setHexaFilter] = useState([]);
-  const [countriesFilter, setCountriesFilter] = useState([]);
 
   /* const filteredSpeciesCountries = useMemo(() => {
     return Object.fromEntries(
@@ -555,17 +559,21 @@ export default function Story(props) {
     const treeMapSpecies = new Set(filteredSpeciesFromTreeMap);
     const orchestraSpecies = new Set(filteredSpeciesFromOrchestra);
     const timelineSpecies = new Set(filteredSpeciesFromTimeline);
+    const explicitlyFilteredSpecies = new Set(speciesFilter);
     return filteredSpeciesFromMap.filter(
       (value) =>
         treeMapSpecies.has(value) &&
         orchestraSpecies.has(value) &&
-        timelineSpecies.has(value)
+        timelineSpecies.has(value) &&
+        (explicitlyFilteredSpecies.size === 0 ||
+          explicitlyFilteredSpecies.has(value))
     );
   }, [
     filteredSpeciesFromMap,
     filteredSpeciesFromOrchestra,
     filteredSpeciesFromTimeline,
-    filteredSpeciesFromTreeMap
+    filteredSpeciesFromTreeMap,
+    speciesFilter
   ]);
 
   const {
@@ -584,6 +592,12 @@ export default function Story(props) {
     intersectedSpecies,
     speciesEcos,
     speciesHexas
+  );
+
+  const getPopulationTrend = useCallback(
+    (speciesName) =>
+      visibleSpeciesTimelineData[speciesName]?.populationTrend ?? null,
+    [visibleSpeciesTimelineData]
   );
 
   useEffect(() => {
@@ -616,17 +630,21 @@ export default function Story(props) {
   return (
     <>
       <HoverProvider>
-        <TooltipProvider>
+        <TooltipProvider speciesLabels={speciesLabels}>
           <OverlayProvider>
             <div
               style={{
                 width: "100%",
-                /* height: "100%", */
-                aspectRatio: "16 / 9",
+                height: `${storyHeight}px`,
+                minHeight: 0,
                 display: "grid",
-                gridTemplateRows: "repeat(auto-fit, minmax(100px, 1fr))",
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))"
-                // gridTemplateColumns: "99% 1%"
+                gridTemplateRows: mobile
+                  ? "repeat(2, minmax(0, 1fr))"
+                  : "minmax(0, 1fr)",
+                gridTemplateColumns: mobile
+                  ? "minmax(0, 1fr)"
+                  : "repeat(2, minmax(0, 1fr))",
+                overflow: "hidden"
               }}
               ref={wrapperRef}
             >
@@ -634,8 +652,10 @@ export default function Story(props) {
                 className="storyMapWrapper"
                 style={{
                   width: "100%",
+                  height: "100%",
+                  minWidth: 0,
+                  minHeight: 0,
                   position: "relative"
-                  /* aspectRatio: "16 / 9" */
                 }}
               >
                 <ResizeComponent>
@@ -648,7 +668,6 @@ export default function Story(props) {
                     getSpeciesThreatLevel={getSpeciesSignThreat}
                     threatType={threatType}
                     ref={mapRef}
-                    mode={mapMode}
                     activeMapLayer={activeMapLayer}
                     showCountries={showCountries}
                     showThreatDonuts={showThreatDonuts}
@@ -658,6 +677,11 @@ export default function Story(props) {
                     timeFrame={timeFrame}
                     categoryFilter={categoryFilter}
                     setCategoryFilter={setCategoryFilter}
+                    getPopulationTrend={getPopulationTrend}
+                    formMapMode={formMapMode}
+                    setFormMapMode={setFormMapMode}
+                    countriesDictionary={countriesDictionary}
+                    orchestrasToISO3={orchestrasToISO3}
                     isStory={true}
                   />
                   {/* <StoryMap
@@ -755,7 +779,13 @@ export default function Story(props) {
                 </div>
               </div>
               <div
-                style={{ width: "100%", height: "100%", position: "relative" }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  minWidth: 0,
+                  minHeight: 0,
+                  position: "relative"
+                }}
               >
                 <ContentPanel className={`contentPanel ${effect}`} ref={ref}>
                   {contents != null &&
@@ -796,6 +826,7 @@ export default function Story(props) {
                             key={`content${index}`}
                             {...content}
                             alignment={alignment}
+                            fontStyle={fontStyle}
                             playAudio={enableAutoPlay && activeFigure === index}
                             mobile={mobile}
                             setOverlayContent={setOverlayContent}
@@ -821,6 +852,7 @@ export default function Story(props) {
                                     instrumentGroup: instrumentGroup,
                                     instrumentPart: instrumentPart,
                                     setInstrumentPart: setInstrumentPart,
+                                    instrumentVideos: instrumentVideos,
                                     getThreatLevel: getSpeciesSignThreat,
                                     imageLinks: imageLinks,
                                     dummyImageLinks: dummyImageLinks,
