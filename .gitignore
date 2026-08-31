@@ -133,3 +133,4 @@ dist
 reactapp/frontend/public/
 reactapp/frontend/build/
 reactapp/frontend/data-fusing-and-crawling/downloaded-data/
+reactapp/frontend/upload/

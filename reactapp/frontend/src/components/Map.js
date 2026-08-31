@@ -47,6 +47,22 @@ const cacheMarker = (cache, key, createMarker) => {
   return marker;
 };
 
+// querySourceFeatures can return the same logical feature from multiple tiles.
+const getSourceFeatureKey = (feature, unclusteredProperty) => {
+  const properties = feature.properties ?? {};
+
+  if (properties.cluster && properties.cluster_id != null) {
+    return `cluster-${properties.cluster_id}`;
+  }
+
+  const featureId = feature.id ?? properties[unclusteredProperty];
+  if (featureId != null) {
+    return `feature-${featureId}`;
+  }
+
+  return `coordinates-${feature.geometry.coordinates.join(",")}`;
+};
+
 const MapComponent = forwardRef((props, ref) => {
   const {
     width: newWidth,
@@ -194,6 +210,7 @@ const MapComponent = forwardRef((props, ref) => {
   const [ecosToMyIDs, setEcosToMyIDs] = useState(null);
   const [extraPolygonGeoJSON, setExtraPolygonGeoJSON] = useState(null);
   const [keepAspectRatio] = useState(i_keepAspectRatio);
+
 
   const [highlightLinesGeoJSON, setHighlightLinesGeoJSON] = useState(null);
   const [ecoRegionsHighlightLinesIndex, setEcoRegionsHighlightLinesIndex] =
@@ -377,6 +394,9 @@ const MapComponent = forwardRef((props, ref) => {
 
       for (let orchestra of orchestraGeoJson.features) {
         let iso = orchestrasToISO3[orchestra.properties.Country];
+        if(iso == null) {
+          console.log("orchestra", orchestra);
+        }
         if (tmpOrchestraHeatMap.hasOwnProperty(iso)) {
           tmpOrchestraHeatMap[iso] = tmpOrchestraHeatMap[iso] + 1;
         } else {
@@ -487,6 +507,8 @@ const MapComponent = forwardRef((props, ref) => {
         }
       }
     }
+
+    // console.log('tmpIsoToSpecies', tmpIsoToSpecies, Object.keys(tmpIsoToSpecies), Object.keys(tmpIsoToSpecies).length);
 
     const tmpIsoToCountryID = {};
     const tmpCountriesGeoJson = { ...countriesGeoJson, features: [] };
@@ -613,24 +635,6 @@ const MapComponent = forwardRef((props, ref) => {
       }
     }
 
-    /*   let scale = [];
-    let test = d3Scale
-      .scaleLinear()
-      .domain([0, tmpEcoregionHeatMapMax])
-      .ticks(Math.min(15, tmpEcoregionHeatMapMax));
-
-    let scaleColor = colorsys.hsvToHex(210, 100, 100);
-    scale.push({ scaleColor, scaleValue: 0 });
-
-    for (let val of test.slice(1, test.length)) {
-      let scaleOpacity = 1 - val / tmpEcoregionHeatMapMax;
-      let scaleColor = colorsys.hsvToHex(210, scaleOpacity * 100, 100);
-
-      scale.push({ scaleColor, scaleValue: val });
-    }
-
-    setDivScaleWithType({ scale, type: "ecoregions" }); */
-
     setEcosToSpecies(tmpEcoToSpecies);
     setEcoRegionsGeoJsonTest(tmpEcoRegionsGeoJson);
     setEcoregionHeatMapMax(tmpEcoregionHeatMapMax);
@@ -681,24 +685,6 @@ const MapComponent = forwardRef((props, ref) => {
         }
       }
     }
-
-    /*   let scale = [];
-    let test = d3Scale
-      .scaleLinear()
-      .domain([0, tmpHexagonHeatMapMax])
-      .ticks(Math.min(15, tmpHexagonHeatMapMax));
-
-    let scaleColor = colorsys.hsvToHex(210, 100, 100);
-    scale.push({ scaleColor, scaleValue: 0 });
-
-    for (let val of test.slice(1, test.length)) {
-      let scaleOpacity = 1 - val / tmpHexagonHeatMapMax;
-      let scaleColor = colorsys.hsvToHex(210, scaleOpacity * 100, 100);
-
-      scale.push({ scaleColor, scaleValue: val });
-    }
-
-    setDivScaleWithType({ scale, type: "hexagons" }); */
 
     setHexagonGeoJSONTest(tmpHexagonGeoJSON);
     setHexagonHeatMapMax(tmpHexagonHeatMapMax);
@@ -786,6 +772,7 @@ const MapComponent = forwardRef((props, ref) => {
 
   function updateEcoregions() {
     const newMarkers = [];
+    const seenFeatureKeys = new Set();
     const features =
       ref.current != null
         ? ref.current.querySourceFeatures("ecoregionsourceCentroid")
@@ -794,6 +781,12 @@ const MapComponent = forwardRef((props, ref) => {
     // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
     // and add it to the map if it's not there already
     for (const feature of features) {
+      const featureKey = getSourceFeatureKey(feature, "ECO_ID");
+      if (seenFeatureKeys.has(featureKey)) {
+        continue;
+      }
+      seenFeatureKeys.add(featureKey);
+
       const coords = feature.geometry.coordinates;
       const props = feature.properties;
       if (!props.cluster) {
@@ -843,6 +836,7 @@ const MapComponent = forwardRef((props, ref) => {
         () => createDonutChart(props)
       );
       newMarkers.push({
+        id: featureKey,
         element: markerElement,
         lng: coords[0],
         lat: coords[1],
@@ -872,6 +866,7 @@ const MapComponent = forwardRef((props, ref) => {
 
   function updateMarkers() {
     const newMarkers = [];
+    const seenFeatureKeys = new Set();
     //const features = ref.current.querySourceFeatures("capitalssource");
     const features =
       ref.current != null
@@ -881,6 +876,12 @@ const MapComponent = forwardRef((props, ref) => {
     // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
     // and add it to the map if it's not there already
     for (const feature of features) {
+      const featureKey = getSourceFeatureKey(feature, "FID");
+      if (seenFeatureKeys.has(featureKey)) {
+        continue;
+      }
+      seenFeatureKeys.add(featureKey);
+
       const coords = feature.geometry.coordinates;
       const props = feature.properties;
       if (!props.cluster) {
@@ -927,11 +928,13 @@ const MapComponent = forwardRef((props, ref) => {
         markerKey,
         () => createDonutChart(props)
       );
+
       newMarkers.push({
+        id: featureKey,
         element: markerElement,
         lng: coords[0],
         lat: coords[1],
-        countriesArray: countriesArray
+        countriesArray: countriesArray,
       });
     }
     setCapitalThreatMarkers(newMarkers);
@@ -961,9 +964,9 @@ const MapComponent = forwardRef((props, ref) => {
     }
 
     const fontSize =
-      total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-    const r = total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
-    const r0 = Math.round(r * 0.6);
+      total >= 100 ? 16 : total >= 50 ? 14 : total >= 10 ? 12 : 11;
+    const r = total >= 100 ? 30 : total >= 50 ? 24 : total >= 10 ? 18 : 12;
+    const r0 = Math.round(r * 0.7);
     const w = r * 2;
 
     return (
@@ -978,6 +981,7 @@ const MapComponent = forwardRef((props, ref) => {
           cy={r}
           r={r}
           fill="white"
+          opacity={0.75}
           stroke={showThreatDonuts === "white" ? "gray" : "none"}
         ></circle>
         {showThreatDonuts && showThreatDonuts !== "white" && (
@@ -994,7 +998,7 @@ const MapComponent = forwardRef((props, ref) => {
             })}
           </g>
         )}
-        <text dominantBaseline="central" transform={`translate(${r}, ${r})`}>
+        <text fontSize={fontSize} dominantBaseline="central" transform={`translate(${r}, ${r})`}>
           {total.toLocaleString()}
         </text>
       </svg>
@@ -1696,10 +1700,10 @@ const MapComponent = forwardRef((props, ref) => {
         {capitalThreatMarkers &&
           mapMode === "countries" &&
           showThreatDonuts &&
-          capitalThreatMarkers.map((element, index) => {
+          capitalThreatMarkers.map((element) => {
             return (
               <Marker
-                key={`marker-${index}${threatType}${colorBlind}${mapMode}`}
+                key={`marker-${element.id}${threatType}${colorBlind}${mapMode}`}
                 longitude={element.lng}
                 latitude={element.lat}
                 anchor="center"
@@ -1722,10 +1726,10 @@ const MapComponent = forwardRef((props, ref) => {
         {ecoThreatMarkers &&
           showThreatDonuts &&
           ["hexagons", "ecoregions", "protection"].includes(mapMode) &&
-          ecoThreatMarkers.map((element, index) => {
+          ecoThreatMarkers.map((element) => {
             return (
               <Marker
-                key={`ecoMarker-${index}${threatType}${colorBlind}`}
+                key={`ecoMarker-${element.id}${threatType}${colorBlind}`}
                 longitude={element.lng}
                 latitude={element.lat}
                 anchor="center"

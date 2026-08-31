@@ -172,9 +172,9 @@ class PieChartD3 {
       .attr("dy", ".3em")
       .style(
         "font-size",
-        this.width >= 70 ? "initial" : this.width >= 40 ? "10" : "5"
+        this.width >= 70 ? "initial" : this.width >= 40 ? "9" : "5"
       )
-      .style("font-weight", "bold")
+      // .style("font-weight", "bold")
       .style("display", options.data.length === 0 ? "none" : "block")
       .text(pieLabel);
 
@@ -199,7 +199,7 @@ class PieChartD3 {
       data: data,
       strokeWidth: this.strokeWidth,
       outerRadius: this.width / 2 - this.strokeWidth,
-      innerRadius: this.width / 4,
+      innerRadius: this.width / 3,
       instrument: false,
       color: (d) => {
         if (this.showThreatDonuts === "white") {

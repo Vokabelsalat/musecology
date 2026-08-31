@@ -61,7 +61,7 @@ export default function OrchestraThreatPieChart(props) {
             getThreatLevel={getThreatLevel}
             threatType={threatType}
             colorBlind={colorBlind}
-            size={45}
+            size={40}
             showThreatDonuts={showThreatDonuts}
           />
         }
