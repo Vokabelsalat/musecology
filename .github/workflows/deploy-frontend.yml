@@ -18,7 +18,7 @@ jobs:
     name: Deploy to production
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    environment: production
+    environment:  deploy-production
 
     steps:
       - name: Check deployment configuration
