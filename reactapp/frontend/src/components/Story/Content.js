@@ -72,12 +72,14 @@ export const Content = (props) => {
   };
 
   const getVisualization = (vis) => {
+    const visualizationId = vis.id ?? `${vis.type}-${id}`;
+
     switch (vis.type) {
       case "orchestra":
         return (
           <OrchestraNew
-            key={`orchestra${id}`}
-            id={`orchestra${id}`}
+            key={visualizationId}
+            id={visualizationId}
             instrumentData={vis.instrumentData}
             instrumentGroupData={vis.instrumentGroupData}
             getThreatLevel={vis.getThreatLevel}

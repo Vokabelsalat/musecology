@@ -789,7 +789,10 @@ export default function Story(props) {
                                     ...content.legend,
                                     setCategoryFilter: setCategoryFilter,
                                     categoryFilter: categoryFilter,
-                                    threatType: threatType,
+                                    threatType:
+                                      content.legend.threatType ??
+                                      content.threatType ??
+                                      threatType,
                                     colorBlind: colorBlind
                                   }
                                 : null
@@ -808,7 +811,10 @@ export default function Story(props) {
                                     getThreatLevel: getSpeciesSignThreat,
                                     imageLinks: imageLinks,
                                     dummyImageLinks: dummyImageLinks,
-                                    threatType: threatType,
+                                    threatType:
+                                      content.visualization.threatType ??
+                                      content.threatType ??
+                                      threatType,
                                     setInstrument: setInstrument,
                                     setInstrumentGroup: setInstrumentGroup,
                                     speciesTimelineData:
@@ -817,10 +823,9 @@ export default function Story(props) {
                                     timeFrame: timeFrame,
                                     domainYears: domainYears,
                                     showThreatDonuts:
-                                      content.visualization.showThreatDonuts !==
-                                      undefined
-                                        ? content.visualization.showThreatDonuts
-                                        : showThreatDonuts,
+                                      content.visualization.showThreatDonuts ??
+                                      content.showThreatDonuts ??
+                                      showThreatDonuts,
                                     kingdomData: filteredKingdomData,
                                     treeMapFilter: treeMapFilter,
                                     setTreeMapFilter: setTreeMapFilter,

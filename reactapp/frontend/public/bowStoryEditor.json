@@ -86,6 +86,7 @@
     },
     "projection": "equalEarth",
     "visualization": {
+      "id": "orchestra-ecosystem-overview",
       "type": "orchestra",
       "width": "100%",
       "showThreatDonuts": false
@@ -107,6 +108,7 @@
     "showCountries": true,
     "showThreatDonuts": false,
     "visualization": {
+      "id": "orchestra-global-ecosystems",
       "type": "orchestra",
       "width": "100%",
       "showThreatDonuts": "white"
@@ -129,8 +131,11 @@
     "showCountries": true,
     "showThreatDonuts": true,
     "visualization": {
+      "id": "orchestra-ecological-threats",
       "type": "orchestra",
-      "width": "100%"
+      "width": "100%",
+      "showThreatDonuts": true,
+      "threatType": "ecologically"
     }
   },
   {
@@ -138,6 +143,7 @@
     "title": "The String Instruments",
     "text": "The string instruments always stand out in an orchestra being the largest instrument group and the heart of any orchestra. In addition, they are also part of many musical cultures and instrument-making traditions around the world. Internationally, more than 60 cultural traditions are listed in the UNESCO Intangible Cultural Heritage List that are associated with bowed string instruments.",
     "visualization": {
+      "id": "orchestra-string-instruments",
       "type": "orchestra",
       "width": "100%"
     },
@@ -179,7 +185,8 @@
       "type": "treeMap",
       "width": "100%"
     },
-    "instrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "legacyInstrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "instrument": "Violin bow| Viola bow| Cello bow| Double bass bow",
     "instrumentGroup": "Strings",
     "instrumentPart": null
   },
@@ -200,9 +207,15 @@
       "type": "treeMap",
       "width": "100%"
     },
-    "instrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "legacyInstrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "instrument": "Violin bow| Viola bow| Cello bow| Double bass bow",
     "instrumentGroup": "Strings",
-    "instrumentPart": "Stick"
+    "legacyInstrumentPart": "Stick",
+    "instrumentPart": [
+      "Renaissance bow stick",
+      "Baroque bow stick",
+      "Modern bow stick"
+    ]
   },
   {
     "type": "text",
@@ -399,9 +412,15 @@
     "projection": "equalEarth",
     "showCountries": true,
     "showThreatDonuts": true,
-    "instrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "legacyInstrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "instrument": "Violin bow| Viola bow| Cello bow| Double bass bow",
     "instrumentGroup": "Strings",
-    "instrumentPart": "Stick"
+    "legacyInstrumentPart": "Stick",
+    "instrumentPart": [
+      "Renaissance bow stick",
+      "Baroque bow stick",
+      "Modern bow stick"
+    ]
   },
   {
     "type": "text",
@@ -523,6 +542,10 @@
     "projection": "globe",
     "showCountries": false,
     "showThreatDonuts": false
+  },
+  {
+    "type": "end",
+    "title": "Le Fin"
   },
   {
     "type": "text",

@@ -13,8 +13,6 @@ export default function OrchestraHeader(props) {
 
   const videos = useMemo(() => {
     for (const key of Object.keys(instrumentVideos)) {
-      console.log(key, instrument);
-
       if (instrument.includes(key)) {
         console.log("RETURN");
 
@@ -23,8 +21,6 @@ export default function OrchestraHeader(props) {
     }
     return null;
   }, [instrumentVideos, instrument]);
-
-  console.log("HERE", instrumentVideos, videos, instrument);
 
   return (
     <>

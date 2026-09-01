@@ -25,12 +25,13 @@ export default function ThreatCode(props) {
 
   return (
     <div
+      className="rounded"
       style={{
         display: "inline-block",
         backgroundColor: assessment.getColor(colorBlind),
         color: assessment.getForegroundColor(colorBlind),
         padding: "0 3px",
-        width: "100%",
+        width: "30px",
         textAlign: "center"
       }}
     >

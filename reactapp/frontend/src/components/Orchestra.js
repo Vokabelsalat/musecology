@@ -13,6 +13,7 @@ const groupToPosition = {
 
 export default function OrchestraNew(props) {
   const {
+    id: visualizationId = "orchestra",
     data,
     width,
     height,
@@ -96,6 +97,7 @@ export default function OrchestraNew(props) {
 
   return (
     <div
+      id={visualizationId}
       style={{
         width: `${width}px`,
         height: `${height}px`,
@@ -127,6 +129,7 @@ export default function OrchestraNew(props) {
         </div>
       )}
       <svg
+        id={`${visualizationId}-svg`}
         width={scaledWidth + 4}
         height={scaledHeight + 4}
         style={{
@@ -141,6 +144,7 @@ export default function OrchestraNew(props) {
         >
           {Object.keys(instrumentGroupData).map((group) => {
             const i = groupToPosition[group];
+            const groupId = `${visualizationId}-group-${i}`;
 
             const asArray = Object.entries(instrumentData);
 
@@ -165,8 +169,8 @@ export default function OrchestraNew(props) {
 
             return (
               <OrchestraGroup
-                key={`OG${i}`}
-                id={`OG${i}`}
+                key={groupId}
+                id={groupId}
                 groupName={group}
                 position={{
                   x: 510 / 2,
@@ -227,6 +231,7 @@ export default function OrchestraNew(props) {
                   .map((instPart) => {
                     return (
                       <div
+                        key={`${visualizationId}-${instrument}-${instPart}`}
                         style={{
                           cursor: "pointer",
                           width: "fit-content",

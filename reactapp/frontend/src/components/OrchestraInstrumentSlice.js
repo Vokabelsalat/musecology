@@ -36,6 +36,7 @@ export default function OrchestraInstrumentSlice(props) {
     instruments,
     species,
     getThreatLevel,
+    threatType,
     colorBlind,
     setInstrument,
     isSelected = false,
@@ -140,6 +141,7 @@ export default function OrchestraInstrumentSlice(props) {
           instruments={instruments}
           species={species}
           getThreatLevel={getThreatLevel}
+          threatType={threatType}
           colorBlind={colorBlind}
           style={{ pointerEvents: "none" }}
           position={pointForThreatPie}

@@ -1767,7 +1767,7 @@ const MapComponent = forwardRef((props, ref) => {
           <Source type="geojson" id="hexagonsource" data={hexagonGeoJSONTest}>
             <Layer
               {...{
-                beforeId: "state-label",
+                beforeId:  layers.includes("state-label") ? "state-label" : null,
                 id: "hexagons",
                 source: "hexagonsource",
                 ...hexagonPaint,

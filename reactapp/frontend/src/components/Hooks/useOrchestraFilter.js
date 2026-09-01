@@ -17,21 +17,24 @@ export function useOrchestraFilter(
       }
 
       if (instrumentPart && instrumentData.hasOwnProperty(instrument)) {
-        filtSpecies = instrumentData[instrument][instrumentPart];
+        const selectedParts = Array.isArray(instrumentPart)
+          ? instrumentPart
+          : [instrumentPart];
+
+        filtSpecies = selectedParts.flatMap(
+          (part) => instrumentData[instrument][part] ?? []
+        );
       } else if (filtInstruments != null) {
         filtSpecies = filtInstruments
           .filter((key) => key in instrumentData)
-          .reduce(
-            (obj2, key) => (
-              obj2.push(
-                ...Object.values(instrumentData[key]).flatMap((entry) => {
-                  return entry;
-                })
-              ),
-              obj2
-            ),
-            []
-          );
+          .reduce((filteredSpecies, key) => {
+            filteredSpecies.push(
+              ...Object.values(instrumentData[key]).flatMap((entry) => {
+                return entry;
+              })
+            );
+            return filteredSpecies;
+          }, []);
       }
 
       filtSpecies = [...new Set(filtSpecies)];

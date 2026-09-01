@@ -25,6 +25,7 @@ export default function OrchestraInstruments(props) {
     groupName,
     position,
     getThreatLevel,
+    threatType,
     colorBlind,
     instruments,
     species,
@@ -78,7 +79,7 @@ export default function OrchestraInstruments(props) {
       ></path>
       <text
         width={acrOptions.width}
-        id={`${groupName}textHeading`}
+        id={`${id}${groupName}textHeading`}
         className="text"
         style={{ opacity: 1 }}
       >
@@ -122,6 +123,7 @@ export default function OrchestraInstruments(props) {
             instruments={instruments}
             species={species}
             getThreatLevel={getThreatLevel}
+            threatType={threatType}
             colorBlind={colorBlind}
             setInstrument={setInstrument}
             showThreatDonuts={showThreatDonuts}
