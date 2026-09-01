@@ -44,6 +44,16 @@ export const navbarOverlayContent = {
       }
     ]
   },
+  updates: {
+    title: "Latest Updates",
+    description:
+      "Recent changes from the master branch that are included in this version of MusEcology.",
+    commitsEndpoint:
+      "https://api.github.com/repos/Vokabelsalat/musecology/commits",
+    repositoryHref: "https://github.com/Vokabelsalat/musecology",
+    branchHref: "https://github.com/Vokabelsalat/musecology/commits/master",
+    branchName: "master"
+  },
   about: {
     title: "About MusEcology",
     paragraphs: [

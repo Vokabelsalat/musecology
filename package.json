@@ -48,10 +48,10 @@
     "use-resize-observer": "^9.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node scripts/react-scripts-with-git-commit.js start",
     "serve": "node scripts/serve-build.js",
-    "build": "react-scripts  build",
-    "test": "react-scripts test",
+    "build": "node scripts/react-scripts-with-git-commit.js build",
+    "test": "node scripts/react-scripts-with-git-commit.js test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

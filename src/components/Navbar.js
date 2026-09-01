@@ -4,6 +4,7 @@ import AboutOverlayContent from "./Navbar/AboutOverlayContent";
 import ImprintOverlayContent from "./Navbar/ImprintOverlayContent";
 import PublicationsOverlayContent from "./Navbar/PublicationsOverlayContent";
 import StoriesOverlayContent from "./Navbar/StoriesOverlayContent";
+import UpdatesOverlayContent from "./Navbar/UpdatesOverlayContent";
 import { navbarOverlayContent } from "./Navbar/navbarOverlayContent";
 
 const navigationItems = [
@@ -26,6 +27,11 @@ const navigationItems = [
     label: "Imprint",
     Content: ImprintOverlayContent,
     content: navbarOverlayContent.imprint
+  },
+  {
+    label: "Updates",
+    Content: UpdatesOverlayContent,
+    content: navbarOverlayContent.updates
   }
 ];
 
@@ -39,7 +45,7 @@ export default function Navbar() {
         gridColumnStart: 1,
         gridColumnEnd: "span 2"
       }}
-      className="grid grid-cols-5 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[35px]"
+      className="grid grid-cols-6 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[35px]"
     >
       <a className="hover:font-bold text-xl text-black flex flex-row items-center gap-2" href="/">
         <img className="size-5" src="/favicon.png" alt="MusEcology Logo"/> MusEcology
