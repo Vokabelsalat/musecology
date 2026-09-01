@@ -15,6 +15,7 @@ export default function StoryWrapper(props) {
 
     if (sciebo) {
       url = `https://th-koeln.sciebo.de/s/${storyId}/download`;
+      
     }
 
     /* url =

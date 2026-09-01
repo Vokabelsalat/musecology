@@ -57,11 +57,6 @@ export default function TimelineViewNew(props) {
       : [];
   const id = "timelineView";
 
-  console.log(
-    "TIMELINEDATA",
-    Object.values(data).filter((e) => e != null)
-  );
-
   return (
     <div
       style={{

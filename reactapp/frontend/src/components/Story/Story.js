@@ -482,51 +482,6 @@ export default function Story(props) {
     family: null
   });
 
-  /* const filteredSpeciesCountries = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(speciesCountries).filter(([key]) => {
-        let hit = true;
-
-        if (speciesFilter.length > 0) {
-          hit = speciesFilter.includes(key);
-        }
-
-        if (hit && countriesFilter.length > 0) {
-          hit =
-            arrayIntersection(speciesCountries[key], countriesFilter).length >
-            0;
-        }
-
-        if (hit && instrumentGroup != null) {
-          let filteredInstruments = instrumentGroupData[instrumentGroup];
-
-          if (hit && instrument != null) {
-            filteredInstruments = [instrument];
-          }
-
-          const testSpecies = [];
-
-          filteredInstruments.forEach((inst) => {
-            if (instrumentData[inst].includes(key)) {
-              testSpecies.push(inst);
-            }
-          });
-
-          hit = testSpecies.length > 0;
-        }
-        return hit;
-      })
-    );
-  }, [
-    speciesCountries,
-    speciesFilter,
-    countriesFilter,
-    instrument,
-    instrumentGroup,
-    instrumentData,
-    instrumentGroupData
-  ]); */
-
   const filteredSpeciesFromTreeMap = useTreeMapFilter(
     treeMapFilter,
     filterTreeMap,
@@ -621,13 +576,6 @@ export default function Story(props) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [contents.length, storyName]);
 
-  /*  const processedContents = useMemo(() => {
-    const processed = [];
-
-      processedContents.push({ content: cont });
-    }
-  }, []); */
-
   return (
     <>
       <HoverProvider>
@@ -649,9 +597,9 @@ export default function Story(props) {
               }}
               ref={wrapperRef}
             >
-              <div className="col-span-2">
+              {!mobile && <div className="col-span-2">
                 <Navbar/>
-              </div>
+              </div>}
               <div
                 className="storyMapWrapper"
                 style={{

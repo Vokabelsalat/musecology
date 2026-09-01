@@ -26,6 +26,7 @@ export default function Navbar() {
                 The Story of Stringed Instrument Bows
                 </a>
               </div>
+              <div><a href="/storyeditor" target="_blank">Story Editor</a></div>
             </div>
           );
         }}

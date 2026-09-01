@@ -1,57 +1,169 @@
-import TextField from "@mui/material/TextField";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { getFlagEmoji, langUnicode } from "./Tooltip";
-import { Link } from "react-router-dom";
-import { json } from "d3";
+import { useCallback, useState } from "react";
 import Story from "./Story/Story";
-import { serialize, deserialize } from "react-serialize";
 
-export default function SearchBar(props) {
-  const {} = props;
+const exampleStory = `[
+  {
+    "type": "storyTitle",
+    "title": "My MusEcology story"
+  },
+  {
+    "type": "text",
+    "title": "A first chapter",
+    "text": "Add your story text here."
+  }
+]`;
 
-  const [jsoned, setJsoned] = useState(null);
+export default function StoryEditor({ width, height }) {
+  const [jsonText, setJsonText] = useState("");
+  const [storyContents, setStoryContents] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
-    var textareaValue = document.getElementById("myTextarea").value;
-    /* for (let splitText of textareaValue.split(": (")) {
-      const paraSplit = splitText.split(")");
-      const last = paraSplit[paraSplit.length - 1];
-      console.log(paraSplit, last);
-    }
-     */
+  const handlePreview = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    var obj = [
-      { type: "text", text: "Test" },
-      { type: "text", text: "Test" }
-    ];
-    /* var stringed = JSON.stringify(obj);
-      console.log(stringed); */
-    var jsoned = JSON.parse(textareaValue);
-    setJsoned(jsoned);
-  }, []);
+      try {
+        const parsedStory = JSON.parse(jsonText);
 
-  const content = useMemo(() => {
-    if (jsoned) {
-      return <Story storyName="test" contents={jsoned}></Story>;
-    } else {
-      return (
-        <div>
-          <form>
-            <label for="myTextarea">Enter some text:</label>
-            <br />
-            <textarea id="myTextarea" rows="4" cols="50"></textarea>
-            <br />
-            <button type="button" onClick={handleSubmit}>
-              Submit
+        if (!Array.isArray(parsedStory)) {
+          throw new Error("The story JSON must be an array of story sections.");
+        }
+
+        if (parsedStory.length === 0) {
+          throw new Error("Add at least one story section before previewing.");
+        }
+
+        setError(null);
+        setStoryContents(parsedStory);
+      } catch (parseError) {
+        setError(parseError.message);
+      }
+    },
+    [jsonText]
+  );
+
+  if (storyContents) {
+    return (
+      <div style={{ width: "100%", height: "100%", position: "relative" }}>
+        <button
+          type="button"
+          className="absolute left-4 top-12 z-[10000] border border-[#ab6318] bg-[#fdfdfd] px-4 py-2 text-[#ab6318] transition-colors hover:bg-[#ab6318] hover:text-white rounded-md"
+          style={{ fontFamily: "Source Sans Pro" }}
+          onClick={() => setStoryContents(null)}
+        >
+          &larr; Edit JSON
+        </button>
+        <Story
+          storyName="test"
+          contents={storyContents}
+          width={width}
+          height={height}
+        />
+      </div>
+    );
+  }
+
+  const isEmpty = jsonText.trim().length === 0;
+
+  return (
+    <main
+      className="h-full w-full overflow-y-auto px-5 py-10 sm:px-10 sm:py-14"
+      style={{ backgroundColor: "#fdfdfd", color: "#1c0f13" }}
+      aria-labelledby="story-editor-title"
+    >
+      <section className="mx-auto w-full max-w-5xl">
+        <header className="mb-10 text-center">
+          <h1
+            id="story-editor-title"
+            className="m-0 font-normal leading-tight"
+            style={{
+              fontSize: "clamp(3rem, 7vw, 4.75rem)"
+            }}
+          >
+            MusEcology Story Editor
+          </h1>
+          <div
+            className="mx-auto my-5"
+            style={{ width: "72px", borderTop: "2px solid #ab6318" }}
+          />
+          <p
+            className="mx-auto max-w-2xl text-lg leading-7"
+            style={{ fontFamily: "Source Sans Pro", color: "#514b48" }}
+          >
+            Paste a MusEcology story JSON array below, then choose Preview story
+            to validate it and render the scrollytelling experience in this
+            browser. Nothing is uploaded or saved.
+          </p>
+        </header>
+
+        <form
+          className="border-t border-stone-300 pt-7"
+          onSubmit={handlePreview}
+          noValidate
+        >
+          <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+            <label
+              htmlFor="story-json"
+              className="text-lg"
+            >
+              Story JSON
+            </label>
+            <span
+              id="story-json-help"
+              className="text-sm text-stone-500"
+              style={{ fontFamily: "Source Sans Pro" }}
+            >
+              The top-level value must be an array of story sections.
+            </span>
+          </div>
+
+          <textarea
+            id="story-json"
+            className={`min-h-[25rem] w-full resize-y border bg-[#faf9f6] p-5 font-mono text-sm leading-6 text-stone-900 outline-none transition-colors focus:border-[var(--highlightpurple)] ${
+              error
+                ? "border-red-600 focus:border-red-600"
+                : "border-stone-400"
+            }`}
+            value={jsonText}
+            onChange={(event) => {
+              setJsonText(event.target.value);
+              if (error) setError(null);
+            }}
+            placeholder={exampleStory}
+            aria-describedby={
+              error
+                ? "story-json-help story-json-error"
+                : "story-json-help"
+            }
+            aria-invalid={Boolean(error)}
+            spellCheck={false}
+          />
+
+          <div className="mt-3 min-h-6">
+            {error && (
+              <p
+                id="story-json-error"
+                className="text-sm text-red-700"
+                style={{ fontFamily: "Source Sans Pro" }}
+                role="alert"
+              >
+                Could not preview this story: {error}
+              </p>
+            )}
+          </div>
+
+          <div className="mt-5 flex justify-end border-t border-stone-300 pt-5">
+            <button
+              type="submit"
+              disabled={isEmpty}
+              className="border-2 border-[#ab6318] bg-[#ab6318] px-6 py-2.5 text-white transition-colors hover:bg-[#8e4f16] focus:border-[var(--highlightpurple)] focus:outline-none disabled:cursor-not-allowed disabled:border-stone-300 disabled:bg-stone-200 disabled:text-stone-500 rounded-md"
+              style={{ fontFamily: "Source Sans Pro", fontSize: "1rem" }}
+            >
+              Preview story
             </button>
-          </form>
-          {/* <textarea value={}></textarea> */}
-        </div>
-      );
-    }
-  }, [handleSubmit, jsoned]);
-
-  return { ...content };
+          </div>
+        </form>
+      </section>
+    </main>
+  );
 }
