@@ -54,22 +54,6 @@ function App() {
             <Route exact path="/" element={<HomeNew />} />
             <Route
               exact
-              path="/bowstory"
-              element={
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%"
-                  }}
-                >
-                  <ResizeComponent>
-                    <Story storyName="bowstory" />
-                  </ResizeComponent>
-                </div>
-              }
-            />
-            <Route
-              exact
               path="/concertstory"
               element={
                 <div

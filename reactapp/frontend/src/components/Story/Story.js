@@ -3,7 +3,6 @@ import ContentWrapper from "./ContentWrapper";
 import { Content } from "./Content";
 import ResizeComponent from "../ResizeComponent";
 import Map from "../Map";
-import bowContents from "./bowstory";
 import concertContents from "./concertstory";
 import { useTreeMapFilter } from "../Hooks/useTreeMapFilter";
 import { useParseSpeciesJSON } from "../Hooks/useParseSpeciesJSON";
@@ -28,7 +27,7 @@ import Overlay from "../Overlay/Overlay";
 import { ThreatLevel } from "../../utils/timelineUtils";
 import Navbar from "../Navbar";
 
-const storyScripts = { bowstory: bowContents, concertstory: concertContents };
+const storyScripts = { concertstory: concertContents };
 
 const findLatestAssessment = (assessments, endYear) => {
   for (let index = assessments.length - 1; index >= 0; index -= 1) {
@@ -587,7 +586,7 @@ export default function Story(props) {
               display: "grid",
               gridTemplateRows: mobile
                 ? "repeat(2, minmax(0, 1fr))"
-                : "40px minmax(0, 1fr)",
+                : "35px minmax(0, 1fr)",
               gridTemplateColumns: mobile
                 ? "minmax(0, 1fr)"
                 : "repeat(2, minmax(0, 1fr))",

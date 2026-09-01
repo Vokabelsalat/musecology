@@ -373,7 +373,7 @@ export default function HomeNew(props) {
                 width: "100%",
                 height: "100%",
                 gridTemplateColumns: "50% 50%",
-                gridTemplateRows: "40px calc(50% - 65px) 90px calc(50% - 65px)",
+                gridTemplateRows: "35px calc(50% - 62px) 90px calc(50% - 62px)",
                 transformOrigin: zoomOrigin,
                 transform: zoomTransform,
                 transitionProperty: "transform",
