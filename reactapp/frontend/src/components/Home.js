@@ -37,7 +37,7 @@ export const returnDummyLink = (speciesObj) => {
     if (sortedPhotos.length > 0) {
       if (sortedPhotos[0].Proxy != null) {
         return {
-          link: "fotos/" + sortedPhotos[0].Proxy.replace(" ", ""),
+          link: "/fotos/" + sortedPhotos[0].Proxy.replace(" ", ""),
           source: sortedPhotos[0].Source
         };
       }
@@ -56,7 +56,7 @@ export const returnImageLinks = (speciesObj) => {
     for (const photo of sortedPhotos) {
       if (photo.Foto != null) {
         returnLinks.push({
-          link: "fotos/" + photo.Foto.replace(" ", ""),
+          link: "/fotos/" + photo.Foto.replace(" ", ""),
           source: photo.Source
         });
       }
@@ -195,7 +195,7 @@ export default function HomeNew(props) {
 
   useEffect(() => {
     // fetch("/data_merged.json")
-    fetch("/data_merged_diss_filtered.json")
+    fetch("/data/data_merged_diss_filtered.json")
       .then((res) => res.json())
       .then(function (speciesData) {
         setSpeciesData(speciesData);
@@ -204,7 +204,7 @@ export default function HomeNew(props) {
         console.log(`Couldn't find file allSpecies.json`, error);
       });
 
-    fetch("/instrument_videos.json")
+    fetch("/data/instrument_videos.json")
       .then((res) => res.json())
       .then(function (instrumentVideos) {
         setInstrumentVideos(instrumentVideos);
@@ -213,7 +213,7 @@ export default function HomeNew(props) {
         console.log(`Couldn't find instrument_videos.json`, error);
       });
 
-    fetch("/countryDictionary.json")
+    fetch("/data/countryDictionary.json")
       .then((res) => res.json())
       .then(function (json) {
         let tmpOrchestraToISO3 = {};

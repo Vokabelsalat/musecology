@@ -1,22 +1,19 @@
-import { useMemo } from "react";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ChevronDownIcon, CheckIcon } from "@heroicons/react/16/solid";
-import Switch from "@mui/material/Switch";
+import {
+  faEarthAmericas,
+  faHandHolding,
+  faMountainSun
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Listbox,
   ListboxButton,
   ListboxOption,
   ListboxOptions
 } from "@headlessui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEarthAmericas,
-  faHandHolding,
-  faMountainSun,
-  faWater
-} from "@fortawesome/free-solid-svg-icons";
-import SpeciesIcon from "./SpeciesIcon";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { useMemo } from "react";
 import { iucnAssessment } from "../utils/timelineUtils";
+import SpeciesIcon from "./SpeciesIcon";
 
 export default function DiversityScale(props) {
   const { scales = {}, className, setMapMode, colorBlind } = props;
@@ -360,27 +357,6 @@ export default function DiversityScale(props) {
               </ListboxOptions>
             </Listbox>
           </div>
-
-          {/* <div className="w-52 text-right z-50">
-            <Listbox value={mapMode} onChange={()=>{}}>
-            <ListboxButton
-              className='relative block w-full rounded-lg bg-white/5 py-1.5 pr-8 pl-3 text-left text-sm/6 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25'>
-              <span>{typeText}<span className="maplayer-devider">/</span>{typeTextSecond}</span>
-              <ChevronDownIcon
-                className="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-gray-400"
-                aria-hidden="true"
-              />
-            </ListboxButton>
-              <ListboxOptions anchor="bottom">
-                  <ListboxOption key={"countries-listoption"} value={"countries"} className="data-[focus]:bg-blue-100">
-                    Species<span className="maplayer-devider">/</span>Countries
-                  </ListboxOption>
-                  <ListboxOption key={"ecoregions-listoption"} value={"ecoregions"} className="data-[focus]:bg-blue-100">
-                  Species<span className="maplayer-devider">/</span>Ecoregions
-                  </ListboxOption>
-              </ListboxOptions>
-            </Listbox>
-          </div> */}
         </div>
       </div>
     </div>

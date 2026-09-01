@@ -6,12 +6,11 @@ import Story from "./Story/Story";
 export default function StoryWrapper(props) {
   const { sciebo = false } = props;
   let { storyId } = useParams();
-  console.log(useParams(), sciebo);
 
   const [contents, setContents] = useState(null);
 
   useEffect(() => {
-    let url = `./${storyId}.json`;
+    let url = `/stories/${storyId}.json`;
 
     if (sciebo) {
       url = `https://th-koeln.sciebo.de/s/${storyId}/download`;

@@ -14,8 +14,6 @@ export default function OrchestraHeader(props) {
   const videos = useMemo(() => {
     for (const key of Object.keys(instrumentVideos)) {
       if (instrument.includes(key)) {
-        console.log("RETURN");
-
         return instrumentVideos[key];
       }
     }
@@ -81,6 +79,7 @@ export default function OrchestraHeader(props) {
           <div className="row-1 col-2 border-b">Videos</div>
           <div className="col-start-2 row-start-2 p-2">
             {Object.entries(videos).map(([k, v]) => {
+              console.log('v', v);
               if (v != null) {
                 return (
                   <div>

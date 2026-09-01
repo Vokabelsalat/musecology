@@ -1,7 +1,6 @@
 import {
   faDroplet,
   faMountainSun,
-  faFence
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as turf from "@turf/turf";
@@ -273,13 +272,13 @@ const MapComponent = forwardRef((props, ref) => {
   ]);
 
   useEffect(() => {
-    fetch("/UN_Worldmap-2.json")
+    fetch("/data/UN_Worldmap.json")
       .then((res) => res.json())
       .then(function (geojson) {
         setCountriesGeoJson(geojson);
       });
 
-    fetch("/UN_Worldmap-2_lines.json")
+    fetch("/data/UN_Worldmap_lines.json")
       .then((res) => res.json())
       .then(function (geojson) {
         let tmpCountriesLinesIndex = {};
@@ -290,7 +289,7 @@ const MapComponent = forwardRef((props, ref) => {
         setCountriesHighlightLinesIndex(tmpCountriesLinesIndex);
       });
 
-    fetch("/WWF_Terrestrial_Ecoregions2017-3.json")
+    fetch("/data/WWF_Terrestrial_Ecoregions2017.json")
       .then((res) => res.json())
       .then(function (geojson) {
         const tmpCentroids = [];
@@ -321,7 +320,7 @@ const MapComponent = forwardRef((props, ref) => {
         setEcoRegionSearchOptions?.(newEcoRegionSearchOptions);
       });
 
-    fetch("/Marine_ecoregions.json")
+    fetch("/data/Marine_ecoregions.json")
       .then((res) => res.json())
       .then(function (geojson) {
         const tmpCentroids = [];
@@ -352,7 +351,7 @@ const MapComponent = forwardRef((props, ref) => {
         setMarineEcoRegionSearchOptions?.(newEcoRegionSearchOptions);
       });
 
-    fetch("/WWF_Terrestrial_Ecoregions2017-3-5_lines.json")
+    fetch("/data/WWF_Terrestrial_Ecoregions2017_lines.json")
       .then((res) => res.json())
       .then(function (geojson) {
         let tmpEcoRegionLinesIndex = {};
@@ -363,7 +362,7 @@ const MapComponent = forwardRef((props, ref) => {
         setEcoRegionsHighlightLinesIndex(tmpEcoRegionLinesIndex);
       });
 
-    fetch("/POPP_capitals_FeaturesToJSON.json")
+    fetch("/data/POPP_capitals_FeaturesToJSON.json")
       .then((res) => res.json())
       .then(function (geojson) {
         let tmpCapToISO = {};
@@ -374,13 +373,13 @@ const MapComponent = forwardRef((props, ref) => {
         setCapitalsGeoJSON(geojson);
       });
 
-    fetch("/Orchestras_worldwide.json")
+    fetch("/data/Orchestras_worldwide.json")
       .then((res) => res.json())
       .then(function (geojson) {
         setOrchestraGeoJson(geojson);
       });
 
-    fetch("/hexagon_2_Project.json")
+    fetch("/data/hexagons.json")
       .then((res) => res.json())
       .then(function (geojson) {
         setHexagonGeoJSON(geojson);

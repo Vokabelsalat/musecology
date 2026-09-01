@@ -22,8 +22,8 @@ export default function SpeciesIcon(props) {
           className="absolute h-[21px] w-[11px] right-[2px] bottom-[4px] bg-gray-700"
           style={{
             //backgroundColor: plantColor,
-            mask: `url("/plantIcon.svg") no-repeat center / contain`,
-            WebkitMask: `url("/plantIcon.svg") no-repeat center / contain`
+            mask: `url("/assets/plantIcon.svg") no-repeat center / contain`,
+            WebkitMask: `url("/assets/plantIcon.svg") no-repeat center / contain`
           }}
         />
       </div>

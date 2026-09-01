@@ -8,7 +8,7 @@ export const navbarOverlayContent = {
     links: [
       {
         label: "The Story of Stringed Instrument Bows",
-        href: "/bowstory"
+        href: "/stories/bow"
       },
     ]
   },
@@ -56,14 +56,14 @@ export const navbarOverlayContent = {
         name: "Silke Lichtenberg",
         role: "Ph. D. student",
         affiliation: "TH Köln – University of Applied Sciences",
-        image: "/silke.jpg",
+        image: "/images/silke.jpg",
         imageAlt: "Silke Lichtenberg"
       },
       {
         name: "Jakob Kusnick",
-        role: "Postdoctoral Student",
+        role: "Postdoctoral Fellow",
         affiliation: "University of Bergen",
-        image: "/image001-1.jpg",
+        image: "/images/image001-1.jpg",
         imageAlt: "Jakob Kusnick"
       }
     ]

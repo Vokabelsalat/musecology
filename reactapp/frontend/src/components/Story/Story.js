@@ -425,7 +425,7 @@ export default function Story(props) {
   const [colorBlind, setColorBlind] = useState(false);
 
   useEffect(() => {
-    fetch("/data_merged_diss_filtered.json")
+    fetch("/data/data_merged_diss_filtered.json")
       .then((res) => res.json())
       .then(function (speciesData) {
         setSpeciesData(speciesData);
@@ -434,7 +434,7 @@ export default function Story(props) {
         console.log(`Couldn't find data_merged_diss_filtered.json`, error);
       });
 
-    fetch("/instrument_videos.json")
+    fetch("/data/instrument_videos.json")
       .then((res) => res.json())
       .then(function (videos) {
         setInstrumentVideos(videos);
@@ -443,7 +443,7 @@ export default function Story(props) {
         console.log(`Couldn't find instrument_videos.json`, error);
       });
 
-    fetch("/countryDictionary.json")
+    fetch("/data/countryDictionary.json")
       .then((res) => res.json())
       .then(function (dictionary) {
         const orchestraCountries = {};

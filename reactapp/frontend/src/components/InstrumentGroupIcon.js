@@ -2,12 +2,12 @@ import { transform } from "proj4";
 import { useEffect, useRef, useState } from "react";
 
 const groupToFileName = {
-  Strings: "strings2.svg",
-  Plucked: "plucked2.svg",
-  Percussion: "percussion2.svg",
-  Keyboard: "keyboard2.svg",
-  Brasses: "brasses2.svg",
-  Woodwinds: "woodwinds2.svg"
+  Strings: "/assets/strings2.svg",
+  Plucked: "/assets/plucked2.svg",
+  Percussion: "/assets/percussion2.svg",
+  Keyboard: "/assets/keyboard2.svg",
+  Brasses: "/assets/brasses2.svg",
+  Woodwinds: "/assets/woodwinds2.svg"
 };
 
 export default function InstrumentGroupIcon(props) {
@@ -49,4 +49,3 @@ export default function InstrumentGroupIcon(props) {
     </foreignObject>
   );
 }
-/*  */

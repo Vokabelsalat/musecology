@@ -131,6 +131,7 @@ dist
 
 *.DS_Store
 reactapp/frontend/public/
+!reactapp/frontend/public/bowstory.json
 reactapp/frontend/build/
 reactapp/frontend/data-fusing-and-crawling/downloaded-data/
 reactapp/frontend/upload/

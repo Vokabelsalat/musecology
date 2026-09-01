@@ -54,7 +54,7 @@ function App() {
             <Route exact path="/" element={<HomeNew />} />
             <Route
               exact
-              path="/concertstory"
+              path="/stories/concertstory"
               element={
                 <div
                   style={{
@@ -86,10 +86,10 @@ function App() {
             />
             <Route
               exact
-              path="/sciebo/:storyId"
+              path="/stories/sciebo/:storyId"
               element={<StoryWrapper sciebo={true} />}
             />
-            <Route exact path="/:storyId" element={<StoryWrapper />} />
+            <Route exact path="/stories/:storyId" element={<StoryWrapper />} />
           </Routes>
           {/* <Route exact path="/timeline">
               <TimelineView />
