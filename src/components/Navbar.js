@@ -42,7 +42,7 @@ export default function Navbar() {
       className="grid grid-cols-5 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[35px]"
     >
       <a className="hover:font-bold text-xl text-black flex flex-row items-center gap-2" href="/">
-        <img className="size-5" src="/favicon.png" alt="MusEcology Logo"/> MusEcology
+        <img className="size-5" src="/favicon.png" alt="MusEcology Logo"/> Test
       </a>
       {navigationItems.map(({ label, Content, content }) => (
         <button
