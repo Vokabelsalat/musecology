@@ -118,3 +118,98 @@ sudo systemctl status musecology-frontend --no-pager
 
 For a frontend-only repository, run `git pull --ff-only` from
 `/opt/musecology/frontend` instead.
+
+## Automatic deployment from GitHub Actions
+
+The repository includes a workflow that connects to the server whenever a
+commit is pushed to `master`. The SSH key used by GitHub Actions should be able
+to run only the deployment command, not an unrestricted shell.
+
+### 1. Install the root-owned deployment command
+
+Run these commands from the checked-out frontend directory on the server:
+
+```sh
+sudo install -o root -g root -m 0755 \
+  deploy/deploy-production.sh /usr/local/sbin/musecology-deploy
+sudo install -o root -g root -m 0440 \
+  deploy/musecology-deploy.sudoers /etc/sudoers.d/musecology-deploy
+sudo visudo -cf /etc/sudoers.d/musecology-deploy
+```
+
+The installed script is deliberately owned by root. Do not configure sudo to
+execute the copy inside the Git checkout, because a repository update could
+then modify code that runs as root.
+
+The script assumes the full repository is located at
+`/opt/musecology/repository`, the frontend symlink is
+`/opt/musecology/frontend`, and the service is named
+`musecology-frontend`. Adjust its constants before installing it if your server
+uses different paths.
+
+### 2. Create a deployment-only SSH account and key
+
+Create a separate login account on the server:
+
+```sh
+sudo useradd --create-home --shell /bin/bash musecology-deploy
+sudo install -d -o musecology-deploy -g musecology-deploy -m 0700 \
+  /home/musecology-deploy/.ssh
+```
+
+Generate a dedicated key on a trusted workstation. Do not reuse a personal SSH
+key:
+
+```sh
+ssh-keygen -t ed25519 -f github-actions-musecology -C github-actions-musecology
+```
+
+Add the public key to
+`/home/musecology-deploy/.ssh/authorized_keys` as one line, prefixed with the
+following restrictions:
+
+```text
+restrict,command="sudo -n /usr/local/sbin/musecology-deploy" ssh-ed25519 PUBLIC_KEY github-actions-musecology
+```
+
+Then secure the file:
+
+```sh
+sudo chown musecology-deploy:musecology-deploy \
+  /home/musecology-deploy/.ssh/authorized_keys
+sudo chmod 0600 /home/musecology-deploy/.ssh/authorized_keys
+```
+
+The `musecology` application account must still be able to pull the repository
+from GitHub. For a private repository, configure a separate read-only GitHub
+deploy key for that account.
+
+### 3. Configure the GitHub production environment
+
+In the GitHub repository, open **Settings → Environments**, create an
+environment named `production`, and add these environment secrets:
+
+- `DEPLOY_HOST`: the server hostname or IP address.
+- `DEPLOY_USER`: `musecology-deploy`.
+- `DEPLOY_SSH_PRIVATE_KEY`: the complete contents of
+  `github-actions-musecology`.
+- `DEPLOY_KNOWN_HOSTS`: the verified SSH host-key line for the server.
+- `DEPLOY_PORT`: the SSH port; omit it to use port 22.
+
+Create `DEPLOY_KNOWN_HOSTS` on a trusted workstation rather than disabling host
+verification:
+
+```sh
+ssh-keyscan -p 22 your-server.example.com
+```
+
+Verify the resulting fingerprint against the server before storing it in
+GitHub:
+
+```sh
+sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+```
+
+The workflow can also be started manually from the repository's **Actions**
+page. Deployment output appears in the workflow log; server output remains
+available through `journalctl -u musecology-frontend`.
