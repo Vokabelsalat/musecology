@@ -196,6 +196,10 @@ const MapComponent = forwardRef((props, ref) => {
   const [centroidsOfEcoregions, setCentroidsOfEcoregions] = useState(null);
   const [centroidsOfMarineEcoregions, setCentroidsOfMarineEcoregions] =
     useState(null);
+  const ecoregionIdKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
+  const ecoregionCentroids = isTerrestial
+    ? centroidsOfEcoregions
+    : centroidsOfMarineEcoregions;
   const [ecoregionHeatMap, setEcoregionHeatMap] = useState(null);
   const [ecoregionHeatMapMax, setEcoregionHeatMapMax] = useState(null);
   const [marineEcoregionHeatMapMax, setMarineEcoregionHeatMapMax] =
@@ -780,7 +784,7 @@ const MapComponent = forwardRef((props, ref) => {
     // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
     // and add it to the map if it's not there already
     for (const feature of features) {
-      const featureKey = getSourceFeatureKey(feature, "ECO_ID");
+      const featureKey = getSourceFeatureKey(feature, ecoregionIdKey);
       if (seenFeatureKeys.has(featureKey)) {
         continue;
       }
@@ -789,7 +793,11 @@ const MapComponent = forwardRef((props, ref) => {
       const coords = feature.geometry.coordinates;
       const props = feature.properties;
       if (!props.cluster) {
-        props.ecos = props.ECO_ID.toString();
+        const ecoregionId = props[ecoregionIdKey];
+        if (ecoregionId == null) {
+          continue;
+        }
+        props.ecos = ecoregionId.toString();
       }
       //const id = props.cluster_id;
       let ecosArray = [];
@@ -1127,6 +1135,7 @@ const MapComponent = forwardRef((props, ref) => {
   const setFocusOnLegend = useCallback(() => {
     legendRef.current?.focus();
   }, [legendRef]);
+
 
   const layers = useMemo(() => {
     if (ref && ref.current) {
@@ -1518,12 +1527,12 @@ const MapComponent = forwardRef((props, ref) => {
         <Source
           type="geojson"
           id="ecoregionsourceCentroid"
-          data={centroidsOfEcoregions}
+          data={ecoregionCentroids}
           cluster={true}
-          key={`${threatType}${colorBlind}Centroids`}
+          key={`${threatType}${colorBlind}${ecoregionIdKey}Centroids`}
           clusterRadius={50}
           clusterProperties={{
-            ecos: ["concat", ["concat", " ", ["get", "ECO_ID"]]]
+            ecos: ["concat", ["concat", " ", ["get", ecoregionIdKey]]]
           }}
         >
           <Layer
