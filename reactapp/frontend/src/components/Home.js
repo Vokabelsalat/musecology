@@ -366,10 +366,7 @@ export default function HomeNew(props) {
     <>
       <HoverProvider>
         <TooltipProvider speciesLabels={speciesLabels}>
-          <OverlayProvider>
             {/* {<Tooltip speciesLabels={speciesLabels} />} */}
-            {<Overlay />}
-
             <div
               style={{
                 display: "grid",
@@ -571,7 +568,6 @@ export default function HomeNew(props) {
                 />
               </div>
             </div>
-          </OverlayProvider>
         </TooltipProvider>
       </HoverProvider>
     </>

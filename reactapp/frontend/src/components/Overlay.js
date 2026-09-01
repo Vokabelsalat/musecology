@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { OverlayContext } from "./OverlayProvider";
 
-export default function Overlay(props) {
+export default function Overlay() {
   const [overlay, setOverlay] = useContext(OverlayContext);
 
   return (
@@ -16,7 +16,7 @@ export default function Overlay(props) {
         display: overlay ? "flex" : "none",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.7)",
+        backgroundColor: "rgba(200, 200, 200, 0.7)",
         cursor: "zoom-out"
       }}
       onClick={(e) => {
@@ -24,10 +24,14 @@ export default function Overlay(props) {
       }}
     >
       <div
+        aria-modal="true"
+        role="dialog"
         style={{
+          zIndex: 5001,
           backgroundColor: "white",
-          padding: "5px"
+          cursor: "initial"
         }}
+        onClick={(event) => event.stopPropagation()}
       >
         {overlay}
       </div>

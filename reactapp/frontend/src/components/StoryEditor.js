@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import Story from "./Story/Story";
+import Navbar from "./Navbar";
 
 const exampleStory = `[
   {
@@ -14,7 +15,7 @@ const exampleStory = `[
 ]`;
 
 export default function StoryEditor({ width, height }) {
-  const [jsonText, setJsonText] = useState("");
+  const [jsonText, setJsonText] = useState(exampleStory);
   const [storyContents, setStoryContents] = useState(null);
   const [error, setError] = useState(null);
 
@@ -66,31 +67,31 @@ export default function StoryEditor({ width, height }) {
   const isEmpty = jsonText.trim().length === 0;
 
   return (
-    <main
-      className="h-full w-full overflow-y-auto px-5 py-10 sm:px-10 sm:py-14"
+    <main className="grid grid-rows-[40px_1fr] grid-cols-1 size-full">
+      <Navbar />
+      <div className="h-full w-full overflow-y-auto px-5 py-10 sm:px-10 sm:py-14"
       style={{ backgroundColor: "#fdfdfd", color: "#1c0f13" }}
-      aria-labelledby="story-editor-title"
-    >
+      aria-labelledby="story-editor-title">
       <section className="mx-auto w-full max-w-5xl">
-        <header className="mb-10 text-center">
+        <header className="mb-10">
           <h1
             id="story-editor-title"
-            className="m-0 font-normal leading-tight"
+            className="m-0 text-center font-normal leading-tight"
             style={{
               fontSize: "clamp(3rem, 7vw, 4.75rem)"
             }}
           >
-            MusEcology Story Editor
+            Story Editor
           </h1>
           <div
             className="mx-auto my-5"
             style={{ width: "72px", borderTop: "2px solid #ab6318" }}
           />
           <p
-            className="mx-auto max-w-2xl text-lg leading-7"
+            className="mx-auto max-w-2xl text-lg text-justify leading-7"
             style={{ fontFamily: "Source Sans Pro", color: "#514b48" }}
           >
-            Paste a MusEcology story JSON array below, then choose Preview story
+            Paste or edit a MusEcology story JSON array below, which cotains the different story sections, then choose Preview story
             to validate it and render the scrollytelling experience in this
             browser. Nothing is uploaded or saved.
           </p>
@@ -129,7 +130,7 @@ export default function StoryEditor({ width, height }) {
               setJsonText(event.target.value);
               if (error) setError(null);
             }}
-            placeholder={exampleStory}
+            // placeholder={exampleStory}
             aria-describedby={
               error
                 ? "story-json-help story-json-error"
@@ -164,6 +165,7 @@ export default function StoryEditor({ width, height }) {
           </div>
         </form>
       </section>
+      </div>
     </main>
   );
 }

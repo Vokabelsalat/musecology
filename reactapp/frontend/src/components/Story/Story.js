@@ -13,7 +13,6 @@ import { useOrchestraFilter } from "../Hooks/useOrchestraFilter";
 import { useTimelineFilter } from "../Hooks/useTimelineFilter";
 import { HoverProvider } from "../HoverProvider";
 import { TooltipProvider } from "../TooltipProvider";
-import { OverlayProvider } from "../OverlayProvider";
 
 import {
   bgciAssessment,
@@ -580,26 +579,27 @@ export default function Story(props) {
     <>
       <HoverProvider>
         <TooltipProvider speciesLabels={speciesLabels}>
-          <OverlayProvider>
-            <div
-              style={{
-                width: "100%",
-                height: `${storyHeight}px`,
-                minHeight: 0,
-                display: "grid",
-                gridTemplateRows: mobile
-                  ? "repeat(2, minmax(0, 1fr))"
-                  : "40px minmax(0, 1fr)",
-                gridTemplateColumns: mobile
-                  ? "minmax(0, 1fr)"
-                  : "repeat(2, minmax(0, 1fr))",
-                overflow: "hidden"
-              }}
-              ref={wrapperRef}
-            >
-              {!mobile && <div className="col-span-2">
-                <Navbar/>
-              </div>}
+          <div
+            style={{
+              width: "100%",
+              height: `${storyHeight}px`,
+              minHeight: 0,
+              display: "grid",
+              gridTemplateRows: mobile
+                ? "repeat(2, minmax(0, 1fr))"
+                : "40px minmax(0, 1fr)",
+              gridTemplateColumns: mobile
+                ? "minmax(0, 1fr)"
+                : "repeat(2, minmax(0, 1fr))",
+              overflow: "hidden"
+            }}
+            ref={wrapperRef}
+          >
+              {!mobile && (
+                <div className="col-span-2">
+                  <Navbar />
+                </div>
+              )}
               <div
                 className="storyMapWrapper"
                 style={{
@@ -841,16 +841,15 @@ export default function Story(props) {
                   </ContentWrapper>
                 </ContentPanel>
               </div>
-            </div>
-            <Overlay
-              open={overlayContent !== null}
-              onClose={() => {
-                setOverlayContent(null);
-              }}
-            >
-              {overlayContent}
-            </Overlay>
-          </OverlayProvider>
+          </div>
+          <Overlay
+            open={overlayContent !== null}
+            onClose={() => {
+              setOverlayContent(null);
+            }}
+          >
+            {overlayContent}
+          </Overlay>
         </TooltipProvider>
       </HoverProvider>
     </>
