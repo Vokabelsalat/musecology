@@ -130,12 +130,12 @@ dist
 .pnp.*
 
 *.DS_Store
-reactapp/frontend/public/fotos
-reactapp/frontend/public/data
-reactapp/frontend/public/images
-reactapp/frontend/public/distribution
-reactapp/frontend/public/generatedOutput
-reactapp/frontend/public/sounds
-reactapp/frontend/build/
-reactapp/frontend/data-fusing-and-crawling/downloaded-data/
-reactapp/frontend/upload/
+public/fotos
+public/data
+public/images
+public/distribution
+public/generatedOutput
+public/sounds
+build/
+data-fusing-and-crawling/
+upload/

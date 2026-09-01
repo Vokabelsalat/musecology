@@ -1,0 +1,80 @@
+{
+  "name": "MusEcology",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@headlessui/react": "^2.2.0",
+    "@heroicons/react": "^2.2.0",
+    "@mui/material": "^5.12.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@turf/turf": "^6.5.0",
+    "@visx/tooltip": "^3.12.0",
+    "colorsys": "^1.0.22",
+    "d3": "^7.8.3",
+    "d3-collection": "^1.0.7",
+    "d3-color-legend": "^1.4.1",
+    "d3-scale": "^4.0.2",
+    "d3-simple-slider": "^1.10.4",
+    "fs": "^0.0.1-security",
+    "html-to-react": "^1.5.1",
+    "is-emoji-supported": "^0.0.5",
+    "leaflet": "^1.9.3",
+    "leaflet-groupedlayercontrol": "git+https://github.com/AcrossTheCloud/leaflet-groupedlayercontrol.git",
+    "leaflet.markercluster": "^1.5.3",
+    "leaflet.pattern": "^0.1.0",
+    "maplibre-gl": "^2.4.0",
+    "proj4": "^2.9.0",
+    "proj4leaflet": "^1.0.2",
+    "react": "^18.2.0",
+    "react-audio-player": "^0.17.0",
+    "react-country-flag": "^3.1.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
+    "react-leaflet-markercluster": "^3.0.0-rc1",
+    "react-map-gl": "^7.0.21",
+    "react-router-dom": "^6.9.0",
+    "react-scripts": "^5.0.1",
+    "react-serialize": "^0.2.1",
+    "react-tabs": "^6.0.0",
+    "reproject": "^1.2.7",
+    "use-resize-observer": "^9.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "serve": "node scripts/serve-build.js",
+    "build": "react-scripts  build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "not safari < 10",
+      "not chrome < 51",
+      "not android < 5",
+      "not ie < 12"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:9000",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
