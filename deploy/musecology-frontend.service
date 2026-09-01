@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 User=musecology
 Group=musecology
-WorkingDirectory=/opt/musecology/frontend
+WorkingDirectory=/opt/musecology/repository
 Environment=NODE_ENV=production
 Environment=HOST=127.0.0.1
 Environment=PORT=3050

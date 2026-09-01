@@ -27,18 +27,14 @@ the repository's clone URL.
 
 ```sh
 sudo useradd --system --create-home --home-dir /opt/musecology --shell /usr/sbin/nologin musecology
-sudo -u musecology git clone REPOSITORY_URL /opt/musecology
-sudo ln -s /opt/musecology /opt/musecology
-cd /opt/musecology
-sudo -u musecology npm ci
+sudo -H -u musecology git clone REPOSITORY_URL /opt/musecology/repository
+cd /opt/musecology/repository
+sudo -H -u musecology npm ci
 ```
 
-If the frontend is the repository root, use this clone command instead and do
-not create the symlink:
-
-```sh
-sudo -u musecology git clone REPOSITORY_URL /opt/musecology
-```
+The frontend now lives at the repository root. The former
+`/opt/musecology/frontend` symlink and `reactapp/frontend` directory are not
+part of a new deployment.
 
 ## 2. Configure and build the frontend
 
@@ -46,9 +42,10 @@ Create the production environment file. A `REACT_APP_*` value is embedded in
 the browser bundle at build time, so the token must be public and domain-restricted.
 
 ```sh
-sudo -u musecology cp .env.example .env.production.local
-sudoedit /opt/musecology/.env.production.local
-sudo -u musecology npm run build
+cd /opt/musecology/repository
+sudo -H -u musecology cp .env.example .env.production.local
+sudoedit /opt/musecology/repository/.env.production.local
+sudo -H -u musecology npm run build
 ```
 
 Set this value in the file:
@@ -66,7 +63,8 @@ Check the Node executable path with `command -v node`. If it is not
 `/usr/bin/node`, update `ExecStart` in the unit before installing it.
 
 ```sh
-sudo cp deploy/musecology-frontend.service /etc/systemd/system/
+sudo cp /opt/musecology/repository/deploy/musecology-frontend.service \
+  /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now musecology-frontend
 sudo systemctl status musecology-frontend --no-pager
@@ -107,17 +105,56 @@ Build before restarting so the currently running version remains available if
 the build fails:
 
 ```sh
-cd /opt/musecology
-sudo -u musecology git pull --ff-only
-cd /opt/musecology
-sudo -u musecology npm ci
-sudo -u musecology npm run build
+cd /opt/musecology/repository
+sudo -H -u musecology git pull --ff-only origin master
+sudo -H -u musecology npm ci
+sudo -H -u musecology npm run build
 sudo systemctl restart musecology-frontend
 sudo systemctl status musecology-frontend --no-pager
 ```
 
-For a frontend-only repository, run `git pull --ff-only` from
-`/opt/musecology` instead.
+The root-owned `/usr/local/sbin/musecology-deploy` command described below
+performs these steps for automatic deployments.
+
+### Migrating from the former nested frontend layout
+
+Older installations already have the checkout in
+`/opt/musecology/repository`, but use `/opt/musecology/frontend` as a symlink to
+`reactapp/frontend`. Before pulling the root-layout cleanup—or before removing
+the old frontend directory if it has already been pulled—preserve the existing
+production environment file outside the checkout:
+
+```sh
+sudo -H -u musecology cp \
+  /opt/musecology/frontend/.env.production.local \
+  /opt/musecology/.env.production.local.backup
+```
+
+If the old deployment has no `.env.production.local`, create the new file as
+described in step 2 after pulling and skip the restore command below.
+
+Then pull the new layout, restore the environment file at the repository root,
+build, and replace the installed service and deployment command:
+
+```sh
+cd /opt/musecology/repository
+sudo -H -u musecology git pull --ff-only origin master
+sudo -H -u musecology cp \
+  /opt/musecology/.env.production.local.backup \
+  .env.production.local
+sudo -H -u musecology npm ci
+sudo -H -u musecology npm run build
+sudo cp deploy/musecology-frontend.service /etc/systemd/system/
+sudo install -o root -g root -m 0755 \
+  deploy/deploy-production.sh /usr/local/sbin/musecology-deploy
+sudo systemctl daemon-reload
+sudo systemctl restart musecology-frontend
+sudo systemctl status musecology-frontend --no-pager
+```
+
+After the service and public endpoint both work, the obsolete
+`/opt/musecology/frontend` symlink can be removed. Keep the backup until the
+migration has been verified.
 
 ## Automatic deployment from GitHub Actions
 
@@ -127,7 +164,7 @@ to run only the deployment command, not an unrestricted shell.
 
 ### 1. Install the root-owned deployment command
 
-Run these commands from the checked-out frontend directory on the server:
+Run these commands from the repository root on the server:
 
 ```sh
 sudo install -o root -g root -m 0755 \
@@ -141,11 +178,12 @@ The installed script is deliberately owned by root. Do not configure sudo to
 execute the copy inside the Git checkout, because a repository update could
 then modify code that runs as root.
 
-The script assumes the full repository is located at
-`/opt/musecology`, the frontend symlink is
-`/opt/musecology`, and the service is named
+The script assumes that the repository and frontend root are both
+`/opt/musecology/repository` and that the service is named
 `musecology-frontend`. Adjust its constants before installing it if your server
-uses different paths.
+uses different paths. Reinstall the root-owned command whenever the checked-in
+deployment script changes; pulling the repository does not update the installed
+copy automatically.
 
 ### 2. Create a deployment-only SSH account and key
 

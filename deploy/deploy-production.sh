@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-readonly REPOSITORY_DIR="/opt/musecology"
-readonly FRONTEND_DIR="/opt/musecology"
+readonly REPOSITORY_DIR="/opt/musecology/repository"
+readonly FRONTEND_DIR="${REPOSITORY_DIR}"
 readonly APP_USER="musecology"
 readonly BRANCH="master"
 readonly SERVICE="musecology-frontend"
