@@ -88,7 +88,8 @@ const MapComponent = forwardRef((props, ref) => {
     countriesDictionary,
     orchestrasToISO3,
     setEcoRegionSearchOptions,
-    setMarineEcoRegionSearchOptions
+    setMarineEcoRegionSearchOptions,
+    selectedCountry
   } = props;
 
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
@@ -216,6 +217,7 @@ const MapComponent = forwardRef((props, ref) => {
     useState(null);
   const [countriesHighlightLinesIndex, setCountriesHighlightLinesIndex] =
     useState(null);
+  const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
 
   useEffect(() => {
     let max = 0;
@@ -282,11 +284,15 @@ const MapComponent = forwardRef((props, ref) => {
       .then((res) => res.json())
       .then(function (geojson) {
         let tmpCountriesLinesIndex = {};
+        let tmpCountryRomnamToMyID = {};
         for (const country of geojson.features) {
           country.properties.myID = country.id.toString() + "COUNTRY";
           tmpCountriesLinesIndex[country.properties.myID] = country;
+          tmpCountryRomnamToMyID[country.properties.ROMNAM] =
+            country.properties.myID;
         }
         setCountriesHighlightLinesIndex(tmpCountriesLinesIndex);
+        setCountryRomnamToMyID(tmpCountryRomnamToMyID);
       });
 
     fetch("/data/WWF_Terrestrial_Ecoregions2017.json")
@@ -1039,8 +1045,9 @@ const MapComponent = forwardRef((props, ref) => {
   const [hoveredStateIds, setHoveredStateIds] = useState([]);
 
   useEffect(() => {
-    let tmpHighlightLines = hoveredStateIds
+    let tmpHighlightLines = [...hoveredStateIds, selectedCountry]
       .map((e) => {
+        console.log("selectedCountry", e, countryRomnamToMyID[e]);
         if (
           ecoRegionsHighlightLinesIndex &&
           ecoRegionsHighlightLinesIndex.hasOwnProperty(e)
@@ -1051,6 +1058,11 @@ const MapComponent = forwardRef((props, ref) => {
           countriesHighlightLinesIndex.hasOwnProperty(e)
         ) {
           return countriesHighlightLinesIndex[e];
+        } else if (
+          countriesHighlightLinesIndex &&
+          countriesHighlightLinesIndex.hasOwnProperty(countryRomnamToMyID[e])
+        ) {
+          return countriesHighlightLinesIndex[countryRomnamToMyID[e]];
         } else {
           return null;
         }
@@ -1064,6 +1076,7 @@ const MapComponent = forwardRef((props, ref) => {
     hoveredStateIds,
     ecoRegionsHighlightLinesIndex,
     countriesHighlightLinesIndex,
+    selectedCountry,
     ref
   ]);
 
