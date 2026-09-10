@@ -20,10 +20,6 @@ export default function CountrySearchBar(props) {
 
   const [value, setValue] = useState();
 
-  useEffect(() => {
-    setValue(selectedCountry);
-  }, [selectedCountry]);
-
   const [countryOptions, ecoRegionOptions] = useMemo(() => {
     let tmpCountryOptions = [];
     let tmpEcoRegionOptions = [];
@@ -60,6 +56,14 @@ export default function CountrySearchBar(props) {
     } */
   }, [data, countriesDictionary, ecoRegionSearchOptions]);
 
+  useEffect(() => {
+    if (mapSearchMode === "countries") {
+      setValue(
+        countryOptions.find((option) => option.value === selectedCountry) ?? null
+      );
+    }
+  }, [selectedCountry, countryOptions, mapSearchMode]);
+
   const label = useMemo(() => {
     switch (mapSearchMode) {
       case "ecoregions":
@@ -71,6 +75,10 @@ export default function CountrySearchBar(props) {
         return "Country Search";
     }
   }, [mapSearchMode]);
+
+  const canEmoji = useMemo(() => {
+    return isEmojiSupported("🇬🇧");
+  }, []);
 
   return (
     <Autocomplete
@@ -138,6 +146,9 @@ export default function CountrySearchBar(props) {
       options={
         mapSearchMode === "countries" ? countryOptions : ecoRegionOptions
       }
+      isOptionEqualToValue={(option, selectedValue) =>
+        option.value === selectedValue.value
+      }
       getOptionLabel={(option) => {
         if (option.iso != null) {
           return `${option.title}`;
@@ -165,7 +176,7 @@ export default function CountrySearchBar(props) {
                   lineHeight: "1.5em"
                 }}
                 countryCode={option.iso}
-                svg={!isEmojiSupported("🇬🇧")}
+                svg={!canEmoji}
               />
               &nbsp;
               {option.title}
@@ -188,8 +199,10 @@ export default function CountrySearchBar(props) {
                   lineHeight: "1.6em",
                   height: "1.6em"
                 }}
+                id="currentFlag"
+                key="currentFlag"
                 countryCode={value.iso}
-                svg={!isEmojiSupported("🇬🇧")}
+                svg={!canEmoji}
               />
             )}
             <TextField
