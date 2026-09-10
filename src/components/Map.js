@@ -1,7 +1,4 @@
-import {
-  faDroplet,
-  faMountainSun,
-} from "@fortawesome/free-solid-svg-icons";
+import { faDroplet, faMountainSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as turf from "@turf/turf";
 import colorsys from "colorsys";
@@ -214,7 +211,6 @@ const MapComponent = forwardRef((props, ref) => {
   const [extraPolygonGeoJSON, setExtraPolygonGeoJSON] = useState(null);
   const [keepAspectRatio] = useState(i_keepAspectRatio);
 
-
   const [highlightLinesGeoJSON, setHighlightLinesGeoJSON] = useState(null);
   const [ecoRegionsHighlightLinesIndex, setEcoRegionsHighlightLinesIndex] =
     useState(null);
@@ -397,7 +393,7 @@ const MapComponent = forwardRef((props, ref) => {
 
       for (let orchestra of orchestraGeoJson.features) {
         let iso = orchestrasToISO3[orchestra.properties.Country];
-        if(iso == null) {
+        if (iso == null) {
           console.log("orchestra", orchestra);
         }
         if (tmpOrchestraHeatMap.hasOwnProperty(iso)) {
@@ -590,7 +586,9 @@ const MapComponent = forwardRef((props, ref) => {
         continue;
       }
 
-      for (let speciesEco of isTerrestial ? ecos["terrestrial"] : ecos["marine"]) {
+      for (let speciesEco of isTerrestial
+        ? ecos["terrestrial"]
+        : ecos["marine"]) {
         if (tmpEcoToSpecies.hasOwnProperty(speciesEco)) {
           tmpEcoToSpecies[speciesEco].push(species);
         } else {
@@ -612,7 +610,9 @@ const MapComponent = forwardRef((props, ref) => {
       //   ...marineEcoRegionsGeoJson.features,
       //   ...ecoRegionsGeoJson.features
       // ]) {
-      for (let ecoregion of isTerrestial ? ecoRegionsGeoJson.features :marineEcoRegionsGeoJson.features) {
+      for (let ecoregion of isTerrestial
+        ? ecoRegionsGeoJson.features
+        : marineEcoRegionsGeoJson.features) {
         let tmpEco = { ...ecoregion, properties: { ...ecoregion.properties } };
 
         for (const idKey of ["ECO_ID", "ECO_CODE"]) {
@@ -643,12 +643,7 @@ const MapComponent = forwardRef((props, ref) => {
     setEcoregionHeatMapMax(tmpEcoregionHeatMapMax);
     setEcoregionHeatMap(tmpEcoregionHeatMap);
     setEcosToMyIDs(tmpEcosToMyIDs);
-  }, [
-    speciesEcos,
-    ecoRegionsGeoJson,
-    marineEcoRegionsGeoJson,
-    isTerrestial
-  ]);
+  }, [speciesEcos, ecoRegionsGeoJson, marineEcoRegionsGeoJson, isTerrestial]);
 
   useEffect(() => {
     const tmpHexasToSpecies = {};
@@ -941,7 +936,7 @@ const MapComponent = forwardRef((props, ref) => {
         element: markerElement,
         lng: coords[0],
         lat: coords[1],
-        countriesArray: countriesArray,
+        countriesArray: countriesArray
       });
     }
     setCapitalThreatMarkers(newMarkers);
@@ -1005,7 +1000,11 @@ const MapComponent = forwardRef((props, ref) => {
             })}
           </g>
         )}
-        <text fontSize={fontSize} dominantBaseline="central" transform={`translate(${r}, ${r})`}>
+        <text
+          fontSize={fontSize}
+          dominantBaseline="central"
+          transform={`translate(${r}, ${r})`}
+        >
           {total.toLocaleString()}
         </text>
       </svg>
@@ -1135,7 +1134,6 @@ const MapComponent = forwardRef((props, ref) => {
   const setFocusOnLegend = useCallback(() => {
     legendRef.current?.focus();
   }, [legendRef]);
-
 
   const layers = useMemo(() => {
     if (ref && ref.current) {
@@ -1775,7 +1773,7 @@ const MapComponent = forwardRef((props, ref) => {
           <Source type="geojson" id="hexagonsource" data={hexagonGeoJSONTest}>
             <Layer
               {...{
-                beforeId:  layers.includes("state-label") ? "state-label" : null,
+                beforeId: layers.includes("state-label") ? "state-label" : null,
                 id: "hexagons",
                 source: "hexagonsource",
                 ...hexagonPaint,
