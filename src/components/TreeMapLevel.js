@@ -2,6 +2,7 @@ import TreeMapTile from "./TreeMapTile";
 
 export default function TreeMapLevel(props) {
   const { node, filterTreeMap } = props;
+  console.log("node", node);
 
   return (
     <div
@@ -41,9 +42,13 @@ export default function TreeMapLevel(props) {
         />
       )}
       <div className="mapTileText">
-        {node.data.filterDepth === 4
-          ? `${node.data.name.slice(node.data.name.indexOf(" ") + 1)}`
-          : `${node.data.name} ${node.value}`}
+        {node.parent != null && (
+          <>
+            {node.data.filterDepth === 4
+              ? `${node.data.name.slice(node.data.name.indexOf(" ") + 1)} ${node.data.filterDepth}`
+              : `${node.data.name} ${node.value} ${node.data.filterDepth}`}
+          </>
+        )}
       </div>
     </div>
   );
