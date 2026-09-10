@@ -1,6 +1,3 @@
-import TreeMap from "./TreeMapNew";
-import { useState } from "react";
-
 export default function TreeMapHeader(props) {
   const { species, genus, family, kingdom, filterTreeMap } = props;
 
@@ -34,7 +31,9 @@ export default function TreeMapHeader(props) {
               display: "grid",
               gridTemplateColumns: "auto",
               gridTemplateRows: "auto auto",
-              cursor: "pointer"
+              cursor: "pointer",
+              padding: "2px",
+              border: family != null ? "" : "2px solid purple"
             }}
             onClick={() => {
               filterTreeMap({ data: { name: kingdom, filterDepth: 1 } });
@@ -53,7 +52,9 @@ export default function TreeMapHeader(props) {
             display: "grid",
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
-            cursor: "pointer"
+            cursor: "pointer",
+            padding: "2px",
+            border: genus != null ? "" : "2px solid purple"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: family, filterDepth: 2 } });
@@ -71,7 +72,9 @@ export default function TreeMapHeader(props) {
             display: "grid",
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
-            cursor: "pointer"
+            cursor: "pointer",
+            padding: "2px",
+            border: species != null ? "" : "2px solid purple"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: genus, filterDepth: 3 } });
@@ -87,16 +90,16 @@ export default function TreeMapHeader(props) {
             display: "grid",
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
-            cursor: "pointer"
+            cursor: "pointer",
+            padding: "2px",
+            border: "2px solid purple"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: species, filterDepth: 4 } });
           }}
         >
           <div style={{}}>Species</div>
-          <div style={{ fontWeight: "bold", fontStyle: "italic" }}>
-            {species}
-          </div>
+          <div className="font-bold italic">{species}</div>
         </div>
       )}
     </div>

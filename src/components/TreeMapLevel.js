@@ -2,7 +2,6 @@ import TreeMapTile from "./TreeMapTile";
 
 export default function TreeMapLevel(props) {
   const { node, filterTreeMap } = props;
-  console.log("node", node);
 
   return (
     <div
