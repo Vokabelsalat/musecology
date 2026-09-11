@@ -186,7 +186,7 @@ export default function CountrySearchBar(props) {
           return <li {...props}>{option.title}</li>;
         }
       }}
-      sx={{ width: 250 }}
+      sx={{ width: "min(250px, 100%)" }}
       freeSolo
       renderInput={(params) => {
         return (

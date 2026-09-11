@@ -17,6 +17,7 @@ export default function Legend(props) {
   if (type === "economically") {
     return (
       <div
+        className="centerPanelLegend"
         style={{
           display: "grid",
           width: "100%",
@@ -48,7 +49,7 @@ export default function Legend(props) {
               <div className="infoI">i</div>
             </a>
           </div>
-          <div className="flex justify-center">
+          <div className="legendEntries flex justify-center">
             {citesAssessment.getSortedLevels().map((e) => {
               let style = {
                 display: "inline-block",
@@ -131,6 +132,7 @@ export default function Legend(props) {
   } else {
     return (
       <div
+        className="centerPanelLegend"
         style={{
           display: "grid",
           width: "100%",
@@ -186,7 +188,7 @@ export default function Legend(props) {
               <div className="infoI">i</div>
             </a>
           </div>
-          <div className="flex justify-center">
+          <div className="legendEntries flex justify-center">
             {iucnAssessment.getSortedLevels().map((e, i) => {
               let width;
               if (["LR/cd"].includes(e)) {
@@ -254,7 +256,7 @@ export default function Legend(props) {
             opacity: threatType === type ? 1.0 : 0.5
           }}
         >
-          <div className="flex justify-center">
+          <div className="legendEntries flex justify-center">
             {bgciAssessment.getSortedLevels().map((e) => {
               let width;
               if (["EX"].includes(e)) {

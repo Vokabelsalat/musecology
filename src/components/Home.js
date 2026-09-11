@@ -374,12 +374,8 @@ export default function HomeNew(props) {
         <TooltipProvider speciesLabels={speciesLabels}>
           {/* {<Tooltip speciesLabels={speciesLabels} />} */}
           <div
+            className="dashboardGrid"
             style={{
-              display: "grid",
-              width: "100%",
-              height: "100%",
-              gridTemplateColumns: "50% 50%",
-              gridTemplateRows: "35px calc(50% - 62px) 90px calc(50% - 62px)",
               transformOrigin: zoomOrigin,
               transform: zoomTransform,
               transitionProperty: "transform",
@@ -388,6 +384,7 @@ export default function HomeNew(props) {
           >
             <Navbar />
             <div
+              className="dashboardPanel dashboardPanelOrchestra"
               style={{
                 gridColumnStart: 1,
                 gridColumnEnd: 1,
@@ -427,6 +424,7 @@ export default function HomeNew(props) {
               />
             </div>
             <div
+              className="dashboardPanel dashboardPanelTreeMap"
               style={{
                 gridColumnStart: 2,
                 gridColumnEnd: 2,
@@ -463,6 +461,7 @@ export default function HomeNew(props) {
               />
             </div>
             <div
+              className="dashboardCenterPanel"
               style={{
                 gridColumnStart: 1,
                 gridColumnEnd: "span 2",
@@ -493,6 +492,7 @@ export default function HomeNew(props) {
               }
             </div>
             <div
+              className="dashboardPanel dashboardPanelTimeline"
               style={{
                 gridColumnStart: 1,
                 gridColumnEnd: 1,
@@ -532,6 +532,7 @@ export default function HomeNew(props) {
               />
             </div>
             <div
+              className="dashboardPanel dashboardPanelMap"
               style={{
                 gridColumnStart: 2,
                 gridColumnEnd: 2,

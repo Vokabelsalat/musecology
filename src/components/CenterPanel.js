@@ -26,25 +26,9 @@ export default function CenterPanel(props) {
   } = props;
 
   return (
-    <div
-      style={{
-        display: "grid",
-        width: "100%",
-        height: "100%",
-        gridTemplateRows: "auto",
-        gridTemplateColumns: "calc(50% - 35px) 70px calc(50% - 35px)",
-        gap: "3px"
-      }}
-    >
+    <div className="centerPanel">
       <div
-        style={{
-          display: "grid",
-          width: "100%",
-          height: "100%",
-          gridTemplateRows: "auto",
-          gridTemplateColumns: "auto auto auto auto auto",
-          gap: "3px"
-        }}
+        className="centerPanelSide centerPanelSideLeft"
       >
         <div
           style={{
@@ -88,7 +72,7 @@ export default function CenterPanel(props) {
           categoryFilter={categoryFilter}
         />
       </div>
-      <div className="searchBarWrapper">
+      <div className="searchBarWrapper centerPanelChart">
         <PieChartNew
           data={data}
           getThreatLevel={getSpeciesThreatLevel}
@@ -97,14 +81,7 @@ export default function CenterPanel(props) {
         />
       </div>
       <div
-        style={{
-          display: "grid",
-          width: "100%",
-          height: "100%",
-          gridTemplateRows: "auto",
-          gridTemplateColumns: "auto auto",
-          gap: "3px"
-        }}
+        className="centerPanelSide centerPanelSideRight"
       >
         <Legend
           type={"ecologically"}
