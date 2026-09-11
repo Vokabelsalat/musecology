@@ -140,7 +140,7 @@ const MapComponent = forwardRef((props, ref) => {
         switch (activeMapLayer.type) {
           case "countries":
             mapMode = "countries";
-            interactiveLayerIds = ["countriesSpecies", "extraPolygonLineLayer"];
+            interactiveLayerIds = ["countriesSpecies"];
             break;
           case "ecoregions":
             mapMode = "ecoregions";
@@ -153,6 +153,10 @@ const MapComponent = forwardRef((props, ref) => {
           case "orchestras":
             mapMode = "orchestras";
             interactiveLayerIds = [];
+            break;
+          case "protection":
+            mapMode = "protection";
+            interactiveLayerIds = ["ecoRegionsProtection"];
             break;
           default:
         }
@@ -190,6 +194,24 @@ const MapComponent = forwardRef((props, ref) => {
         }
       } else {
         mapMode = formMapMode;
+        switch (formMapMode) {
+          case "ecoregions":
+            interactiveLayerIds = ["ecoRegions"];
+            break;
+          case "hexagons":
+            interactiveLayerIds = ["hexagons"];
+            break;
+          case "protection":
+            interactiveLayerIds = ["ecoRegionsProtection"];
+            break;
+          case "orchestras":
+            interactiveLayerIds = [];
+            break;
+          case "countries":
+          default:
+            interactiveLayerIds = ["countriesSpecies"];
+            break;
+        }
       }
 
       return {
@@ -552,6 +574,15 @@ const MapComponent = forwardRef((props, ref) => {
     return index;
   }, [countriesDictionary]);
 
+  const countriesByIso = useMemo(() => {
+    return Object.fromEntries(
+      Object.values(countriesDictionary ?? {}).map((country) => [
+        country.ISO3,
+        country
+      ])
+    );
+  }, [countriesDictionary]);
+
   useEffect(() => {
     let tmpExtraPolygonPaint = null;
 
@@ -677,6 +708,7 @@ const MapComponent = forwardRef((props, ref) => {
   }, [setDivScale]); */
 
   const [ecosToSpecies, setEcosToSpecies] = useState(null);
+  const [hexasToSpecies, setHexasToSpecies] = useState(null);
 
   useEffect(() => {
     const tmpEcoToSpecies = {};
@@ -787,6 +819,7 @@ const MapComponent = forwardRef((props, ref) => {
     setHexagonGeoJSONTest(tmpHexagonGeoJSON);
     setHexagonHeatMapMax(tmpHexagonHeatMapMax);
     setHexagonHeatMap(tmpHexagonHeatMap);
+    setHexasToSpecies(tmpHexasToSpecies);
   }, [hexagonGeoJSON, speciesHexas, isTerrestial]);
 
   const colors = ["#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c"];
@@ -1176,28 +1209,83 @@ const MapComponent = forwardRef((props, ref) => {
 
   const onPolygonHover = useCallback(
     (event) => {
-      if (event.features.length > 0) {
+      if (event.features?.length > 0) {
         const feat = event.features && event.features[0];
-
+        const properties = feat.properties ?? {};
         let hoverIds = [];
+        let title = "";
+        let countryCode = null;
+        let polygonSpecies = [];
         switch (mapMode) {
-          case "countries":
-            const iso = feat.properties.ISO3CD;
+          case "countries": {
+            const iso = properties.ISO3CD;
             hoverIds = [isoToCountryID[iso]];
+            title = properties.ROMNAM ?? countriesByIso[iso]?.ROMNAM ?? iso;
+            countryCode = countriesByIso[iso]?.ISO2 ?? null;
+            polygonSpecies = countriesToSpecies?.[iso] ?? [];
             break;
+          }
           case "ecoregions":
-            const ecoID = feat.properties.ECO_ID;
+          case "protection": {
+            const ecoID = properties.ECO_ID ?? properties.ECO_CODE;
             hoverIds = [ecosToMyIDs[ecoID]];
+            title =
+              properties.ECO_NAME ??
+              properties.ECOREGION ??
+              (ecoID != null ? `Ecoregion ${ecoID}` : "");
+            polygonSpecies = ecosToSpecies?.[ecoID?.toString()] ?? [];
             break;
-          case "hexagons":
+          }
+          case "hexagons": {
+            const hexagonID = properties.HexagonID;
+            title = hexagonID != null ? `Hexagon ${hexagonID}` : "";
+            polygonSpecies = hexasToSpecies?.[hexagonID?.toString()] ?? [];
             break;
+          }
           default:
             break;
         }
 
-        setHoveredStateIds([hoverIds]);
+        setHoveredStateIds(hoverIds.filter(Boolean));
+
+        if (title) {
+          const groupedThreats = new Map();
+          polygonSpecies.forEach((species) => {
+            const threat = getSpeciesThreatLevel(species, threatType);
+            const key = `${threat.abbreviation}-${threat.name}`;
+            const category = groupedThreats.get(key) ?? {
+              abbreviation: threat.abbreviation,
+              name: threat.name,
+              color: threat.getColor(colorBlind),
+              count: 0,
+              sort: threat.numvalue
+            };
+            category.count += 1;
+            groupedThreats.set(key, category);
+          });
+
+          setTooltip({
+            tooltipMode: "map",
+            tooltipText: title,
+            tooltipOptions: {
+              title,
+              countryCode,
+              speciesCount: polygonSpecies.length,
+              threatLabel:
+                threatType === "economically"
+                  ? "Trade threat"
+                  : "Conservation threat",
+              threatDistribution: [...groupedThreats.values()].sort(
+                (a, b) => a.sort - b.sort
+              )
+            }
+          });
+        } else {
+          setTooltip(null);
+        }
       } else {
         setHoveredStateIds([]);
+        setTooltip(null);
       }
       /*  setHoverInfo({
       longitude: event.lngLat.lng,
@@ -1205,7 +1293,19 @@ const MapComponent = forwardRef((props, ref) => {
       countyName: county && county.properties.COUNTY
     }); */
     },
-    [mapMode, isoToCountryID, ecosToMyIDs]
+    [
+      mapMode,
+      isoToCountryID,
+      ecosToMyIDs,
+      countriesByIso,
+      countriesToSpecies,
+      ecosToSpecies,
+      hexasToSpecies,
+      getSpeciesThreatLevel,
+      threatType,
+      colorBlind,
+      setTooltip
+    ]
   );
 
   /*  if (ref.current && ref.current.getStyle().layers.includes("state-label")) {
@@ -1462,6 +1562,7 @@ const MapComponent = forwardRef((props, ref) => {
         }}
         onMouseLeave={(event) => {
           setHoveredStateIds([]);
+          setTooltip(null);
         }}
         onClick={(event) => {
           console.log(

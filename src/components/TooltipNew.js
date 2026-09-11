@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { ReactCountryFlag } from "react-country-flag";
 import ThreatCode from "./ThreatCode";
 import ThreatIcon from "./ThreatIcon";
+import ThreatDonut from "./ThreatDonut";
 import { createProxyPhoto } from "./TimelineFront";
 
 export const langUnicode = {
@@ -161,6 +162,67 @@ export default function Tooltip(props) {
           )}
         </div>
       );
+    } else if (tooltipMode === "map") {
+      const {
+        title,
+        countryCode,
+        speciesCount = 0,
+        threatLabel,
+        threatDistribution = []
+      } = tooltipOptions ?? {};
+
+      return (
+        <div className="min-w-[230px] max-w-[300px] p-1">
+          <div className="flex items-center gap-2 text-[medium] font-bold">
+            {countryCode && (
+              <ReactCountryFlag
+                style={{ fontSize: "1.5em", lineHeight: "1.5em" }}
+                countryCode={countryCode}
+                svg={!isEmojiSupported("🇬🇧")}
+                aria-label={`${title} flag`}
+              />
+            )}
+            <span>{title}</span>
+          </div>
+          <div className="mt-1 text-neutral-600">
+            {speciesCount.toLocaleString()} mapped species
+          </div>
+          <div className="mt-2 flex items-center gap-3">
+            <ThreatDonut
+              distribution={threatDistribution}
+              total={speciesCount}
+            />
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 text-xs font-bold uppercase tracking-wide text-neutral-500">
+                {threatLabel}
+              </div>
+              {threatDistribution.length > 0 ? (
+                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-0.5">
+                  {threatDistribution.map((category) => (
+                    <div
+                      className="contents"
+                      key={`${category.abbreviation}-${category.name}`}
+                    >
+                      <span
+                        className="inline-block size-2.5 rounded-full"
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <span className="truncate" title={category.name}>
+                        {category.abbreviation}
+                      </span>
+                      <span className="tabular-nums">
+                        {category.count.toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-neutral-500">No species data</div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
     } else if (tooltipMode === "species") {
       const species = tooltipText;
       const labels = speciesLabels[species];
@@ -261,7 +323,7 @@ export default function Tooltip(props) {
     } else {
       return "";
     }
-  }, [tooltipText, tooltipMode, tooltipOptions]);
+  }, [speciesLabels, tooltipText, tooltipMode, tooltipOptions]);
 
   if (tooltipText === "" || tooltipText == null) {
     return <></>;
