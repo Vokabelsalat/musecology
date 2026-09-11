@@ -69,7 +69,7 @@ export default function StoryEditor({ width, height }) {
   return (
     <main className="grid grid-rows-[40px_1fr] grid-cols-1 size-full">
       <Navbar />
-      <div className="h-full w-full overflow-y-auto px-5 py-10 sm:px-10 sm:py-14"
+      <div className="scrollbar-hidden h-full w-full overflow-y-auto px-5 py-10 sm:px-10 sm:py-14"
       style={{ backgroundColor: "#fdfdfd", color: "#1c0f13" }}
       aria-labelledby="story-editor-title">
       <section className="mx-auto w-full max-w-5xl">

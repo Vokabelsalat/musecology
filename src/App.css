@@ -128,6 +128,20 @@ tr {
   overflow: auto;
 }
 
+/* Keep scrollable panels usable without showing platform scrollbars. */
+.scroll,
+.scrollbar-hidden,
+.leaflet-control-layers {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar,
+.scrollbar-hidden::-webkit-scrollbar,
+.leaflet-control-layers::-webkit-scrollbar {
+  display: none;
+}
+
 table {
   width: 100%;
 }

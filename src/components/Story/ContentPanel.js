@@ -6,7 +6,7 @@ const ContentPanel = forwardRef((props, ref) => {
 
   return (
     <div
-      className={className}
+      className={[className, "scrollbar-hidden"].filter(Boolean).join(" ")}
       ref={ref}
       style={{
         width: `100%`,

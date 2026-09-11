@@ -1,15 +1,5 @@
-import {
-  ArrowsPointingInIcon,
-  ArrowsPointingOutIcon
-} from "@heroicons/react/24/solid";
-
-import TimelineHeader from "./TimelineHeader";
-import TimelineFront from "./TimelineFront";
-import TimelineRows from "./TimelineRows";
-import TimelineScaleD3 from "./TimelineScaleD3";
 import TimelineNew from "./Timeline";
-
-import { useState, useEffect, useRef } from "react";
+import TimelineScaleD3 from "./TimelineScaleD3";
 
 import { replaceSpecialCharacters } from "../utils/utils";
 

@@ -198,6 +198,7 @@ export default function OrchestraNew(props) {
       </svg>
       {instrument && (
         <div
+          className="scrollbar-hidden"
           style={{
             position: "absolute",
             width: "90%",
