@@ -158,7 +158,7 @@
     "type": "fullSizeQuote",
     "quote": {
       "text": "<div> <div style='margin-left:-50%;white-space:nowrap;'> 'Le violon </div> <div style='margin-right:-50%;white-space:nowrap'> c'est l'archet' </div></div>",
-      "author": "Giovanni Battista Viotti (violanist)",
+      "author": "Giovanni Battista Viotti (violinist)",
       "translation": "The violin, that's the bow."
     },
     "image": {
@@ -277,7 +277,7 @@
   {
     "type": "text",
     "title": "Where can this unique tree potentially be found?",
-    "text": "Pau-brasil is picky and grows naturally only between Rio Grande do Norte and Rio de Janeira and is endemic to the Mata Atlântica biome. The emblematic and culturally important pau-brasil tree tells a bundle of stories - on one hand a story of social and cultural exploitation and on the other of music and culture. The beauty of its flowers with their sweet smell attracts bees and fascinates people.",
+    "text": "Pau-brasil is picky and grows naturally only between Rio Grande do Norte and Rio de Janeiro and is endemic to the Mata Atlântica biome. The emblematic and culturally important pau-brasil tree tells a bundle of stories - on one hand a story of social and cultural exploitation and on the other of music and culture. The beauty of its flowers with their sweet smell attracts bees and fascinates people.",
     "width": "100%",
     "imageArray": [
       {
@@ -395,7 +395,7 @@
   {
     "type": "text",
     "title": "Trade limitations - a cornerstone to preserve pau-brasil in the wild",
-    "text": "When few is left, already little trade can threaten species. This was and is the case for the endangered pau-brasil. Since 1998 the IUCN Red List, you remember the Species Alarm System, is already indicating that pau-brasil is threatened with extinction. In consequence since 2007, pau-brasil is listed in Appendix <ThreatCode type='cites' code='II'></ThreatCode> of the Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES). CITES is one of the most important international levers in general as it is the only convention that is legally binding and allows to internationally control species-threatening trade. Species already threatened by trade or that may be threatened in future by trade can be listed in three different categories (Appendix <ThreatCode type='cites' code='III'></ThreatCode> - less strict category, Appendix <ThreatCode type='cites' code='II'></ThreatCode> - moderate category, Appendix <ThreatCode type='cites' code='I'></ThreatCode> - strictest category) with gradually increasingly strict trade controls and restrictions. Of the 63 species used over history for sticks of string instrument bows (see timeline), 13 are listed in Appendix <ThreatCode type='cites' code='II'></ThreatCode>, pau-brasil being one of them (for eight species of the genus Handroanthus and Dipteryx this listing will come into force at the 25.11.2024.",
+    "text": "When few is left, already little trade can threaten species. This was and is the case for the endangered pau-brasil. Since 1998 the IUCN Red List, you remember the Species Alarm System, is already indicating that pau-brasil is threatened with extinction. In consequence since 2007, pau-brasil is listed in Appendix <ThreatCode type='cites' code='II'></ThreatCode> of the Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES). CITES is one of the most important international levers in general as it is the only convention that is legally binding and allows to internationally control species-threatening trade. Species already threatened by trade or that may be threatened in future by trade can be listed in three different categories (Appendix <ThreatCode type='cites' code='III'></ThreatCode> - less strict category, Appendix <ThreatCode type='cites' code='II'></ThreatCode> - moderate category, Appendix <ThreatCode type='cites' code='I'></ThreatCode> - strictest category) with gradually increasingly strict trade controls and restrictions. Of the 63 species used over history for sticks of string instrument bows (see timeline), 13 are listed in Appendix <ThreatCode type='cites' code='II'></ThreatCode>, pau-brasil being one of them (for eight species of the genus </I>Handroanthus</I> and </I>Dipteryx</I> this listing will come into force at the 25.11.2024.",
     "visualization": {
       "type": "timeline",
       "width": "100%"
@@ -483,7 +483,7 @@
     "type": "text",
     "title": "CITES CoP19 Panama, Proposal of Listing Pau-brasil in Appendix I",
 
-    "text": "The negotiations and discussions in the pau-brasil working group resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 that until 2023 excluded finished bows from the regulation and from 2023 onwards aks for an CITES export permission for finished bows leaving the country of pau-brasils origin - that means Brazil.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/TBIJ0zGiryk?start=3250' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
+    "text": "The negotiations and discussions in the pau-brasil working group resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 that until 2023 excluded finished bows from the regulation and from 2023 onwards asks for an CITES export permission for finished bows leaving the country of pau-brasil's origin - that means Brazil.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/TBIJ0zGiryk?start=3250' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
     "flyTo": {
       "center": [-79.548204, 8.937899],
       "zoom": 18,
@@ -500,7 +500,7 @@
   {
     "type": "text",
     "title": "CITES - threat or a blessing for musicians, violin and bow makers?",
-    "text": "<div style='display: grid;margin-top: 15px;grid-gap: 40px;text-align: left;'><div>Is CITES threatening music, musicians, violin and bow makers?</div><div>Or is the task of CITES a blessing as music and instrument makers provit in the longterm if species loss due to trade is avoided?</div><div>What is the right balance and what are the direct consequences in the workshop and on stage?</div><div>",
+    "text": "<div style='display: grid;margin-top: 15px;grid-gap: 40px;text-align: left;'><div>Is CITES threatening music, musicians, violin and bow makers?</div><div>Or is the task of CITES a blessing as music and instrument makers profit in the longterm if species loss due to trade is avoided?</div><div>What is the right balance and what are the direct consequences in the workshop and on stage?</div><div>",
     "flyTo": {
       "center": [4.129790608581004, 47.07191652676002],
       "zoom": 1,
@@ -517,8 +517,26 @@
   },
   {
     "type": "text",
+    "title": "CITES CoP20 Samarkand, Usbekistan, Proposal of Listing Pau-brasil in Appendix I",
+
+    "text": "The negotiations and discussions in the pau-brasil working group resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 since 2023 asked for an CITES export permission for finished bows leaving Brazil, the country of the species origin.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/watch?v=AYccCOAMcP0?start=9066' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
+    "flyTo": {
+      "center": [39.66119638040882, 67.06857713431425],
+      "zoom": 18,
+      "speed": 0.3
+    },
+    "mapLayer": {
+      "type": "countries",
+      "mapStyle": "satellite"
+    },
+    "projection": "globe",
+    "showCountries": false,
+    "showThreatDonuts": false
+  },
+  {
+    "type": "text",
     "title": "The bow making craftsmanship - a century old tradition",
-    "text": "There are century old string instrument bows of high value that are often preferred to new bows. However, high-quality string instrument bows are until nowadays often made in the same way and with similar tools as more than 200 years ago.In old craftsmanship, such as bow making, time seems to stay still. However, global change with its threatening effects on ecosystems and species directly threaten such traditions. This is most evident in resulting resource scarcities. The only way foreward is preserving the last natural populations, restauring ecosystems to increase the natural populations, by discovering possibilites for plantations to cover the demand without harming the last natural populations. Treaceability and transparency of the supply chain are important key levers and last but not least in the long-term there might be a need for obligatory and unified musical instrument 'passports' to enable travels with musical instruments that are legally registered. This is an increasingly high challenge for music.",
+    "text": "There are century old string instrument bows of high value that are often preferred to new bows. However, high-quality string instrument bows are until nowadays often made in the same way and with similar tools as more than 200 years ago. In old craftsmanship, such as bow making, time seems to stay still. However, global change with its threatening effects on ecosystems and species directly threaten such traditions. This is most evident in resulting resource scarcities. The only way foreward is preserving the last natural populations, restauring ecosystems to increase the natural populations, by discovering possibilites for plantations to cover the demand without harming the last natural populations. Treaceability and transparency of the supply chain are important key levers and last but not least in the long-term there might be a need for obligatory and unified musical instrument 'passports' to enable travels with musical instruments that are legally registered. This is an increasingly high challenge for music.",
     "image": {
       "url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Pracownia_lutnicza_Mardu%C5%82%C3%B3w_w_Zakopanem%2C_fot._K._Schubert_MIK_2019_%2849140662183%29.jpg",
       "caption": "Pracownia lutnicza Mardułów w Zakopanem, fot. K. Schubert MIK 2019",
