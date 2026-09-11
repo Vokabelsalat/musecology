@@ -96,7 +96,8 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       speciesTreeMapData[genusSpecies] = {
         image: tmpImageLinks[spec],
         proxy: tmpDummyImageLinks[spec],
-        mediaUrls: speciesObj["mediaUrls"]
+        mediaUrls: speciesObj["mediaUrls"],
+        isAnimal: speciesObj.Kingdom === "Animalia"
       };
 
       if (speciesObj.origMat == null) {
@@ -342,6 +343,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
               image: speciesTreeMapData[genusSpecies]["image"],
               proxy: speciesTreeMapData[genusSpecies]["proxy"],
               mediaUrls: speciesTreeMapData[genusSpecies]["mediaUrls"],
+              isAnimal: speciesTreeMapData[genusSpecies]["isAnimal"],
               value: speciesCount[genusSpecies],
               filterDepth: 4
             });

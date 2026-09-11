@@ -3,7 +3,15 @@ import TreeMapHeader from "./TreeMapHeader";
 import { useState } from "react";
 
 export default function TreeMapView(props) {
-  const { width, height, data, treeMapFilter, setTreeMapFilter } = props;
+  const {
+    width,
+    height,
+    data,
+    treeMapFilter,
+    setTreeMapFilter,
+    getTreeThreatLevel,
+    colorBlind
+  } = props;
 
   const { kingdom, family, genus, species } = treeMapFilter;
 
@@ -123,6 +131,8 @@ export default function TreeMapView(props) {
         data={tmpData}
         headerOffset={kingdom ? 48 : 0}
         filterTreeMap={filterTreeMap}
+        getTreeThreatLevel={getTreeThreatLevel}
+        colorBlind={colorBlind}
       />
     </div>
   );

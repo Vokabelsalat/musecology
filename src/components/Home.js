@@ -449,6 +449,8 @@ export default function HomeNew(props) {
               species={selectedSpecies} */
                     treeMapFilter={treeMapFilter}
                     setTreeMapFilter={setTreeMapFilter}
+                    getTreeThreatLevel={getSpeciesSignThreat}
+                    colorBlind={colorBlind}
                   />
                 </ResizeComponent>
               )}

@@ -3,7 +3,15 @@ import { useState } from "react";
 import TreeMapLevel from "./TreeMapLevel";
 
 export default function TreeMap(props) {
-  const { width, height, data, filterTreeMap, headerOffset = 0 } = props;
+  const {
+    width,
+    height,
+    data,
+    filterTreeMap,
+    getTreeThreatLevel,
+    colorBlind,
+    headerOffset = 0
+  } = props;
 
   var root = d3
     .hierarchy(data)
@@ -33,6 +41,8 @@ export default function TreeMap(props) {
               key={`treeMapLevel${node.data.name}${index}`}
               node={node}
               filterTreeMap={filterTreeMap}
+              getTreeThreatLevel={getTreeThreatLevel}
+              colorBlind={colorBlind}
             />
           );
         })
@@ -41,6 +51,8 @@ export default function TreeMap(props) {
           key={`treeMapLevel${root.data.name}${0}`}
           node={root}
           filterTreeMap={filterTreeMap}
+          getTreeThreatLevel={getTreeThreatLevel}
+          colorBlind={colorBlind}
         />
       )}
     </div>

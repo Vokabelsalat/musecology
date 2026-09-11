@@ -33,7 +33,7 @@ export default function TreeMapHeader(props) {
               gridTemplateRows: "auto auto",
               cursor: "pointer",
               padding: "2px",
-              border: family != null ? "" : "2px solid purple"
+              border: family != null ? "" : "2px solid var(--highlightpurple)"
             }}
             onClick={() => {
               filterTreeMap({ data: { name: kingdom, filterDepth: 1 } });
@@ -54,7 +54,7 @@ export default function TreeMapHeader(props) {
             gridTemplateRows: "auto auto",
             cursor: "pointer",
             padding: "2px",
-            border: genus != null ? "" : "2px solid purple"
+            border: genus != null ? "" : "2px solid var(--highlightpurple)"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: family, filterDepth: 2 } });
@@ -74,7 +74,7 @@ export default function TreeMapHeader(props) {
             gridTemplateRows: "auto auto",
             cursor: "pointer",
             padding: "2px",
-            border: species != null ? "" : "2px solid purple"
+            border: species != null ? "" : "2px solid var(--highlightpurple)"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: genus, filterDepth: 3 } });
@@ -92,7 +92,7 @@ export default function TreeMapHeader(props) {
             gridTemplateRows: "auto auto",
             cursor: "pointer",
             padding: "2px",
-            border: "2px solid purple"
+            border: "2px solid var(--highlightpurple)"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: species, filterDepth: 4 } });

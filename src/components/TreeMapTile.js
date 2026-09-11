@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useMemo, useState } from "react";
+import ThreatIcon from "./ThreatIcon";
 
 const transformWikimediaURL = (url) => {
   if (url.includes("/")) {
@@ -13,7 +14,13 @@ const transformWikimediaURL = (url) => {
 };
 
 export default function TreeMapTile(props) {
-  const { node, parentTop = 0, parentLeft = 0 } = props;
+  const {
+    node,
+    parentTop = 0,
+    parentLeft = 0,
+    getTreeThreatLevel,
+    colorBlind
+  } = props;
 
   const getMaxChild = (children) => {
     const sorted = children.sort((a, b) => {
@@ -76,6 +83,20 @@ export default function TreeMapTile(props) {
 
   const speciesLevel =
     node.data.mediaUrls != null && node.parent == null ? true : false;
+
+  const isGenusOrSpeciesView =
+    node.parent == null ||
+    (node.parent.data.filterDepth === 3 && node.parent.parent == null);
+  const showThreatIcon =
+    node.data.filterDepth === 4 &&
+    isGenusOrSpeciesView &&
+    getTreeThreatLevel != null;
+  const economicThreat = showThreatIcon
+    ? getTreeThreatLevel(node.data.name, "economically")
+    : null;
+  const ecologicalThreat = showThreatIcon
+    ? getTreeThreatLevel(node.data.name, "ecologically")
+    : null;
 
   let content = <></>;
 
@@ -166,13 +187,13 @@ export default function TreeMapTile(props) {
             <div className="chevronRight"></div>
           </div>
           {photos[visibleIndex] !== undefined && (
-            <div className="absolute bottom-1 right-1 text-lg bg-slate-50 rounded-full h-[20px] w-[20px] hover:w-fit flex items-center justify-center group transition-all duration-500 hover:p-1">
+            <div className="absolute top-1 right-1 text-lg bg-slate-50 rounded-full h-[20px] w-[20px] hover:w-fit flex items-center justify-center group transition-all duration-500 hover:p-1">
               <span className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-500 text-sm">
                 {photos[visibleIndex].type === "wiki" ? (
                   <a
                     target="_blank"
                     href={transformWikimediaURL(photos[visibleIndex].src ?? "")}
-                    className="text-black"
+                    className="text-[var(--highlightpurple)] underline"
                   >
                     {photos[visibleIndex].author != null &&
                       photos[visibleIndex].author !== "" && (
@@ -215,6 +236,25 @@ export default function TreeMapTile(props) {
       }}
     >
       {content}
+      {showThreatIcon && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "4px",
+            right: "4px",
+            zIndex: 1,
+            pointerEvents: "none",
+            transform: node.parent == null ? "scale(1.5)" : "none",
+            transformOrigin: "bottom right"
+          }}
+        >
+          <ThreatIcon
+            leftColor={economicThreat.getColor(colorBlind)}
+            rightColor={ecologicalThreat.getColor(colorBlind)}
+            isAnimal={node.data.isAnimal}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -119,6 +119,8 @@ export const Content = (props) => {
             }}
             treeMapFilter={vis.treeMapFilter}
             setTreeMapFilter={vis.setTreeMapFilter}
+            getTreeThreatLevel={vis.getThreatLevel}
+            colorBlind={colorBlind}
           />
         );
       default:

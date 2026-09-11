@@ -763,10 +763,10 @@ path.handle:focus {
 }
 
 .copyrightQuote {
-   a:-webkit-any-link,
-    a:any-link {
-      color: gray !important;
-    }
+  a:-webkit-any-link,
+  a:any-link {
+    color: gray !important;
+  }
 }
 
 .contentWrapper {
@@ -786,13 +786,17 @@ path.handle:focus {
 .contentPanel.black {
   color: #fdfdfd;
   background-color: #1f1f1f;
-  transition: color 0.5s, background-color 0.5s;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
 }
 
 .contentPanel {
   color: #1c0f13;
   background-color: #fdfdfd;
-  transition: color 0.5s, background-color 0.5s;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
   width: 100%;
   height: 100%;
 }
@@ -1084,11 +1088,13 @@ path.handle:focus {
 
 .imageSliderButtonDiv {
   position: absolute;
-  top: 0;
-  height: 100%;
+  top: 32px;
+  bottom: 32px;
   display: flex;
   align-items: center;
+  padding: 10px;
   justify-content: center;
+  border-radius: 10px;
 }
 
 .imageSliderButtonDivRight {
@@ -1135,7 +1141,6 @@ path.handle:focus {
   padding: 0 3px;
 }
 
-
 .pieContainer {
   height: 20px;
   position: relative;
@@ -1146,7 +1151,7 @@ path.handle:focus {
   width: 20px;
   height: 20px;
   border-radius: 100%;
-} 
+}
 
 .pie {
   transition: all 1s;
@@ -1166,10 +1171,10 @@ path.handle:focus {
 }
 
 .pieSlice1 .pie {
-  transform:rotate(120deg);
+  transform: rotate(120deg);
 }
 
- .pieSlice2 {
+.pieSlice2 {
   transform: rotate(120deg);
 }
 
@@ -1186,10 +1191,10 @@ path.handle:focus {
 }
 
 .pieSlice4 .pie {
-  transform:rotate(90deg);
+  transform: rotate(90deg);
 }
 
- .pieSlice5 {
+.pieSlice5 {
   transform: rotate(90deg);
 }
 
@@ -1205,7 +1210,7 @@ path.handle:focus {
   transform: rotate(90deg);
 }
 
- .pieSlice7 {
+.pieSlice7 {
   transform: rotate(270deg);
 }
 
@@ -1220,7 +1225,7 @@ path.handle:focus {
   background-color: white;
   border-radius: 100%;
   top: 5px;
-  left: 5px; 
+  left: 5px;
   color: white;
 }
 
