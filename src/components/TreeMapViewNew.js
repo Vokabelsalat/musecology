@@ -129,7 +129,7 @@ export default function TreeMapView(props) {
         width={width}
         height={height}
         data={tmpData}
-        headerOffset={kingdom ? 48 : 0}
+        headerOffset={kingdom ? 54 : 0}
         filterTreeMap={filterTreeMap}
         getTreeThreatLevel={getTreeThreatLevel}
         colorBlind={colorBlind}

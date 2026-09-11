@@ -32,8 +32,9 @@ export default function TreeMapHeader(props) {
               gridTemplateColumns: "auto",
               gridTemplateRows: "auto auto",
               cursor: "pointer",
-              padding: "2px",
-              border: family != null ? "" : "2px solid var(--highlightpurple)"
+              padding: "0px 2px",
+              border: family != null ? "" : "2px solid var(--highlightpurple)",
+              boxSizing: "border-box"
             }}
             onClick={() => {
               filterTreeMap({ data: { name: kingdom, filterDepth: 1 } });
@@ -53,8 +54,9 @@ export default function TreeMapHeader(props) {
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
             cursor: "pointer",
-            padding: "2px",
-            border: genus != null ? "" : "2px solid var(--highlightpurple)"
+            padding: "0px 2px",
+            border: genus != null ? "" : "2px solid var(--highlightpurple)",
+            boxSizing: "border-box"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: family, filterDepth: 2 } });
@@ -73,8 +75,9 @@ export default function TreeMapHeader(props) {
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
             cursor: "pointer",
-            padding: "2px",
-            border: species != null ? "" : "2px solid var(--highlightpurple)"
+            padding: "0px 2px",
+            border: species != null ? "" : "2px solid var(--highlightpurple)",
+            boxSizing: "border-box"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: genus, filterDepth: 3 } });
@@ -91,8 +94,9 @@ export default function TreeMapHeader(props) {
             gridTemplateColumns: "auto",
             gridTemplateRows: "auto auto",
             cursor: "pointer",
-            padding: "2px",
-            border: "2px solid var(--highlightpurple)"
+            padding: "0px 2px",
+            border: "2px solid var(--highlightpurple)",
+            boxSizing: "border-box"
           }}
           onClick={() => {
             filterTreeMap({ data: { name: species, filterDepth: 4 } });
