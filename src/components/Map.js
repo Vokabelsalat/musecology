@@ -31,6 +31,29 @@ import mapboxAccessToken from "../config/mapbox";
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
 const MAX_MARKER_CACHE_SIZE = 256;
 
+const getFeatureViewport = (feature) => {
+  let featureToFit = feature;
+  let bounds = turf.bbox(featureToFit);
+
+  // Non-Mercator projections cannot reliably fit bounds that extend beyond
+  // +/-180 degrees. For date-line-spanning countries, focus their largest
+  // land mass instead of sending the camera to a wrapped world copy.
+  if (bounds[2] - bounds[0] > 180 && feature.geometry.type === "MultiPolygon") {
+    featureToFit = turf.flatten(feature).features.reduce((largest, candidate) =>
+      turf.area(candidate) > turf.area(largest) ? candidate : largest
+    );
+    bounds = turf.bbox(featureToFit);
+  }
+
+  return {
+    bounds: [
+      [bounds[0], bounds[1]],
+      [bounds[2], bounds[3]]
+    ],
+    center: turf.center(featureToFit).geometry.coordinates
+  };
+};
+
 const cacheMarker = (cache, key, createMarker) => {
   if (cache.has(key)) {
     return cache.get(key);
@@ -218,6 +241,37 @@ const MapComponent = forwardRef((props, ref) => {
   const [countriesHighlightLinesIndex, setCountriesHighlightLinesIndex] =
     useState(null);
   const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
+
+  useEffect(() => {
+    const map = ref?.current;
+    if (!selectedCountry || !countriesGeoJson || !map) {
+      return;
+    }
+
+    const country = countriesGeoJson.features.find(
+      (feature) => feature.properties.ROMNAM === selectedCountry
+    );
+    if (!country) {
+      return;
+    }
+
+    const { bounds, center } = getFeatureViewport(country);
+    const camera = map.cameraForBounds(bounds, {
+      padding: 80,
+      maxZoom: 4.5
+    });
+    if (!camera) {
+      return;
+    }
+
+    // Mapbox GL 2.14 calculates an Equal Earth bounds center using Mercator
+    // unprojection. Keep its fitted zoom, but use the actual geographic center.
+    map.flyTo({
+      ...camera,
+      center,
+      duration: 1200
+    });
+  }, [selectedCountry, countriesGeoJson, ref]);
 
   useEffect(() => {
     let max = 0;
