@@ -39,9 +39,11 @@ const getFeatureViewport = (feature) => {
   // +/-180 degrees. For date-line-spanning countries, focus their largest
   // land mass instead of sending the camera to a wrapped world copy.
   if (bounds[2] - bounds[0] > 180 && feature.geometry.type === "MultiPolygon") {
-    featureToFit = turf.flatten(feature).features.reduce((largest, candidate) =>
-      turf.area(candidate) > turf.area(largest) ? candidate : largest
-    );
+    featureToFit = turf
+      .flatten(feature)
+      .features.reduce((largest, candidate) =>
+        turf.area(candidate) > turf.area(largest) ? candidate : largest
+      );
     bounds = turf.bbox(featureToFit);
   }
 
@@ -241,6 +243,44 @@ const MapComponent = forwardRef((props, ref) => {
   const [countriesHighlightLinesIndex, setCountriesHighlightLinesIndex] =
     useState(null);
   const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
+
+  const mappedSpeciesCount = useMemo(() => {
+    const hasEntries = (value, useRegionType = false) => {
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+      if (value == null || typeof value !== "object") {
+        return false;
+      }
+
+      if (useRegionType) {
+        const regionEntries = value[isTerrestial ? "terrestrial" : "marine"];
+        return Array.isArray(regionEntries) && regionEntries.length > 0;
+      }
+
+      return Object.values(value).some(
+        (entries) => Array.isArray(entries) && entries.length > 0
+      );
+    };
+
+    switch (mapMode) {
+      case "ecoregions":
+      case "hexagons":
+      case "protection": {
+        const mapData =
+          mapMode === "hexagons" ? speciesHexas : speciesEcos;
+        return Object.values(mapData).filter((value) =>
+          hasEntries(value, true)
+        ).length;
+      }
+      case "orchestras":
+      case "countries":
+      default:
+        return Object.values(speciesCountries).filter((value) =>
+          hasEntries(value)
+        ).length;
+    }
+  }, [mapMode, speciesCountries, speciesEcos, speciesHexas, isTerrestial]);
 
   useEffect(() => {
     const map = ref?.current;
@@ -1438,6 +1478,25 @@ const MapComponent = forwardRef((props, ref) => {
           }
         }}
       >
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
+            position: "absolute",
+            top: 10,
+            left: 10,
+            zIndex: 1,
+            padding: "6px 10px",
+            borderRadius: "4px",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            boxShadow: "0 1px 2px rgba(0, 0, 0, 0.15)",
+            fontSize: "12px",
+            lineHeight: 1.25,
+            pointerEvents: "none"
+          }}
+        >
+          Map data for {mappedSpeciesCount.toLocaleString()} species
+        </div>
         {keepAspectRatio !== true && (
           <>
             <NavigationControl />
