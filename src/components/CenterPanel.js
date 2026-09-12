@@ -1,4 +1,4 @@
-import PieChartNew from "./PieChartNew";
+import ThreatDonut from "./ThreatDonut";
 import Switch from "@mui/material/Switch";
 import Legend from "./LegendNew";
 import SearchBar from "./SearchBarNew";
@@ -73,11 +73,12 @@ export default function CenterPanel(props) {
         />
       </div>
       <div className="searchBarWrapper centerPanelChart">
-        <PieChartNew
+        <ThreatDonut
           data={data}
           getThreatLevel={getSpeciesThreatLevel}
           threatType={threatType}
           colorBlind={colorBlind}
+          size={70}
         />
       </div>
       <div

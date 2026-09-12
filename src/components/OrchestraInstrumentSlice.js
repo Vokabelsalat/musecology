@@ -12,16 +12,15 @@ import { replaceSpecialCharacters } from "../utils/utils";
 const positioning = {
   Strings: {
     textOffset: "50%",
-    threatOffset: -0.5,
     threatVerticalOffset: 8,
     textVerticalOffset: 7,
     textAlign: "middle"
   },
-  Woodwinds: { textOffset: "23%", threatOffset: 0.14, textAlign: "start" },
-  Percussion: { textOffset: "40%", threatOffset: 0.3, textAlign: "start" },
-  Brasses: { textOffset: "25%", threatOffset: 0.15, textAlign: "start" },
-  Plucked: { textOffset: "35%", threatOffset: 0.25, textAlign: "start" },
-  Keyboard: { textOffset: "30%", threatOffset: 0.2, textAlign: "start" }
+  Woodwinds: { textOffset: "23%", textAlign: "start" },
+  Percussion: { textOffset: "40%", textAlign: "start" },
+  Brasses: { textOffset: "25%", textAlign: "start" },
+  Plucked: { textOffset: "35%", textAlign: "start" },
+  Keyboard: { textOffset: "30%", textAlign: "start" }
 };
 
 export default function OrchestraInstrumentSlice(props) {
@@ -68,8 +67,7 @@ export default function OrchestraInstrumentSlice(props) {
         ? positioning[groupName].threatVerticalOffset
         : 0),
     arcOptions.start,
-    arcOptions.end,
-    positioning[groupName].threatOffset
+    arcOptions.end
   );
 
   return (

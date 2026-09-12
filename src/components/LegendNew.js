@@ -178,7 +178,7 @@ export default function Legend(props) {
           }}
         >
           <div style={{ textAlign: "center", lineHeight: "1.7em" }}>
-            IUCN Red List
+            IUCN Red List v.2026-1
             <a
               href="https://www.iucnredlist.org/about/regional"
               target="_blank"

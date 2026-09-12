@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as turf from "@turf/turf";
 import colorsys from "colorsys";
 import * as d3Scale from "d3-scale";
-import { nanoid } from "nanoid";
 import {
   forwardRef,
   useCallback,
@@ -13,6 +12,7 @@ import {
   useState
 } from "react";
 import DiversityScale from "./DiversityScale";
+import ThreatDonut from "./ThreatDonut";
 
 import ReactMapGL, {
   Layer,
@@ -27,6 +27,7 @@ import { TooltipContext } from "./TooltipProvider";
 
 import { bgciAssessment } from "../utils/timelineUtils";
 import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
+import compareThreatCategories from "../utils/compareThreatCategories";
 import mapboxAccessToken from "../config/mapbox";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
@@ -68,6 +69,13 @@ const cacheMarker = (cache, key, createMarker) => {
   }
   return marker;
 };
+
+const getThreatSignature = (data) =>
+  Object.values(data)
+    .filter(Boolean)
+    .map((threat) => `${threat.assessmentType}:${threat.abbreviation}`)
+    .sort()
+    .join(",");
 
 // querySourceFeatures can return the same logical feature from multiple tiles.
 const getSourceFeatureKey = (feature, unclusteredProperty) => {
@@ -975,20 +983,14 @@ const MapComponent = forwardRef((props, ref) => {
 
       props.data = data;
 
-      const threatNumvalues = Object.values(data).map((threat) => {
-        return threat.numvalue;
-      });
-
-      const markerKey = `${threatNumvalues
-        .sort()
-        .join()}${threatType}${colorBlind}EcoMarker${JSON.stringify(
+      const markerKey = `${getThreatSignature(data)}${threatType}${colorBlind}${showThreatDonuts}EcoMarker${JSON.stringify(
         timeFrame
       )}`;
 
       const markerElement = cacheMarker(
         ecoThreatMarkersCache.current,
         markerKey,
-        () => createDonutChart(props)
+        () => createClusterDonut(props)
       );
       newMarkers.push({
         id: featureKey,
@@ -1071,17 +1073,12 @@ const MapComponent = forwardRef((props, ref) => {
       props.data = data;
       props.countriesArray = countriesArray;
 
-      const threatNumvalues = Object.values(data).map((threat) => {
-        return threat.numvalue;
-      });
-      const markerKey = `${threatNumvalues
-        .sort()
-        .join()}${threatType}${colorBlind}${JSON.stringify(timeFrame)}`;
+      const markerKey = `${getThreatSignature(data)}${threatType}${colorBlind}${showThreatDonuts}${JSON.stringify(timeFrame)}`;
 
       const markerElement = cacheMarker(
         capitalMarkerCache.current,
         markerKey,
-        () => createDonutChart(props)
+        () => createClusterDonut(props)
       );
 
       newMarkers.push({
@@ -1102,89 +1099,39 @@ const MapComponent = forwardRef((props, ref) => {
     }, {});
   }
 
-  function createDonutChart(props) {
-    const offsets = [];
-
-    // const counts = [props.mag1, props.mag2, props.mag3, props.mag4, props.mag5];
-    const data = props.data;
-
-    const grouped = groupBy(Object.values(data), "numvalue");
-
-    const sortedGroupedKeys = Object.keys(grouped).sort().reverse();
-
-    let total = 0;
-    for (const group of sortedGroupedKeys) {
-      offsets.push(total);
-      total += grouped[group].length;
+  function createClusterDonut(props) {
+    const grouped = new Map();
+    for (const threat of Object.values(props.data)) {
+      if (!threat) continue;
+      const key = `${threat.assessmentType}-${threat.abbreviation}`;
+      const category = grouped.get(key) ?? {
+        abbreviation: threat.abbreviation,
+        name: threat.name,
+        color: threat.getColor(colorBlind),
+        numvalue: threat.numvalue,
+        sort: threat.sort,
+        count: 0
+      };
+      category.count += 1;
+      grouped.set(key, category);
     }
+    const distribution = [...grouped.values()];
+    const total = distribution.reduce(
+      (sum, category) => sum + category.count,
+      0
+    );
 
     const fontSize =
       total >= 100 ? 16 : total >= 50 ? 14 : total >= 10 ? 12 : 11;
-    const r = total >= 100 ? 30 : total >= 50 ? 24 : total >= 10 ? 18 : 12;
-    const r0 = Math.round(r * 0.7);
-    const w = r * 2;
+    const size = total >= 100 ? 60 : total >= 50 ? 48 : total >= 10 ? 36 : 24;
 
     return (
-      <svg
-        width={`${w}`}
-        height={`${w}`}
-        viewBox={`0 0 ${w} ${w}`}
-        textAnchor="middle"
-      >
-        <circle
-          cx={r}
-          cy={r}
-          r={r}
-          fill="white"
-          opacity={0.75}
-          stroke={showThreatDonuts === "white" ? "gray" : "none"}
-        ></circle>
-        {showThreatDonuts && showThreatDonuts !== "white" && (
-          <g transform={"translate(1, 1)"}>
-            {sortedGroupedKeys.map((item, index) => {
-              return donutSegment(
-                offsets[index] / total,
-                (offsets[index] + grouped[item].length) / total,
-                r - 1,
-                r0 - 1,
-                grouped[item][0].getColor(colorBlind),
-                `donut-segment-${index}-${nanoid()}`
-              );
-            })}
-          </g>
-        )}
-        <text
-          fontSize={fontSize}
-          dominantBaseline="central"
-          transform={`translate(${r}, ${r})`}
-        >
-          {total.toLocaleString()}
-        </text>
-      </svg>
-    );
-  }
-
-  function donutSegment(start, end, r, r0, color, key) {
-    if (end - start === 1) end -= 0.00001;
-    const a0 = 2 * Math.PI * (start - 0.25);
-    const a1 = 2 * Math.PI * (end - 0.25);
-    const x0 = Math.cos(a0),
-      y0 = Math.sin(a0);
-    const x1 = Math.cos(a1),
-      y1 = Math.sin(a1);
-    const largeArc = end - start > 0.5 ? 1 : 0;
-
-    return (
-      <path
-        key={key}
-        d={`M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${
-          r + r * y0
-        } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${
-          r + r0 * x1
-        } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${
-          r + r0 * y0
-        }`}
-        fill={`${color}`}
+      <ThreatDonut
+        distribution={distribution}
+        total={total}
+        size={size}
+        labelFontSize={fontSize}
+        showThreatDonuts={showThreatDonuts}
       />
     );
   }
@@ -1194,7 +1141,6 @@ const MapComponent = forwardRef((props, ref) => {
   useEffect(() => {
     let tmpHighlightLines = [...hoveredStateIds, selectedCountry]
       .map((e) => {
-        console.log("selectedCountry", e, countryRomnamToMyID[e]);
         if (
           ecoRegionsHighlightLinesIndex &&
           ecoRegionsHighlightLinesIndex.hasOwnProperty(e)
@@ -1277,8 +1223,9 @@ const MapComponent = forwardRef((props, ref) => {
               abbreviation: threat.abbreviation,
               name: threat.name,
               color: threat.getColor(colorBlind),
+              numvalue: threat.numvalue,
               count: 0,
-              sort: threat.numvalue
+              sort: threat.sort
             };
             category.count += 1;
             groupedThreats.set(key, category);
@@ -1296,7 +1243,7 @@ const MapComponent = forwardRef((props, ref) => {
                   ? "Trade threat"
                   : "Conservation threat",
               threatDistribution: [...groupedThreats.values()].sort(
-                (a, b) => a.sort - b.sort
+                compareThreatCategories
               )
             }
           });

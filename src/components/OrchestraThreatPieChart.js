@@ -1,11 +1,8 @@
-import { transform } from "proj4";
 import { useMemo } from "react";
-import PieChartNew from "./PieChartNew";
-import { replaceSpecialCharacters } from "../utils/utils";
+import ThreatDonut from "./ThreatDonut";
 
 export default function OrchestraThreatPieChart(props) {
   const {
-    id,
     group,
     position,
     angle,
@@ -17,8 +14,8 @@ export default function OrchestraThreatPieChart(props) {
     showThreatDonuts = true
   } = props;
 
-  const width = 75;
-  const height = 75;
+  const width = 40;
+  const height = 40;
 
   const processedSpecies = useMemo(() => {
     let tmpData = {};
@@ -55,8 +52,7 @@ export default function OrchestraThreatPieChart(props) {
         }}
       >
         {
-          <PieChartNew
-            id={`${replaceSpecialCharacters(id)}ThreatPie`}
+          <ThreatDonut
             data={processedSpecies}
             getThreatLevel={getThreatLevel}
             threatType={threatType}

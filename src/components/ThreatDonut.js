@@ -1,3 +1,5 @@
+import compareThreatCategories from "../utils/compareThreatCategories";
+
 const polarPoint = (radius, angle, center) => ({
   x: center + radius * Math.cos(angle),
   y: center + radius * Math.sin(angle)
@@ -22,8 +24,45 @@ const donutSegment = (start, end, outerRadius, innerRadius, center) => {
   ].join(" ");
 };
 
-export default function ThreatDonut({ distribution = [], total = 0, size = 76 }) {
-  const categories = distribution.filter((category) => category.count > 0);
+export default function ThreatDonut({
+  distribution,
+  total,
+  data,
+  getThreatLevel,
+  threatType,
+  colorBlind,
+  showThreatDonuts = true,
+  labelFontSize,
+  size = 76
+}) {
+  // Orchestra and center-panel charts provide species; map tooltips provide
+  // an already grouped distribution.
+  if (distribution == null && data != null) {
+    const grouped = new Map();
+    for (const species of Object.keys(data)) {
+      const threat = getThreatLevel(species, threatType);
+      if (!threat) continue;
+
+      const category = grouped.get(threat.abbreviation) ?? {
+        abbreviation: threat.abbreviation,
+        name: threat.name,
+        color: threat.getColor(colorBlind),
+        numvalue: threat.numvalue,
+        sort: threat.sort,
+        count: 0
+      };
+      category.count += 1;
+      grouped.set(threat.abbreviation, category);
+    }
+    distribution = [...grouped.values()];
+    total = distribution.reduce((sum, category) => sum + category.count, 0);
+  }
+
+  const categories = (distribution ?? [])
+    .filter((category) => category.count > 0)
+    .sort(compareThreatCategories);
+
+  const speciesTotal = total ?? 0;
   let offset = 0;
   const center = size / 2;
   const outerRadius = center - 2;
@@ -35,7 +74,8 @@ export default function ThreatDonut({ distribution = [], total = 0, size = 76 })
       height={size}
       viewBox={`0 0 ${size} ${size}`}
       role="img"
-      aria-label={`${total.toLocaleString()} species by threat category`}
+      aria-label={`${speciesTotal.toLocaleString()} species by threat category`}
+      style={{ display: "block" }}
     >
       <circle
         cx={center}
@@ -44,31 +84,41 @@ export default function ThreatDonut({ distribution = [], total = 0, size = 76 })
         fill="#f3f4f6"
         stroke="#d1d5db"
       />
-      {total > 0 &&
+      {speciesTotal > 0 &&
         categories.map((category) => {
-          const start = offset / total;
+          const start = offset / speciesTotal;
           offset += category.count;
           // Avoid a coincident arc when a single category occupies the circle.
-          const end = Math.min(offset / total, 0.999999);
+          const end = Math.min(offset / speciesTotal, 0.999999);
           return (
             <path
               key={`${category.abbreviation}-${category.name}`}
               d={donutSegment(start, end, outerRadius, innerRadius, center)}
-              fill={category.color}
+              fill={showThreatDonuts === "white" ? "white" : category.color}
+              stroke={showThreatDonuts === "white" ? "gray" : "none"}
             />
           );
         })}
-      <circle cx={center} cy={center} r={innerRadius - 1} fill="white" />
+      <circle
+        cx={center}
+        cy={center}
+        r={innerRadius - 1}
+        fill="white"
+        stroke={showThreatDonuts === "white" ? "gray" : "none"}
+      />
       <text
         x={center}
         y={center}
         textAnchor="middle"
         dominantBaseline="central"
-        fontSize={total >= 1000 ? 12 : 14}
-        fontWeight="600"
+        fontSize={
+          labelFontSize ??
+          (size < 20 ? 5 : size < 50 ? 9 : speciesTotal >= 1000 ? 12 : 14)
+        }
+        // fontWeight="600"
         fill="#171717"
       >
-        {total.toLocaleString()}
+        {data == null || speciesTotal > 0 ? speciesTotal.toLocaleString() : ""}
       </text>
     </svg>
   );

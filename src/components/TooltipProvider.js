@@ -4,13 +4,7 @@ import {
   useTooltip,
   useTooltipInPortal
 } from "@visx/tooltip";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import Tooltip from "./Tooltip";
 
 const tooltipStyles = {
@@ -18,12 +12,6 @@ const tooltipStyles = {
   backgroundColor: "rgba(248,248,248,1.0)",
   color: "#171717",
   padding: 6
-  /* WebkitBoxShadow:
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  MozBoxShadow:
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  boxShadow:
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" */
 };
 
 export const TooltipContext = createContext(null);
