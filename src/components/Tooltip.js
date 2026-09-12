@@ -1,11 +1,10 @@
 import { isEmojiSupported } from "is-emoji-supported";
-import { useContext, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { ReactCountryFlag } from "react-country-flag";
-import { useRefDimensions } from "./Story/useRefDimensions";
 import ThreatCode from "./ThreatCode";
 import ThreatIcon from "./ThreatIcon";
+import ThreatDonut from "./ThreatDonut";
 import { createProxyPhoto } from "./TimelineFront";
-import { TooltipContext } from "./TooltipProvider";
 
 export const langUnicode = {
   de: "DE",
@@ -28,13 +27,15 @@ const getLatestAssessment = (assessments) => {
 const createSpeciesPhoto = (imageLink, dummyLink) => {
   if (imageLink != null && imageLink.length > 0) {
     return (
-      <div className="h-auto w-[300px]">
+      <div className="h-auto w-[300px] max-h-[200px]">
         <img src={imageLink[0].link} />
       </div>
     );
   } else if (dummyLink != null) {
     return (
-      <div className="h-auto w-[300px]">{createProxyPhoto(dummyLink)}</div>
+      <div className="h-auto w-[300px] max-h-[200px]">
+        {createProxyPhoto(dummyLink)}
+      </div>
     );
   } else {
     return <></>;
@@ -61,32 +62,168 @@ const getImageSource = (imageLink, dummyLink) => {
 };
 
 export default function Tooltip(props) {
-  const { speciesLabels } = props;
-
-  const { tooltipText, tooltipMode, tooltipPosition, tooltipOptions } =
-    useContext(TooltipContext);
-
-  const tooltipRef = useRef(null);
-
-  const dims = useRefDimensions(tooltipRef);
-
-  const position = useMemo(() => {
-    const test = {
-      x: Math.min(
-        window.innerWidth - dims.width,
-        (tooltipPosition != null ? tooltipPosition.x : 0) + 25
-      ),
-      y: Math.min(
-        window.innerHeight - dims.height,
-        (tooltipPosition != null ? tooltipPosition.y : 0) + 25
-      )
-    };
-    return test;
-  }, [dims, tooltipPosition]);
+  const { speciesLabels, tooltipMode, tooltipText, tooltipOptions } = props;
 
   const tooltipContent = useMemo(() => {
     if (tooltipMode === "text") {
       return tooltipText;
+    } else if (tooltipMode === "assessment") {
+      const assessmentAndElement = tooltipText;
+
+      return (
+        <div className="flex flex-col gap-1 max-w-80">
+          <div className="font-bold text-[medium] mb-1">
+            <span className="italic">{assessmentAndElement.species}</span>
+            {` (${assessmentAndElement.author})`}
+          </div>
+          {assessmentAndElement.assessment.assessmentType === "CITES" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">CITES Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">CITES: </span>
+                <span>{`${assessmentAndElement.element.year} – Appendix ${assessmentAndElement.element.appendix}`}</span>
+              </div>
+              {assessmentAndElement.element.annotation && (
+                <div>
+                  <span className="font-bold">Annotation: </span>
+                  <span>{assessmentAndElement.element.annotation}</span>
+                </div>
+              )}
+              {assessmentAndElement.element.hash_annotation && (
+                <div>
+                  <div className="font-bold">
+                    Annotation for traded commodities:
+                  </div>
+                  <div>{`${assessmentAndElement.element.hash_annotation.symbol} ${assessmentAndElement.element.hash_annotation.note}`}</div>
+                </div>
+              )}
+            </>
+          )}
+          {assessmentAndElement.assessment.assessmentType === "IUCN" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">IUCN Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">IUCN: </span>
+                <span>{`${assessmentAndElement.element.year} – ${assessmentAndElement.assessment.name} (${assessmentAndElement.assessment.abbreviation})`}</span>
+              </div>
+              <div>
+                <span className="font-bold">Assessment Year: </span>
+                <span>{`${new Date(
+                  assessmentAndElement.element.assessmentDate
+                ).getFullYear()}`}</span>
+              </div>
+              {assessmentAndElement.element.reasonOfChange != null && (
+                <div className="italic">
+                  {assessmentAndElement.element.reasonOfChange === "N"
+                    ? "non-genuine status change"
+                    : assessmentAndElement.element.reasonOfChange === "G"
+                      ? "genuine status change"
+                      : "previous listing was an error"}
+                </div>
+              )}
+            </>
+          )}
+          {assessmentAndElement.assessment.assessmentType === "BGCI" && (
+            <>
+              {assessmentAndElement.element.foundBy && (
+                <div>
+                  <span className="font-bold">BGCI Synonym: </span>
+                  <span className="italic">{`${assessmentAndElement.element.foundBy.taxonName}`}</span>
+                  {` (${assessmentAndElement.element.foundBy.author})`}
+                </div>
+              )}
+              <div>
+                <span className="font-bold">BGCI: </span>
+                <span>
+                  {`${assessmentAndElement.assessment.name} (${assessmentAndElement.assessment.abbreviation})`}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold">Assessment Year: </span>
+                <span>{assessmentAndElement.element.year}</span>
+              </div>
+              <div>
+                <span className="font-bold">Reference: </span>
+                <span>{`${assessmentAndElement.element.reference}`}</span>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    } else if (tooltipMode === "map") {
+      const {
+        title,
+        countryCode,
+        speciesCount = 0,
+        threatLabel,
+        threatDistribution = []
+      } = tooltipOptions ?? {};
+
+      return (
+        <div className="min-w-[230px] max-w-[300px] p-1">
+          <div className="flex items-center gap-2 text-[medium] font-bold">
+            {countryCode && (
+              <ReactCountryFlag
+                style={{ fontSize: "1.5em", lineHeight: "1.5em" }}
+                countryCode={countryCode}
+                svg={!isEmojiSupported("🇬🇧")}
+                aria-label={`${title} flag`}
+              />
+            )}
+            <span>{title}</span>
+          </div>
+          <div className="mt-1 text-neutral-600">
+            {speciesCount.toLocaleString()} mapped species
+          </div>
+          <div className="mt-2 flex items-center gap-3">
+            <ThreatDonut
+              distribution={threatDistribution}
+              total={speciesCount}
+            />
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 text-xs font-bold uppercase tracking-wide text-neutral-500">
+                {threatLabel}
+              </div>
+              {threatDistribution.length > 0 ? (
+                <div className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-0.5">
+                  {threatDistribution.map((category) => (
+                    <div
+                      className="contents"
+                      key={`${category.abbreviation}-${category.name}`}
+                    >
+                      <span
+                        className="inline-block size-2.5 rounded-full"
+                        style={{ backgroundColor: category.color }}
+                      />
+                      <span className="truncate" title={category.name}>
+                        {category.abbreviation}
+                      </span>
+                      <span className="tabular-nums">
+                        {category.count.toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-neutral-500">No species data</div>
+              )}
+            </div>
+          </div>
+          <div className="italic mt-1">Click to filter!</div>
+        </div>
+      );
     } else if (tooltipMode === "species") {
       const species = tooltipText;
       const labels = speciesLabels[species];
@@ -100,7 +237,7 @@ export default function Tooltip(props) {
           </b>
           <div className="flex gap-3">
             {Object.keys(labels).map((language) => {
-              if (labels[language] == null) {
+              if (labels[language] == null || labels[language].length === 0) {
                 return <></>;
               } else {
                 return (
@@ -113,7 +250,7 @@ export default function Tooltip(props) {
                       countryCode={langUnicode[language]}
                       svg={!isEmojiSupported("🇬🇧")}
                     />{" "}
-                    {labels[language]}
+                    {labels[language].join(", ")}
                   </div>
                 );
               }
@@ -187,12 +324,13 @@ export default function Tooltip(props) {
     } else {
       return "";
     }
-  }, [tooltipText, tooltipMode, tooltipOptions]);
+  }, [speciesLabels, tooltipText, tooltipMode, tooltipOptions]);
 
   if (tooltipText === "" || tooltipText == null) {
     return <></>;
   } else {
-    return (
+    return tooltipContent;
+    /* return (
       <div
         ref={tooltipRef}
         style={{
@@ -208,6 +346,6 @@ export default function Tooltip(props) {
       >
         <div className="relative size-full">{tooltipContent}</div>
       </div>
-    );
+    ); */
   }
 }

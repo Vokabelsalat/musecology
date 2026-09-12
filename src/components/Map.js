@@ -26,6 +26,7 @@ import { useContext } from "react";
 import { TooltipContext } from "./TooltipProvider";
 
 import { bgciAssessment } from "../utils/timelineUtils";
+import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
 import mapboxAccessToken from "../config/mapbox";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
@@ -119,9 +120,30 @@ const MapComponent = forwardRef((props, ref) => {
 
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
   const [showLegend, setShowLegend] = useState(false);
+  const [showCountrySourcePriority, setShowCountrySourcePriority] =
+    useState(false);
+  const countrySourcePriorityRef = useRef(null);
   const legendRef = useRef(null);
   const [isTerrestial, setTerrestial] = useState(true);
   const { setTooltip } = useContext(TooltipContext);
+
+  useEffect(() => {
+    if (!showCountrySourcePriority) return;
+
+    const handleOutsidePointerDown = (event) => {
+      if (!countrySourcePriorityRef.current?.contains(event.target)) {
+        setShowCountrySourcePriority(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown, true);
+    return () =>
+      document.removeEventListener(
+        "pointerdown",
+        handleOutsidePointerDown,
+        true
+      );
+  }, [showCountrySourcePriority]);
 
   const setDivScaleWithType = useCallback((scaleAndType) => {
     /* console.log("set", scaleAndType); */
@@ -289,11 +311,9 @@ const MapComponent = forwardRef((props, ref) => {
       case "ecoregions":
       case "hexagons":
       case "protection": {
-        const mapData =
-          mapMode === "hexagons" ? speciesHexas : speciesEcos;
-        return Object.values(mapData).filter((value) =>
-          hasEntries(value, true)
-        ).length;
+        const mapData = mapMode === "hexagons" ? speciesHexas : speciesEcos;
+        return Object.values(mapData).filter((value) => hasEntries(value, true))
+          .length;
       }
       case "orchestras":
       case "countries":
@@ -1580,23 +1600,96 @@ const MapComponent = forwardRef((props, ref) => {
         }}
       >
         <div
-          role="status"
-          aria-live="polite"
+          ref={countrySourcePriorityRef}
           style={{
             position: "absolute",
             top: 10,
             left: 10,
             zIndex: 1,
-            padding: "6px 10px",
-            borderRadius: "4px",
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            boxShadow: "0 1px 2px rgba(0, 0, 0, 0.15)",
-            fontSize: "12px",
-            lineHeight: 1.25,
-            pointerEvents: "none"
+            width: showCountrySourcePriority
+              ? "min(340px, calc(100% - 20px))"
+              : "auto",
+            borderRadius: "6px",
+            backgroundColor: "rgba(255, 255, 255, 0.96)",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.18)",
+            fontSize: "13px",
+            lineHeight: 1.35,
+            color: "#1e212e",
+            pointerEvents: "auto",
+            overflow: "hidden"
           }}
+          onClick={(event) => event.stopPropagation()}
+          onDoubleClick={(event) => event.stopPropagation()}
         >
-          Map data for {mappedSpeciesCount.toLocaleString()} species
+          <button
+            type="button"
+            aria-expanded={showCountrySourcePriority}
+            aria-controls="country-source-priority"
+            onClick={() =>
+              setShowCountrySourcePriority((isExpanded) => !isExpanded)
+            }
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "12px",
+              width: "100%",
+              padding: "8px 10px",
+              border: 0,
+              background: "transparent",
+              color: "inherit",
+              font: "inherit",
+              fontWeight: 600,
+              textAlign: "left",
+              cursor: "pointer"
+            }}
+          >
+            <span aria-live="polite">
+              {mappedSpeciesCount.toLocaleString()} mapped species
+            </span>
+            <span aria-hidden="true">
+              {showCountrySourcePriority ? "−" : "+"}
+            </span>
+          </button>
+
+          {showCountrySourcePriority && (
+            <div
+              id="country-source-priority"
+              style={{
+                padding: "0 12px 12px",
+                borderTop: "1px solid rgba(30, 33, 46, 0.14)"
+              }}
+            >
+              <p style={{ margin: "10px 0 8px" }}>
+                <strong>Country mapping source priority</strong>
+              </p>
+              <p style={{ margin: "0 0 10px" }}>
+                The first source with country data is used; results from later
+                sources are not combined.
+              </p>
+              <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                {COUNTRY_SOURCE_PRIORITY.map((source) => (
+                  <li key={source.field} style={{ marginBottom: "8px" }}>
+                    {source.href ? (
+                      <a
+                        href={source.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: "#095e8e", fontWeight: 600 }}
+                      >
+                        {source.name}
+                      </a>
+                    ) : (
+                      <strong>{source.name}</strong>
+                    )}
+                    <span style={{ display: "block" }}>
+                      {source.description}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
         </div>
         {keepAspectRatio !== true && (
           <>

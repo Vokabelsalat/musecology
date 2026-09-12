@@ -11,7 +11,7 @@ import {
   useMemo,
   useState
 } from "react";
-import Tooltip from "./TooltipNew";
+import Tooltip from "./Tooltip";
 
 const tooltipStyles = {
   ...defaultStyles,

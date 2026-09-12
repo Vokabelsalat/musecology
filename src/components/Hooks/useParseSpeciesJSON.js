@@ -5,6 +5,7 @@ import {
   bgciAssessment,
   citesAssessment
 } from "../../utils/timelineUtils";
+import { COUNTRY_SOURCE_PRIORITY } from "../../utils/countrySourcePriority";
 import { returnImageLink, returnDummyLink, returnImageLinks } from "../Home";
 
 export function useParseSpeciesJSON(i_speciesData, slice) {
@@ -244,33 +245,11 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       };
 
       let tmpCountries = [];
-      // if (spec === "Dalbergia scorpioides") {
-      //   console.log("HERE", spec, speciesObj);
-      // }
-
-      if (
-        speciesObj.hasOwnProperty("treeCountries") && //bgci
-        speciesObj["treeCountries"].length > 0
-      ) {
-        tmpCountries = speciesObj["treeCountries"];
-      } else {
-        if (
-          speciesObj.hasOwnProperty("iucnCountries") &&
-          speciesObj["iucnCountries"].length > 0
-        ) {
-          tmpCountries = speciesObj["iucnCountries"];
-        } else {
-          // console.log("HERE using POWO countries", speciesObj, spec);
-
-          if (speciesObj.hasOwnProperty("powoCountries") && speciesObj["powoCountries"].length > 0) {
-            // console.log(spec, speciesObj["powoCountries"]);
-            tmpCountries = speciesObj["powoCountries"];
-          }
-          else {
-           if (speciesObj.hasOwnProperty("manualCountries") && speciesObj["manualCountries"].length > 0) {
-              tmpCountries = speciesObj["manualCountries"];
-            } 
-          }
+      for (const source of COUNTRY_SOURCE_PRIORITY) {
+        const countries = speciesObj[source.field];
+        if (Array.isArray(countries) && countries.length > 0) {
+          tmpCountries = countries;
+          break;
         }
       }
 
