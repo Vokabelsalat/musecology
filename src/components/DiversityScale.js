@@ -16,19 +16,13 @@ import { iucnAssessment } from "../utils/timelineUtils";
 import SpeciesIcon from "./SpeciesIcon";
 
 export default function DiversityScale(props) {
-  const { scales = {}, className, setMapMode, colorBlind } = props;
-  /*   const stringedScales = JSON.stringify(scales);
-
-  const scale = useMemo(() => {
-    const parsed = JSON.parse(stringedScales);
-    if (parsed.hasOwnProperty(mapMode)) {
-      return JSON.parse(stringedScales)[mapMode];
-    } else {
-      return [];
-    }
-  }, [stringedScales, mapMode]);
-
-  console.log(scales, mapMode, scale); */
+  const {
+    scales = {},
+    className,
+    setMapMode,
+    colorBlind,
+    onSegmentHover
+  } = props;
 
   const scale = scales.scale ?? [];
   const mapMode = scales.type ?? "countries";
@@ -67,17 +61,31 @@ export default function DiversityScale(props) {
     //let width =
     let col = 1;
 
-    for (let scaleValue of scale) {
+    for (let index = 0; index < scale.length; index += 1) {
+      const scaleValue = scale[index];
       scaleElements.push(
         <div
           key={"scaleElement" + scaleValue.scaleValue}
           className="scaleElement"
+          tabIndex={0}
+          aria-label={
+            mapMode === "protection"
+              ? `Highlight protection category ${scaleValue.scaleValue}`
+              : `Highlight ${mapMode} with ${scaleValue.scaleValue}${
+                  scale[index + 1]
+                    ? ` to less than ${scale[index + 1].scaleValue}`
+                    : " or more"
+                }`
+          }
+          onMouseEnter={() => onSegmentHover?.({ type: mapMode, index })}
+          onMouseLeave={() => onSegmentHover?.(null)}
+          onFocus={() => onSegmentHover?.({ type: mapMode, index })}
+          onBlur={() => onSegmentHover?.(null)}
           style={{
             gridColumnStart: col,
             gridColumnEnd: col,
             gridRowStart: 1,
-            gridRowEnd: 1,
-            height: "20px"
+            gridRowEnd: 1
           }}
         >
           <div
@@ -115,13 +123,12 @@ export default function DiversityScale(props) {
     }
 
     return { scaleElements, typeText, typeTextSecond, col };
-  }, [scale, mapMode]);
+  }, [scale, mapMode, onSegmentHover]);
 
   const orangeIconColor = iucnAssessment.get("CR").getColor(colorBlind);
   const redIconColor = iucnAssessment.get("EX").getColor(colorBlind);
   const yellowIconColor = iucnAssessment.get("NT").getColor(colorBlind);
   const greenIconColor = iucnAssessment.get("LC").getColor(colorBlind);
-  const neutralIconColor = "gray";
 
   const blueIconColor = "rgba(45, 45, 255, 0.8)";
 
@@ -188,22 +195,6 @@ export default function DiversityScale(props) {
             ></div>
           </>
         );
-      /* case "ecoregionsmar":
-        return (
-          <>
-            <div className="flex gap-1 items-center">
-              <SpeciesIcon
-                animalColor={orangeIconColor}
-                plantColor={yellowIconColor}
-                neutralColor={greenIconColor}
-              />
-              <div className="text-sm/6 text-nowrap">
-                Species<span className="maplayer-devider">/</span>Mar. Ecoregion
-              </div>
-            </div>
-            <FontAwesomeIcon icon={faWater} color={blueIconColor} />
-          </>
-        ); */
       case "orchestras":
         return (
           <>
@@ -302,7 +293,6 @@ export default function DiversityScale(props) {
       >
         <div
           style={{
-            /* whiteSpace: "break-spaces", */
             textAlign: "center",
             height: "100%",
             alignSelf: "center",
@@ -311,7 +301,6 @@ export default function DiversityScale(props) {
             marginLeft: "5px"
           }}
         >
-          {/* <div style={{textWrapMode: "nowrap", height: "100%", display: "flex"}}>{typeText}<span className="maplayer-devider">/</span>{typeTextSecond}</div> */}
           <div className="mx-auto h-full">
             <Listbox value={mapMode} onChange={setMapMode}>
               <ListboxButton className="relative block w-full rounded-[4px] bg-white border border-gray-400 py-1 pr-7 pl-1 text-left text-sm/6 focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25">
@@ -361,6 +350,4 @@ export default function DiversityScale(props) {
       </div>
     </div>
   );
-
-  //return <div style={{  }}></div>;
 }

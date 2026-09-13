@@ -28,6 +28,10 @@ import { TooltipContext } from "./TooltipProvider";
 import mapboxAccessToken from "../config/mapbox";
 import compareThreatCategories from "../utils/compareThreatCategories";
 import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
+import {
+  getDiversityFilter,
+  getDiversityRange
+} from "../utils/diversityHighlight";
 import { bgciAssessment } from "../utils/timelineUtils";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
@@ -47,6 +51,20 @@ function SpeciesHighlightLayer({ id, source, property, ids }) {
       type="fill"
       beforeId="highlightLines"
       filter={["in", ["to-string", ["get", property]], ["literal", ids]]}
+      paint={speciesHighlightPaint}
+    />
+  );
+}
+
+function DiversityHighlightLayer({ id, source, property, range, categorical }) {
+  if (!range) return null;
+  return (
+    <Layer
+      id={id}
+      source={source}
+      type="fill"
+      beforeId="highlightLines"
+      filter={getDiversityFilter(property, range, categorical)}
       paint={speciesHighlightPaint}
     />
   );
@@ -147,6 +165,7 @@ const MapComponent = forwardRef((props, ref) => {
   } = props;
 
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
+  const [hoveredScaleSegment, setHoveredScaleSegment] = useState(null);
   const [showLegend, setShowLegend] = useState(false);
   const [showCountrySourcePriority, setShowCountrySourcePriority] =
     useState(false);
@@ -268,6 +287,17 @@ const MapComponent = forwardRef((props, ref) => {
         polygonFill: polygonFill
       };
     }, [activeMapLayer, formMapMode]);
+
+  const hoveredScaleRange = useMemo(() => {
+    if (hoveredScaleSegment?.type !== mapMode || divScale.type !== mapMode) {
+      return null;
+    }
+    return getDiversityRange(divScale.scale, hoveredScaleSegment.index);
+  }, [hoveredScaleSegment, divScale, mapMode]);
+
+  useEffect(() => {
+    setHoveredScaleSegment(null);
+  }, [mapMode]);
 
   const [countriesGeoJson, setCountriesGeoJson] = useState(null);
   const [countriesGeoJsonTest, setCountriesGeoJsonTest] = useState(null);
@@ -404,6 +434,15 @@ const MapComponent = forwardRef((props, ref) => {
       case "orchestras":
         max = orchestraHeatMapMax;
         break;
+      case "protection":
+        setDivScaleWithType({
+          type: mapMode,
+          scale: ["DD", "nT", "PT", "TH", "EX"].map((code, scaleValue) => ({
+            scaleValue,
+            scaleColor: bgciAssessment.get(code).getColor(colorBlind)
+          }))
+        });
+        return;
       default:
         max = 0;
         break;
@@ -439,7 +478,9 @@ const MapComponent = forwardRef((props, ref) => {
     orchestraHeatMapMax,
     hexagonHeatMapMax,
     ecoregionHeatMapMax,
-    countriesHeatMapMax
+    countriesHeatMapMax,
+    colorBlind,
+    setDivScaleWithType
   ]);
 
   useEffect(() => {
@@ -1354,6 +1395,7 @@ const MapComponent = forwardRef((props, ref) => {
               mapMode={mapMode}
               setMapMode={setFormMapMode}
               colorBlind={colorBlind}
+              onSegmentHover={setHoveredScaleSegment}
             />
           </div>
         </div>
@@ -1567,6 +1609,14 @@ const MapComponent = forwardRef((props, ref) => {
                 ids={hoveredCountryIsos}
               />
             )}
+            {mapMode === "countries" && (
+              <DiversityHighlightLayer
+                id="diversityCountries"
+                source="countriesSource"
+                property="speciesCount"
+                range={hoveredScaleRange}
+              />
+            )}
           </Source>
         )}
         {ecoregionHeatMap && ecoregionHeatMapMax && (
@@ -1601,6 +1651,14 @@ const MapComponent = forwardRef((props, ref) => {
                 source="ecoregionsource"
                 property={ecoregionIdKey}
                 ids={hoveredEcoregionIds}
+              />
+            )}
+            {mapMode === "ecoregions" && (
+              <DiversityHighlightLayer
+                id="diversityEcoregions"
+                source="ecoregionsource"
+                property="speciesCount"
+                range={hoveredScaleRange}
               />
             )}
           </Source>
@@ -1643,6 +1701,15 @@ const MapComponent = forwardRef((props, ref) => {
               source="ecoregionProtectionsource"
               property="ECO_ID"
               ids={hoveredEcoregionIds}
+            />
+          )}
+          {mapMode === "protection" && (
+            <DiversityHighlightLayer
+              id="diversityProtectionRegions"
+              source="ecoregionProtectionsource"
+              property="NNH"
+              range={hoveredScaleRange}
+              categorical
             />
           )}
         </Source>
@@ -1712,6 +1779,14 @@ const MapComponent = forwardRef((props, ref) => {
                 source="countriesOrchestraSource"
                 property="ISO3CD"
                 ids={hoveredCountryIsos}
+              />
+            )}
+            {mapMode === "orchestras" && (
+              <DiversityHighlightLayer
+                id="diversityOrchestraCountries"
+                source="countriesOrchestraSource"
+                property="orchestraCount"
+                range={hoveredScaleRange}
               />
             )}
           </Source>
@@ -1922,6 +1997,14 @@ const MapComponent = forwardRef((props, ref) => {
                 ids={hoveredHexagonIds}
               />
             )}
+            {mapMode === "hexagons" && (
+              <DiversityHighlightLayer
+                id="diversityHexagons"
+                source="hexagonsource"
+                property="speciesCount"
+                range={hoveredScaleRange}
+              />
+            )}
           </Source>
         )}
         {hexagonHeatMap && hexagonHeatMapMax && !polygonFill && (
@@ -1942,6 +2025,14 @@ const MapComponent = forwardRef((props, ref) => {
                 source="hexagonsource"
                 property="HexagonID"
                 ids={hoveredHexagonIds}
+              />
+            )}
+            {mapMode === "hexagons" && (
+              <DiversityHighlightLayer
+                id="diversityHexagons"
+                source="hexagonsource"
+                property="speciesCount"
+                range={hoveredScaleRange}
               />
             )}
           </Source>
