@@ -625,31 +625,44 @@ const MapComponent = forwardRef((props, ref) => {
     );
   }, [countriesDictionary]);
 
+  const hoveredSpeciesNames = useMemo(() => {
+    if (Array.isArray(hoveredSpecies)) return hoveredSpecies;
+    return hoveredSpecies ? [hoveredSpecies] : [];
+  }, [hoveredSpecies]);
+
   const hoveredCountryIsos = useMemo(() => {
-    if (!hoveredSpecies) return [];
     return [
       ...new Set(
-        (speciesCountries[hoveredSpecies] ?? [])
+        hoveredSpeciesNames
+          .flatMap((species) => speciesCountries[species] ?? [])
           .map((country) => countryNameToIso.get(country))
           .filter(Boolean)
       )
     ];
-  }, [hoveredSpecies, speciesCountries, countryNameToIso]);
+  }, [hoveredSpeciesNames, speciesCountries, countryNameToIso]);
 
   const hoveredEcoregionIds = useMemo(() => {
-    if (!hoveredSpecies) return [];
-    const regions = speciesEcos[hoveredSpecies];
     const regionType =
       isTerrestial || mapMode === "protection" ? "terrestrial" : "marine";
-    return [...new Set((regions?.[regionType] ?? []).map(String))];
-  }, [hoveredSpecies, speciesEcos, isTerrestial, mapMode]);
+    return [
+      ...new Set(
+        hoveredSpeciesNames
+          .flatMap((species) => speciesEcos[species]?.[regionType] ?? [])
+          .map(String)
+      )
+    ];
+  }, [hoveredSpeciesNames, speciesEcos, isTerrestial, mapMode]);
 
   const hoveredHexagonIds = useMemo(() => {
-    if (!hoveredSpecies) return [];
-    const hexagons = speciesHexas[hoveredSpecies];
     const regionType = isTerrestial ? "terrestrial" : "marine";
-    return [...new Set((hexagons?.[regionType] ?? []).map(String))];
-  }, [hoveredSpecies, speciesHexas, isTerrestial]);
+    return [
+      ...new Set(
+        hoveredSpeciesNames
+          .flatMap((species) => speciesHexas[species]?.[regionType] ?? [])
+          .map(String)
+      )
+    ];
+  }, [hoveredSpeciesNames, speciesHexas, isTerrestial]);
 
   useEffect(() => {
     let tmpExtraPolygonPaint = null;

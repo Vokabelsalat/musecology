@@ -10,6 +10,7 @@ export default function TreeMap(props) {
     filterTreeMap,
     getTreeThreatLevel,
     colorBlind,
+    setHoveredSpecies,
     headerOffset = 0
   } = props;
 
@@ -43,6 +44,7 @@ export default function TreeMap(props) {
               filterTreeMap={filterTreeMap}
               getTreeThreatLevel={getTreeThreatLevel}
               colorBlind={colorBlind}
+              setHoveredSpecies={setHoveredSpecies}
             />
           );
         })
@@ -53,6 +55,7 @@ export default function TreeMap(props) {
           filterTreeMap={filterTreeMap}
           getTreeThreatLevel={getTreeThreatLevel}
           colorBlind={colorBlind}
+          setHoveredSpecies={setHoveredSpecies}
         />
       )}
     </div>

@@ -104,6 +104,7 @@ export default function ThreatDonut({
         cy={center}
         r={innerRadius - 1}
         fill="white"
+        fillOpacity={0.0}
         stroke={showThreatDonuts === "white" ? "gray" : "none"}
       />
       <text

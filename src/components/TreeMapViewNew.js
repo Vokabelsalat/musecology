@@ -10,7 +10,8 @@ export default function TreeMapView(props) {
     treeMapFilter,
     setTreeMapFilter,
     getTreeThreatLevel,
-    colorBlind
+    colorBlind,
+    setHoveredSpecies
   } = props;
 
   const { kingdom, family, genus, species } = treeMapFilter;
@@ -133,6 +134,7 @@ export default function TreeMapView(props) {
         filterTreeMap={filterTreeMap}
         getTreeThreatLevel={getTreeThreatLevel}
         colorBlind={colorBlind}
+        setHoveredSpecies={setHoveredSpecies}
       />
     </div>
   );

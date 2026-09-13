@@ -1265,6 +1265,7 @@ path.handle:focus {
 
 .mapTileText {
   position: absolute;
+  pointer-events: none;
   left: 3px;
   top: 3px;
   color: white;

@@ -1,7 +1,16 @@
 import TreeMapTile from "./TreeMapTile";
 
 export default function TreeMapLevel(props) {
-  const { node, filterTreeMap, getTreeThreatLevel, colorBlind } = props;
+  const {
+    node,
+    filterTreeMap,
+    getTreeThreatLevel,
+    colorBlind,
+    setHoveredSpecies
+  } = props;
+  const speciesInLevel = node.leaves()
+    .filter((leaf) => leaf.data.filterDepth === 4)
+    .map((leaf) => leaf.data.name);
 
   return (
     <div
@@ -15,6 +24,8 @@ export default function TreeMapLevel(props) {
       onClick={() => {
         filterTreeMap(node);
       }}
+      onMouseEnter={() => setHoveredSpecies?.(speciesInLevel)}
+      onMouseLeave={() => setHoveredSpecies?.(null)}
       className="treeMapLevel"
     >
       {node.children ? (
