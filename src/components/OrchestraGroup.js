@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  polarToCartesian,
-  describeArc,
-  calculatePath
-} from "../utils/orchestraUtils";
-import InstrumentGroupIcon from "./InstrumentGroupIcon";
-import OrchestraThreatPieChart from "./OrchestraThreatPieChart";
+import { calculatePath } from "../utils/orchestraUtils";
 import OrchestraGroupContent from "./OrchestraGroupContent";
 import OrchestraInstruments from "./OrchestraInstruments";
 
@@ -25,10 +19,6 @@ export default function OrchestraGroup(props) {
     position,
     selected,
     setZoom,
-    getThreatLevel,
-    threatType,
-    colorBlind,
-    instruments,
     species,
     setInstrument,
     setInstrumentGroup,
@@ -40,8 +30,6 @@ export default function OrchestraGroup(props) {
   const groupSpecies = [...new Set(Object.values(species).flat())];
 
   const ref = useRef(null);
-  const iconTextRef = useRef(null);
-  const threatTextRef = useRef(null);
 
   const [highlight, setHighlight] = useState(false);
 

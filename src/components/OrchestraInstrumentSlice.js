@@ -1,26 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
+  calcMidPointOfArc,
   calculatePath,
-  describeArc,
-  calcMidPointOfArc
+  describeArc
 } from "../utils/orchestraUtils";
-import InstrumentGroupIcon from "./InstrumentGroupIcon";
-import OrchestraThreatPieChart from "./OrchestraThreatPieChart";
-import InstrumentThreatPieChart from "./InstrumentThreatPieChart";
 import { replaceSpecialCharacters } from "../utils/utils";
+import InstrumentThreatPieChart from "./InstrumentThreatPieChart";
 
 const positioning = {
   Strings: {
     textOffset: "50%",
     threatVerticalOffset: 8,
     textVerticalOffset: 7,
+    threatOffset: -0.5,
     textAlign: "middle"
   },
-  Woodwinds: { textOffset: "23%", textAlign: "start" },
-  Percussion: { textOffset: "40%", textAlign: "start" },
-  Brasses: { textOffset: "25%", textAlign: "start" },
-  Plucked: { textOffset: "35%", textAlign: "start" },
-  Keyboard: { textOffset: "30%", textAlign: "start" }
+  Woodwinds: { textOffset: "23%", threatOffset: 0.14, textAlign: "start" },
+  Percussion: { textOffset: "40%", threatOffset: 0.3, textAlign: "start" },
+  Brasses: { textOffset: "25%", threatOffset: 0.15, textAlign: "start" },
+  Plucked: { textOffset: "35%", threatOffset: 0.25, textAlign: "start" },
+  Keyboard: { textOffset: "30%", threatOffset: 0.2, textAlign: "start" }
 };
 
 export default function OrchestraInstrumentSlice(props) {
@@ -69,7 +68,8 @@ export default function OrchestraInstrumentSlice(props) {
         ? positioning[groupName].threatVerticalOffset
         : 0),
     arcOptions.start,
-    arcOptions.end
+    arcOptions.end,
+    positioning[groupName].threatOffset
   );
 
   return (
@@ -117,13 +117,11 @@ export default function OrchestraInstrumentSlice(props) {
           key={`textPath${id}${instrument}`}
           style={{ dominantBaseline: "central" }}
         >
-          {instrument === "Horn, trumpet, trombone, bass tuba" ? (
+          {instrument ===
+          "Violin bow| Viola bow| Cello bow| Double bass bow" ? (
             <>
               <tspan key="HornTrumpetText" dy="-0.5em">
-                Horn, trumpet,
-              </tspan>
-              <tspan key="TrombineBassTubaText" x="0" dy="1.5em">
-                trombone, bass tuba
+                String instrument bow
               </tspan>
             </>
           ) : (

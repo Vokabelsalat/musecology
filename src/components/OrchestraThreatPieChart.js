@@ -14,8 +14,10 @@ export default function OrchestraThreatPieChart(props) {
     showThreatDonuts = true
   } = props;
 
-  const width = 40;
-  const height = 40;
+  const size = 35;
+
+  const width = size;
+  const height = size;
 
   const processedSpecies = useMemo(() => {
     let tmpData = {};
@@ -57,7 +59,7 @@ export default function OrchestraThreatPieChart(props) {
             getThreatLevel={getThreatLevel}
             threatType={threatType}
             colorBlind={colorBlind}
-            size={40}
+            size={size}
             showThreatDonuts={showThreatDonuts}
           />
         }

@@ -33,6 +33,7 @@ export default function ThreatDonut({
   colorBlind,
   showThreatDonuts = true,
   labelFontSize,
+  className,
   size = 76
 }) {
   // Orchestra and center-panel charts provide species; map tooltips provide
@@ -76,6 +77,7 @@ export default function ThreatDonut({
       role="img"
       aria-label={`${speciesTotal.toLocaleString()} species by threat category`}
       style={{ display: "block" }}
+      className={className ?? ""}
     >
       {speciesTotal > 0 &&
         categories.map((category) => {

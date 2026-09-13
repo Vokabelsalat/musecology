@@ -27,9 +27,7 @@ export default function CenterPanel(props) {
 
   return (
     <div className="centerPanel">
-      <div
-        className="centerPanelSide centerPanelSideLeft"
-      >
+      <div className="centerPanelSide centerPanelSideLeft">
         <div
           style={{
             margin: 0,
@@ -79,11 +77,10 @@ export default function CenterPanel(props) {
           threatType={threatType}
           colorBlind={colorBlind}
           size={70}
+          className={"font-bold"}
         />
       </div>
-      <div
-        className="centerPanelSide centerPanelSideRight"
-      >
+      <div className="centerPanelSide centerPanelSideRight">
         <Legend
           type={"ecologically"}
           threatType={threatType}

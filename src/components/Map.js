@@ -1506,7 +1506,7 @@ const MapComponent = forwardRef((props, ref) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: "12px",
+              gap: "6px",
               width: "100%",
               padding: "4px 5px",
               border: 0,
