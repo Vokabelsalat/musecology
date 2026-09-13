@@ -130,6 +130,7 @@ export default function HomeNew(props) {
   const [treeMapFilter, setTreeMapFilter] = useState({});
 
   const [categoryFilter, setCategoryFilter] = useState(null);
+  const [hoveredTimelineSpecies, setHoveredTimelineSpecies] = useState(null);
   const mapRef = useRef(null);
 
   const slice = false;
@@ -516,6 +517,7 @@ export default function HomeNew(props) {
                         colorBlind={colorBlind}
                         domainYears={domainYears}
                         setTreeMapFilter={setTreeMapFilter}
+                        setHoveredSpecies={setHoveredTimelineSpecies}
                       />
                     </ResizeComponent>
                   )}
@@ -547,6 +549,7 @@ export default function HomeNew(props) {
                     speciesCountries={visibleSpeciesCountries}
                     speciesEcos={visibleSpeciesEcos}
                     speciesHexas={visibleSpeciesHexas}
+                    hoveredSpecies={hoveredTimelineSpecies}
                     colorBlind={colorBlind}
                     getSpeciesThreatLevel={getSpeciesSignThreat}
                     threatType={threatType}

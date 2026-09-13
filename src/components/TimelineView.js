@@ -17,7 +17,8 @@ export default function TimelineViewNew(props) {
     colorBlind,
     getTreeThreatLevel,
     filteredSpecies,
-    setTreeMapFilter
+    setTreeMapFilter,
+    setHoveredSpecies
   } = props;
 
   //const [x, setX] = useState(null);
@@ -108,6 +109,7 @@ export default function TimelineViewNew(props) {
                   dummyImageLink={dummyImageLinks[e]}
                   isAnimal={data[e].isAnimal}
                   setTreeMapFilter={setTreeMapFilter}
+                  setHoveredSpecies={setHoveredSpecies}
                 />
               );
             })}

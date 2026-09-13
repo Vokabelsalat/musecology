@@ -17,7 +17,8 @@ export default function TimelineNew(props) {
     dummyImageLink,
     isAnimal,
     timeFrame,
-    setTreeMapFilter
+    setTreeMapFilter,
+    setHoveredSpecies
   } = props;
 
   const { speciesName, genusName, kingdomName, familyName } = species;
@@ -86,8 +87,14 @@ export default function TimelineNew(props) {
           gridRowEnd: 1,
           width: "fit-content"
         }}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        onMouseEnter={(event) => {
+          onMouseEnter(event);
+          setHoveredSpecies?.(sciName);
+        }}
+        onMouseLeave={(event) => {
+          onMouseLeave(event);
+          setHoveredSpecies?.(null);
+        }}
       >
         <TimelineHeader
           species={species}
@@ -106,8 +113,14 @@ export default function TimelineNew(props) {
           gridRowStart: 2,
           gridRowEnd: 2
         }}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        onMouseEnter={(event) => {
+          onMouseEnter(event);
+          setHoveredSpecies?.(sciName);
+        }}
+        onMouseLeave={(event) => {
+          onMouseLeave(event);
+          setHoveredSpecies?.(null);
+        }}
       >
         <TimelineFront
           speciesName={sciName}

@@ -32,6 +32,25 @@ import { bgciAssessment } from "../utils/timelineUtils";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
 const MAX_MARKER_CACHE_SIZE = 256;
+const speciesHighlightPaint = {
+  "fill-color": "#83009b",
+  "fill-opacity": 0.45,
+  "fill-outline-color": "#570068"
+};
+
+function SpeciesHighlightLayer({ id, source, property, ids }) {
+  if (ids.length === 0) return null;
+  return (
+    <Layer
+      id={id}
+      source={source}
+      type="fill"
+      beforeId="highlightLines"
+      filter={["in", ["to-string", ["get", property]], ["literal", ids]]}
+      paint={speciesHighlightPaint}
+    />
+  );
+}
 
 const getFeatureViewport = (feature) => {
   let featureToFit = feature;
@@ -100,6 +119,7 @@ const MapComponent = forwardRef((props, ref) => {
     speciesCountries = {},
     speciesEcos = {},
     speciesHexas = {},
+    hoveredSpecies = null,
     colorBlind = false,
     getSpeciesThreatLevel = () => {
       return "DD";
@@ -604,6 +624,32 @@ const MapComponent = forwardRef((props, ref) => {
       ])
     );
   }, [countriesDictionary]);
+
+  const hoveredCountryIsos = useMemo(() => {
+    if (!hoveredSpecies) return [];
+    return [
+      ...new Set(
+        (speciesCountries[hoveredSpecies] ?? [])
+          .map((country) => countryNameToIso.get(country))
+          .filter(Boolean)
+      )
+    ];
+  }, [hoveredSpecies, speciesCountries, countryNameToIso]);
+
+  const hoveredEcoregionIds = useMemo(() => {
+    if (!hoveredSpecies) return [];
+    const regions = speciesEcos[hoveredSpecies];
+    const regionType =
+      isTerrestial || mapMode === "protection" ? "terrestrial" : "marine";
+    return [...new Set((regions?.[regionType] ?? []).map(String))];
+  }, [hoveredSpecies, speciesEcos, isTerrestial, mapMode]);
+
+  const hoveredHexagonIds = useMemo(() => {
+    if (!hoveredSpecies) return [];
+    const hexagons = speciesHexas[hoveredSpecies];
+    const regionType = isTerrestial ? "terrestrial" : "marine";
+    return [...new Set((hexagons?.[regionType] ?? []).map(String))];
+  }, [hoveredSpecies, speciesHexas, isTerrestial]);
 
   useEffect(() => {
     let tmpExtraPolygonPaint = null;
@@ -1500,6 +1546,14 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
+            {mapMode === "countries" && (
+              <SpeciesHighlightLayer
+                id="timelineSpeciesCountries"
+                source="countriesSource"
+                property="ISO3CD"
+                ids={hoveredCountryIsos}
+              />
+            )}
           </Source>
         )}
         {ecoregionHeatMap && ecoregionHeatMapMax && (
@@ -1528,6 +1582,14 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
+            {mapMode === "ecoregions" && (
+              <SpeciesHighlightLayer
+                id="timelineSpeciesEcoregions"
+                source="ecoregionsource"
+                property={ecoregionIdKey}
+                ids={hoveredEcoregionIds}
+              />
+            )}
           </Source>
         )}
         <Source
@@ -1562,6 +1624,14 @@ const MapComponent = forwardRef((props, ref) => {
               }
             }}
           />
+          {mapMode === "protection" && (
+            <SpeciesHighlightLayer
+              id="timelineSpeciesProtectionRegions"
+              source="ecoregionProtectionsource"
+              property="ECO_ID"
+              ids={hoveredEcoregionIds}
+            />
+          )}
         </Source>
         <Source
           type="geojson"
@@ -1623,6 +1693,14 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
+            {mapMode === "orchestras" && (
+              <SpeciesHighlightLayer
+                id="timelineSpeciesOrchestraCountries"
+                source="countriesOrchestraSource"
+                property="ISO3CD"
+                ids={hoveredCountryIsos}
+              />
+            )}
           </Source>
         )}
         {orchestraHeatMap && orchestraHeatMapMax && (
@@ -1823,6 +1901,14 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
+            {mapMode === "hexagons" && (
+              <SpeciesHighlightLayer
+                id="timelineSpeciesHexagons"
+                source="hexagonsource"
+                property="HexagonID"
+                ids={hoveredHexagonIds}
+              />
+            )}
           </Source>
         )}
         {hexagonHeatMap && hexagonHeatMapMax && !polygonFill && (
@@ -1837,6 +1923,14 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
+            {mapMode === "hexagons" && (
+              <SpeciesHighlightLayer
+                id="timelineSpeciesHexagons"
+                source="hexagonsource"
+                property="HexagonID"
+                ids={hoveredHexagonIds}
+              />
+            )}
           </Source>
         )}
         <Source
