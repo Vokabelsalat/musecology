@@ -1279,9 +1279,8 @@ path.handle:focus {
   position: absolute;
   pointer-events: none;
   left: 3px;
-  top: 3px;
   color: white;
-  line-height: 1em;
+  line-height: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
   width: 100%;

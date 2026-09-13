@@ -84,8 +84,7 @@ export default function TimelineNew(props) {
           gridColumnStart: 1,
           gridColumnEnd: "span 2",
           gridRowStart: 1,
-          gridRowEnd: 1,
-          width: "fit-content"
+          gridRowEnd: 1
         }}
         onMouseEnter={(event) => {
           onMouseEnter(event);

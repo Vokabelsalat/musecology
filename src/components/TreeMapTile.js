@@ -61,26 +61,6 @@ export default function TreeMapTile(props) {
     }
   }, []);
 
-  const getProxyPhoto = useCallback(() => {
-    if (max.data.proxy != null) {
-      return (
-        <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <img
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover"
-            }}
-            src={max.data.proxy}
-          />
-          <div className="proxyText">PROXY</div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  }, [max]);
-
   const speciesLevel =
     node.data.mediaUrls != null && node.parent == null ? true : false;
 

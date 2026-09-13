@@ -16,13 +16,9 @@ export default function TimelineViewNew(props) {
     dummyImageLinks,
     colorBlind,
     getTreeThreatLevel,
-    filteredSpecies,
     setTreeMapFilter,
     setHoveredSpecies
   } = props;
-
-  //const [x, setX] = useState(null);
-  //const [timescaleWidth, setTimescaleWidth] = useState(0);
 
   let x = (val) => 6;
 

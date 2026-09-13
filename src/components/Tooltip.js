@@ -231,7 +231,7 @@ export default function Tooltip(props) {
       const tradeThreatLevel = tooltipOptions.tradeThreat;
 
       return (
-        <div className="grid grid-cols-1 grid-rows-[auto_auto_auto_auto_auto] p-1 gap-x-2">
+        <div className="max-w-[800px] grid grid-cols-1 grid-rows-[auto_auto_auto_auto_auto] p-1 gap-x-2">
           <b>
             <i>{species}</i>
           </b>

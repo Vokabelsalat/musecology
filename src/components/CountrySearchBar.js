@@ -1,8 +1,6 @@
 import Autocomplete from "@mui/material/Autocomplete";
-import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import { isEmojiSupported } from "is-emoji-supported";
-import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { ReactCountryFlag } from "react-country-flag";
 // import { getFlagEmoji, langUnicode } from "./Tooltip";
@@ -59,7 +57,8 @@ export default function CountrySearchBar(props) {
   useEffect(() => {
     if (mapSearchMode === "countries") {
       setValue(
-        countryOptions.find((option) => option.value === selectedCountry) ?? null
+        countryOptions.find((option) => option.value === selectedCountry) ??
+          null
       );
     }
   }, [selectedCountry, countryOptions, mapSearchMode]);

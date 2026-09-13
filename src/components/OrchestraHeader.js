@@ -4,7 +4,6 @@ export default function OrchestraHeader(props) {
   const {
     instrumentGroup,
     instrument,
-    instrumentParts,
     instrumentPart,
     setInstrument,
     setInstrumentPart,
@@ -54,8 +53,8 @@ export default function OrchestraHeader(props) {
               onMouseEnter={() => setHoveredSpecies?.(groupSpecies)}
               onMouseLeave={() => setHoveredSpecies?.(instrumentSpecies)}
             >
-              <div style={{ fontWeight: "bold" }}>Instrument Group</div>
-              <div style={{}}>{instrumentGroup}</div>
+              <div>Instrument Group</div>
+              <div className="font-bold">{instrumentGroup}</div>
             </div>
           </>
         )}
@@ -71,13 +70,12 @@ export default function OrchestraHeader(props) {
             }}
             onClick={() => {
               setInstrumentPart(null);
-              /* filterTreeMap({ data: { name: family, filterDepth: 2 } }); */
             }}
             onMouseEnter={() => setHoveredSpecies?.(instrumentSpecies)}
             onMouseLeave={() => setHoveredSpecies?.(instrumentSpecies)}
           >
-            <div style={{ fontWeight: "bold" }}>Instrument</div>
-            <div style={{}}>{instrument}</div>
+            <div>Instrument</div>
+            <div className="font-bold">{instrument}</div>
           </div>
         )}
       </div>
@@ -89,7 +87,7 @@ export default function OrchestraHeader(props) {
               if (v != null) {
                 return (
                   <div>
-                    <div>{k}</div>
+                    <div className="font-bold">{k}</div>
                     <div className="pb-[56.25%] relative">
                       <iframe
                         className="absolute top-0 left-0 w-full h-full"

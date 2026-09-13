@@ -1,10 +1,18 @@
-import { useEffect, useRef, useState, cloneElement } from "react";
+import { useMemo } from "react";
 import TimelineRow from "./TimelineRow";
-import useResizeObserver from "use-resize-observer";
-import { tooltip } from "leaflet";
 
 export default function TimelineRows(props) {
   const { data, x, width, colorBlind, populationTrend, timeFrame } = props;
+
+  if (data.species === "lambertii") {
+    console.log("test", data);
+  }
+
+  const numberOfLines = useMemo(() => {
+    return [data.cites.length, data.iucn.length, data.bgci.length].filter(
+      (e) => e > 0
+    ).length;
+  }, [data]);
 
   return (
     <div
@@ -13,7 +21,7 @@ export default function TimelineRows(props) {
         width: "100%",
         height: "100%",
         gridTemplateColumns: "40px auto 30px",
-        gridTemplateRows: "auto auto auto",
+        gridTemplateRows: `repeat(${numberOfLines}, minmax(0px, 20px))`,
         fontSize: "12px",
         position: "relative"
       }}
