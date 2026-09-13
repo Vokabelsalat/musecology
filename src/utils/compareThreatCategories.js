@@ -2,8 +2,8 @@
 // schemes; sort only ranks categories within their own scheme.
 export default function compareThreatCategories(a, b) {
   const colorOrder =
-    (b.numvalue ?? b.sort ?? Infinity) - (a.numvalue ?? a.sort ?? Infinity);
-  const levelOrder = (b.sort ?? Infinity) - (a.sort ?? Infinity);
+    (a.numvalue ?? a.sort ?? Infinity) - (b.numvalue ?? b.sort ?? Infinity);
+  const levelOrder = (a.sort ?? Infinity) - (b.sort ?? Infinity);
   return (
     colorOrder ||
     levelOrder ||

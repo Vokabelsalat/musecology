@@ -28,7 +28,7 @@ export default function OrchestraThreatPieChart(props) {
   let x = position.x;
   let y = position.y;
   let cx = width / 2;
-  let cy = height / 2;
+  let cy = height / 1.2;
 
   const transformString =
     "translate(" +

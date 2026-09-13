@@ -1581,12 +1581,11 @@ const MapComponent = forwardRef((props, ref) => {
               justifyContent: "space-between",
               gap: "12px",
               width: "100%",
-              padding: "8px 10px",
+              padding: "4px 5px",
               border: 0,
               background: "transparent",
               color: "inherit",
               font: "inherit",
-              fontWeight: 600,
               textAlign: "left",
               cursor: "pointer"
             }}
@@ -1608,11 +1607,11 @@ const MapComponent = forwardRef((props, ref) => {
               }}
             >
               <p style={{ margin: "10px 0 8px" }}>
-                <strong>Country mapping source priority</strong>
+                <strong>Species mapping source priority</strong>
               </p>
               <p style={{ margin: "0 0 10px" }}>
-                The first source with country data is used; results from later
-                sources are not combined.
+                The first source with data is used; results from later sources
+                are not combined.
               </p>
               <ol style={{ margin: 0, paddingLeft: "22px" }}>
                 {COUNTRY_SOURCE_PRIORITY.map((source) => (
