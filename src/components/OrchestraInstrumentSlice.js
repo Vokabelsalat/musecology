@@ -38,6 +38,8 @@ export default function OrchestraInstrumentSlice(props) {
     threatType,
     colorBlind,
     setInstrument,
+    setInstrumentGroup,
+    setInstrumentPart,
     setHoveredSpecies,
     isSelected = false,
     showThreatDonuts = true
@@ -83,7 +85,9 @@ export default function OrchestraInstrumentSlice(props) {
         setHoveredSpecies?.(groupSpecies);
       }}
       onClick={(e) => {
+        setInstrumentGroup?.(groupName);
         setInstrument(instrument);
+        setInstrumentPart?.(null);
         e.stopPropagation();
       }}
     >

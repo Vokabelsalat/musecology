@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import OrchestraNew from "./Orchestra";
+import OrchestraGroup from "./OrchestraGroup";
 import OrchestraInstrumentSlice from "./OrchestraInstrumentSlice";
 
 const instrumentData = {
@@ -92,4 +93,42 @@ test("leaving an instrument slice restores its group species", () => {
     "Species B",
     "Species C"
   ]);
+});
+
+test("hover previews a group's instruments without selecting it", () => {
+  const setInstrumentGroup = jest.fn();
+  const setInstrument = jest.fn();
+  const setInstrumentPart = jest.fn();
+  const { container } = render(
+    <svg>
+      <OrchestraGroup
+        id="keyboard"
+        groupName="Keyboard"
+        position={{ x: 255, y: 255 }}
+        positionID={0}
+        selected={false}
+        instruments={["Piano", "Organ"]}
+        species={{ Piano: ["Species A"], Organ: ["Species B"] }}
+        showThreatDonuts={false}
+        setInstrumentGroup={setInstrumentGroup}
+        setInstrument={setInstrument}
+        setInstrumentPart={setInstrumentPart}
+      />
+    </svg>
+  );
+  const group = container.querySelector(".orchestraGroupGroup");
+
+  expect(screen.queryByText("Piano")).not.toBeInTheDocument();
+  fireEvent.mouseEnter(group);
+  expect(screen.getByText("Piano")).toBeInTheDocument();
+  expect(screen.getByText("Organ")).toBeInTheDocument();
+  expect(setInstrumentGroup).not.toHaveBeenCalled();
+
+  fireEvent.click(screen.getByText("Piano").closest("g"));
+  expect(setInstrumentGroup).toHaveBeenCalledWith("Keyboard");
+  expect(setInstrument).toHaveBeenCalledWith("Piano");
+  expect(setInstrumentPart).toHaveBeenCalledWith(null);
+
+  fireEvent.mouseLeave(group);
+  expect(screen.queryByText("Piano")).not.toBeInTheDocument();
 });

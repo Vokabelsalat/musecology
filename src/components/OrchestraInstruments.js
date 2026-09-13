@@ -32,6 +32,8 @@ export default function OrchestraInstruments(props) {
     groupSpecies,
     acrOptions,
     setInstrument,
+    setInstrumentGroup,
+    setInstrumentPart,
     setHoveredSpecies,
     isSelected = false,
     selectedInstrument = null,
@@ -130,6 +132,8 @@ export default function OrchestraInstruments(props) {
             threatType={threatType}
             colorBlind={colorBlind}
             setInstrument={setInstrument}
+            setInstrumentGroup={setInstrumentGroup}
+            setInstrumentPart={setInstrumentPart}
             showThreatDonuts={showThreatDonuts}
           />
         );

@@ -79,7 +79,7 @@ export default function OrchestraGroup(props) {
           strokeWidth={highlight ? "1px" : "1px"}
           d={pathString}
         ></path>
-        {selected ? (
+        {selected || highlight ? (
           <OrchestraInstruments
             {...props}
             acrOptions={acrOptions}
