@@ -413,6 +413,7 @@ export default function HomeNew(props) {
                     instrumentPart={instrumentPart}
                     setInstrumentPart={setInstrumentPart}
                     instrumentVideos={instrumentVideos}
+                    setHoveredSpecies={setHoveredMapSpecies}
                   />
                 </ResizeComponent>
               )}

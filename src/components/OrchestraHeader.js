@@ -8,7 +8,10 @@ export default function OrchestraHeader(props) {
     instrumentPart,
     setInstrument,
     setInstrumentPart,
-    instrumentVideos
+    instrumentVideos,
+    groupSpecies,
+    instrumentSpecies,
+    setHoveredSpecies
   } = props;
 
   const videos = useMemo(() => {
@@ -48,6 +51,8 @@ export default function OrchestraHeader(props) {
                 setInstrument(null);
                 /* filterTreeMap({ data: { name: kingdom, filterDepth: 1 } }); */
               }}
+              onMouseEnter={() => setHoveredSpecies?.(groupSpecies)}
+              onMouseLeave={() => setHoveredSpecies?.(instrumentSpecies)}
             >
               <div style={{ fontWeight: "bold" }}>Instrument Group</div>
               <div style={{}}>{instrumentGroup}</div>
@@ -68,6 +73,8 @@ export default function OrchestraHeader(props) {
               setInstrumentPart(null);
               /* filterTreeMap({ data: { name: family, filterDepth: 2 } }); */
             }}
+            onMouseEnter={() => setHoveredSpecies?.(instrumentSpecies)}
+            onMouseLeave={() => setHoveredSpecies?.(instrumentSpecies)}
           >
             <div style={{ fontWeight: "bold" }}>Instrument</div>
             <div style={{}}>{instrument}</div>

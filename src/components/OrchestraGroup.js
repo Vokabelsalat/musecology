@@ -34,8 +34,10 @@ export default function OrchestraGroup(props) {
     setInstrumentGroup,
     setInstrumentPart,
     positionID,
-    instrument
+    instrument,
+    setHoveredSpecies
   } = props;
+  const groupSpecies = [...new Set(Object.values(species).flat())];
 
   const ref = useRef(null);
   const iconTextRef = useRef(null);
@@ -74,9 +76,11 @@ export default function OrchestraGroup(props) {
         }}
         onMouseEnter={() => {
           setHighlight(true);
+          setHoveredSpecies?.(groupSpecies);
         }}
         onMouseLeave={() => {
           setHighlight(false);
+          setHoveredSpecies?.(null);
         }}
         className="orchestraGroupGroup"
       >
@@ -93,6 +97,7 @@ export default function OrchestraGroup(props) {
             acrOptions={acrOptions}
             isSelected={selected}
             selectedInstrument={instrument}
+            groupSpecies={groupSpecies}
             id={`${id}OrchestraInstruments`}
           />
         ) : (

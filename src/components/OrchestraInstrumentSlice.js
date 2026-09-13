@@ -34,10 +34,12 @@ export default function OrchestraInstrumentSlice(props) {
     angle,
     instruments,
     species,
+    groupSpecies,
     getThreatLevel,
     threatType,
     colorBlind,
     setInstrument,
+    setHoveredSpecies,
     isSelected = false,
     showThreatDonuts = true
   } = props;
@@ -74,9 +76,11 @@ export default function OrchestraInstrumentSlice(props) {
     <g
       onMouseEnter={() => {
         setHighlight(true);
+        setHoveredSpecies?.(species[instrument] ?? []);
       }}
       onMouseLeave={() => {
         setHighlight(false);
+        setHoveredSpecies?.(groupSpecies);
       }}
       onClick={(e) => {
         setInstrument(instrument);

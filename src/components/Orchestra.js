@@ -29,7 +29,8 @@ export default function OrchestraNew(props) {
     instrumentPart,
     setInstrumentPart,
     showThreatDonuts = true,
-    instrumentVideos
+    instrumentVideos,
+    setHoveredSpecies
   } = props;
 
   const ref = useRef(null);
@@ -95,6 +96,19 @@ export default function OrchestraNew(props) {
     }
   }, [instrumentGroup, zoomInto]);
 
+  const groupSpecies = instrumentGroup
+    ? [
+        ...new Set(
+          (instrumentGroupData[instrumentGroup] ?? []).flatMap((name) =>
+            Object.values(instrumentData[name] ?? {}).flat()
+          )
+        )
+      ]
+    : [];
+  const instrumentSpecies = instrument
+    ? [...new Set(Object.values(instrumentData[instrument] ?? {}).flat())]
+    : [];
+
   return (
     <div
       id={visualizationId}
@@ -123,6 +137,7 @@ export default function OrchestraNew(props) {
             setInstrument(null);
             setInstrumentGroup(null);
             setInstrumentPart(null);
+            setHoveredSpecies?.(null);
           }}
         >
           Reset
@@ -191,6 +206,7 @@ export default function OrchestraNew(props) {
                 setInstrumentPart={setInstrumentPart}
                 instrument={instrument}
                 showThreatDonuts={showThreatDonuts}
+                setHoveredSpecies={setHoveredSpecies}
               />
             );
           })}
@@ -208,6 +224,8 @@ export default function OrchestraNew(props) {
             overflow: "hidden",
             overflowY: "scroll"
           }}
+          onMouseEnter={() => setHoveredSpecies?.(instrumentSpecies)}
+          onMouseLeave={() => setHoveredSpecies?.(null)}
         >
           <div className="grid grid-cols-2 grid-rows-[min-content_auto]">
             <OrchestraHeader
@@ -218,6 +236,9 @@ export default function OrchestraNew(props) {
               setInstrument={setInstrument}
               setInstrumentPart={setInstrumentPart}
               instrumentVideos={instrumentVideos}
+              groupSpecies={groupSpecies}
+              instrumentSpecies={instrumentSpecies}
+              setHoveredSpecies={setHoveredSpecies}
             />
             <div
               style={{
@@ -246,6 +267,12 @@ export default function OrchestraNew(props) {
                         onClick={() => {
                           setInstrumentPart(instPart);
                         }}
+                        onMouseEnter={() =>
+                          setHoveredSpecies?.(instrumentData[instrument][instPart])
+                        }
+                        onMouseLeave={() =>
+                          setHoveredSpecies?.(instrumentSpecies)
+                        }
                       >
                         {instPart} (
                         {instrumentData[instrument][instPart].length})

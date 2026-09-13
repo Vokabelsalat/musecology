@@ -109,7 +109,6 @@ export default function ThreatDonut({
           labelFontSize ??
           (size < 20 ? 5 : size < 50 ? 9 : speciesTotal >= 1000 ? 12 : 14)
         }
-        // fontWeight="600"
         fill="#171717"
       >
         {data == null || speciesTotal > 0 ? speciesTotal.toLocaleString() : ""}
