@@ -137,9 +137,10 @@ export default function TreeMapTile(props) {
               style={{
                 display:
                   visibleIndex % photos.length === index ? "block" : "none",
-                width: speciesLevel ? "auto" : "100%",
+                width: "100%",
                 height: "100%",
-                objectFit: speciesLevel ? "unset" : "cover"
+                objectFit: speciesLevel ? "unset" : "cover",
+                boxSizing: "border-box"
               }}
               src={entry.src}
               alt={`Material View ${index}`}

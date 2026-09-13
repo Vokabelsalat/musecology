@@ -659,6 +659,10 @@ path.handle:focus {
   display: none !important;
 }
 
+#timelineViewscaleBottomSliderGroup > g > g > text {
+  transform: translateY(-10px) !important;
+}
+
 .tick > text {
   opacity: 1 !important;
   fill: black !important;
@@ -723,17 +727,19 @@ path.handle:focus {
   border: 2px solid white;
   z-index: 9;
   container-type: size;
+  overflow: hidden;
 }
 
 .treeMapLevel:hover {
-  border: 2px solid var(--highlightpurple);
-  z-index: 999 !important;
+  outline: 2px solid var(--highlightpurple);
+  z-index: 9999 !important;
+  outline-offset: -3px;
 }
 
 .treeMapLevel.orchestra-linked {
-  outline: 3px solid var(--highlightpurple);
+  border: 2px solid var(--highlightpurple);
+  z-index: 999 !important;
   outline-offset: -3px;
-  z-index: 998;
 }
 
 .threatIconOnMap:hover {

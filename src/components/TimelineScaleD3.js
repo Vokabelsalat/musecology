@@ -86,18 +86,6 @@ class TimelineScaleD3 extends Component {
     }
 
     sliderGroup.select(".slider > .parameter-value > text").attr("y", "-16");
-
-    /*  useEffect(() => {
-      // Delete every second tick text
-      while (width < sliderGroup.selectAll(".tick > text").size() * 25) {
-        sliderGroup
-          .selectAll(".tick > text")
-          .select(function (e, i) {
-            return i % 2 !== 0 ? this : null;
-          })
-          .remove();
-      }
-    }, [domainYears, width, ticks, sliderGroup]); */
   }
 
   componentDidMount() {
@@ -136,12 +124,12 @@ class TimelineScaleD3 extends Component {
           }
           id={this.state.id}
           width={this.props.width}
-          height={"50px"}
+          height={this.props.bottom ? "40px" : "50px"}
         >
           <g
             id={`${this.props.id}SliderGroup`}
             transform={`translate(${this.props.x(
-              this.props.domainYears.minYear /*  */
+              this.props.domainYears.minYear
             )} ${this.props.bottom ? 0 : 40})`}
           ></g>
         </svg>

@@ -9,7 +9,8 @@ export default function TreeMapLevel(props) {
     setHoveredSpecies,
     highlightedSpeciesSet
   } = props;
-  const speciesInLevel = node.leaves()
+  const speciesInLevel = node
+    .leaves()
     .filter((leaf) => leaf.data.filterDepth === 4)
     .map((leaf) => leaf.data.name);
   const orchestraMatch = speciesInLevel.some((species) =>
