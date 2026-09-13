@@ -77,13 +77,6 @@ export default function ThreatDonut({
       aria-label={`${speciesTotal.toLocaleString()} species by threat category`}
       style={{ display: "block" }}
     >
-      <circle
-        cx={center}
-        cy={center}
-        r={outerRadius}
-        fill="#f3f4f6"
-        stroke="#d1d5db"
-      />
       {speciesTotal > 0 &&
         categories.map((category) => {
           const start = offset / speciesTotal;
@@ -102,9 +95,9 @@ export default function ThreatDonut({
       <circle
         cx={center}
         cy={center}
-        r={innerRadius - 1}
+        r={innerRadius}
         fill="white"
-        fillOpacity={0.0}
+        fillOpacity={0.7}
         stroke={showThreatDonuts === "white" ? "gray" : "none"}
       />
       <text
