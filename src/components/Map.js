@@ -25,10 +25,10 @@ import ReactMapGL, {
 import { useContext } from "react";
 import { TooltipContext } from "./TooltipProvider";
 
-import { bgciAssessment } from "../utils/timelineUtils";
-import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
-import compareThreatCategories from "../utils/compareThreatCategories";
 import mapboxAccessToken from "../config/mapbox";
+import compareThreatCategories from "../utils/compareThreatCategories";
+import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
+import { bgciAssessment } from "../utils/timelineUtils";
 
 const blueIconColor = "rgba(45, 45, 255, 0.8)";
 const MAX_MARKER_CACHE_SIZE = 256;
@@ -154,9 +154,6 @@ const MapComponent = forwardRef((props, ref) => {
   }, [showCountrySourcePriority]);
 
   const setDivScaleWithType = useCallback((scaleAndType) => {
-    /* console.log("set", scaleAndType); */
-    /*  const tmpDivScale = { ...divScale };
-      tmpDivScale[scaleAndType.type] = scaleAndType.scale; */
     setDivScale({ type: scaleAndType.type, scale: scaleAndType.scale });
   }, []);
 
@@ -290,8 +287,16 @@ const MapComponent = forwardRef((props, ref) => {
   const [keepAspectRatio] = useState(i_keepAspectRatio);
 
   const [highlightLinesGeoJSON, setHighlightLinesGeoJSON] = useState(null);
-  const [ecoRegionsHighlightLinesIndex, setEcoRegionsHighlightLinesIndex] =
-    useState(null);
+  const ecoRegionsHighlightLinesIndex = useMemo(() => {
+    const visibleEcoregions =
+      mapMode === "protection" ? ecoRegionsGeoJson : ecoRegionsGeoJsonTest;
+    return Object.fromEntries(
+      (visibleEcoregions?.features ?? []).map((feature) => [
+        feature.properties.myID,
+        feature
+      ])
+    );
+  }, [mapMode, ecoRegionsGeoJson, ecoRegionsGeoJsonTest]);
   const [countriesHighlightLinesIndex, setCountriesHighlightLinesIndex] =
     useState(null);
   const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
@@ -501,17 +506,6 @@ const MapComponent = forwardRef((props, ref) => {
         setMarineEcoRegionSearchOptions?.(newEcoRegionSearchOptions);
       });
 
-    fetch("/data/WWF_Terrestrial_Ecoregions2017_lines.json")
-      .then((res) => res.json())
-      .then(function (geojson) {
-        let tmpEcoRegionLinesIndex = {};
-        for (const ecoRegion of geojson.features) {
-          ecoRegion.properties.myID = ecoRegion.id.toString() + "EcoRegion";
-          tmpEcoRegionLinesIndex[ecoRegion.properties.myID] = ecoRegion;
-        }
-        setEcoRegionsHighlightLinesIndex(tmpEcoRegionLinesIndex);
-      });
-
     fetch("/data/POPP_capitals_FeaturesToJSON.json")
       .then((res) => res.json())
       .then(function (geojson) {
@@ -666,8 +660,6 @@ const MapComponent = forwardRef((props, ref) => {
       }
     }
 
-    // console.log('tmpIsoToSpecies', tmpIsoToSpecies, Object.keys(tmpIsoToSpecies), Object.keys(tmpIsoToSpecies).length);
-
     const tmpIsoToCountryID = {};
     const tmpCountriesGeoJson = { ...countriesGeoJson, features: [] };
     if (countriesGeoJson) {
@@ -694,46 +686,12 @@ const MapComponent = forwardRef((props, ref) => {
       }
     }
 
-    /*   let scale = [];
-    let test = d3Scale
-      .scaleLinear()
-      .domain([0, tmpCountriesHeatMapMax])
-      .ticks(Math.min(15, tmpCountriesHeatMapMax));
-
-    let scaleColor = colorsys.hsvToHex(210, 100, 100);
-    scale.push({ scaleColor, scaleValue: 0 });
-
-    for (let val of test.slice(1, test.length)) {
-      let scaleOpacity = 1 - val / tmpCountriesHeatMapMax;
-      let scaleColor = colorsys.hsvToHex(210, scaleOpacity * 100, 100);
-
-      scale.push({ scaleColor, scaleValue: val });
-    }
-
-    setDivScaleWithType({ scale, type: "countries" }); */
-
     setCountriesToSpecies(tmpIsoToSpecies);
     setIsoToCountryID(tmpIsoToCountryID);
     setCountriesHeatMap(tmpCountriesHeatMap);
     setCountriesHeatMapMax(tmpCountriesHeatMapMax);
     setCountriesGeoJsonTest({ ...tmpCountriesGeoJson });
   }, [speciesCountries, countryNameToIso, countriesGeoJson]);
-
-  /* useEffect(() => {
-    console.log(
-      "speciesCountries has changed",
-      JSON.stringify(speciesCountries)
-    );
-  }, [speciesCountries]);
-  useEffect(() => {
-    console.log("countriesDictionary has changed", countriesDictionary);
-  }, [countriesDictionary]);
-  useEffect(() => {
-    console.log("countriesGeoJson has changed", countriesGeoJson);
-  }, [countriesGeoJson]);
-  useEffect(() => {
-    console.log("setDivScale has changed", setDivScale);
-  }, [setDivScale]); */
 
   const [ecosToSpecies, setEcosToSpecies] = useState(null);
   const [hexasToSpecies, setHexasToSpecies] = useState(null);
@@ -1275,12 +1233,6 @@ const MapComponent = forwardRef((props, ref) => {
     ]
   );
 
-  /*  if (ref.current && ref.current.getStyle().layers.includes("state-label")) {
-      return "state-label";
-    } else {
-      return null;
-    } */
-
   const hexagonPaint = useMemo(() => {
     if (polygonFill) {
       return {
@@ -1305,10 +1257,6 @@ const MapComponent = forwardRef((props, ref) => {
     }
   }, [polygonFill, scaleColors]);
 
-  const setFocusOnLegend = useCallback(() => {
-    legendRef.current?.focus();
-  }, [legendRef]);
-
   const layers = useMemo(() => {
     if (ref && ref.current) {
       return ref.current.getStyle().layers.map((e) => e.id);
@@ -1329,142 +1277,28 @@ const MapComponent = forwardRef((props, ref) => {
           : "min-content minmax(0, 1fr)"
       }}
     >
-      {
-        isStory === false && (
-          <div
-            style={{
-              height: "50px",
-              display: "grid",
-              gridTemplateColumns: "100%",
-              marginRight: "5px",
-              gap: "5px"
-              // paddingLeft: "2px"
-            }}
-          >
-            <div className="diversityScaleWrapper">
-              <DiversityScale
-                className="diversityScale"
-                scales={divScale}
-                mapMode={mapMode}
-                setMapMode={setFormMapMode}
-                colorBlind={colorBlind}
-              />
-            </div>
-            {/* <div className="diversityScaleWrapper">
-              <DiversityScale
-                className="diversityScale"
-                scales={divScale}
-                mapMode={mapMode}
-              />
-            </div> */}
+      {isStory === false && (
+        <div
+          style={{
+            height: "50px",
+            display: "grid",
+            gridTemplateColumns: "100%",
+            marginRight: "5px",
+            gap: "5px"
+            // paddingLeft: "2px"
+          }}
+        >
+          <div className="diversityScaleWrapper">
+            <DiversityScale
+              className="diversityScale"
+              scales={divScale}
+              mapMode={mapMode}
+              setMapMode={setFormMapMode}
+              colorBlind={colorBlind}
+            />
           </div>
-        )
-        /*         <div style={{ height: "20px", display: "flex" }}>
-          <form
-            onChange={(e) => {
-              setFormMapMode(e.target.value);
-            }}
-          >
-            <input
-              type="radio"
-              id="countries"
-              name="map_mode"
-              value="countries"
-              defaultChecked={mapMode === "countries"}
-            />
-            <label htmlFor="html">Countries</label>
-            <input
-              type="radio"
-              id="ecoregions"
-              name="map_mode"
-              value="ecoregions"
-            />
-            <label htmlFor="css">Ecoregions</label>
-            <input
-              type="radio"
-              id="hexagons"
-              name="map_mode"
-              value="hexagons"
-            />
-            <label htmlFor="javascript">Hexagons</label>
-            <input
-              type="radio"
-              id="orchestras"
-              name="map_mode"
-              value="orchestras"
-            />
-            <label htmlFor="javascript">Orchestras</label>
-            <input
-              type="radio"
-              id="protection"
-              name="map_mode"
-              value="protection"
-            />
-            <label htmlFor="javascript">Protection Potential</label>
-          </form>
-          {mapMode === "ecoregions" && (
-            <button onClick={calcEcoStatistics}>Stats</button>
-          )}
-        </div> */
-        /* <div
-        className="mapLegend"
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "center"
-        }}
-      >
-        <div
-          className="mapLegendHoverHandle"
-          onClick={() => {
-            setShowLegend(!showLegend);
-            setFocusOnLegend();
-          }}
-          onMouseEnter={() => {
-            console.log("Mouse Enter");
-            setShowLegend(!showLegend);
-            setFocusOnLegend();
-          }}
-        >
-          Legend
         </div>
-        <div
-          className="mapLegendWrapper"
-          ref={legendRef}
-          tabIndex={-1}
-          onBlur={(event) => {
-            setShowLegend(false);
-          }}
-        >
-          {showLegend && (
-            <>
-              {showThreatDonuts && (
-                <div className="mapLegendThreatWrapper">
-                  <Legend
-                    type={threatType}
-                    threatType={threatType}
-                    colorBlind={colorBlind}
-                    setCategoryFilter={setCategoryFilter}
-                    categoryFilter={categoryFilter}
-                  />
-                </div>
-              )}
-              <div className="diversityScaleWrapper">
-                <DiversityScale
-                  className="diversityScale"
-                  scales={divScale}
-                  mapMode={mapMode}
-                />
-              </div>
-            </>
-          )}
-        </div> 
-      </div> */
-      }
+      )}
       <ReactMapGL
         ref={ref}
         /* reuseMaps={false} */
@@ -1511,14 +1345,6 @@ const MapComponent = forwardRef((props, ref) => {
           "ecoRegionsProtection"
         ]} */
         interactiveLayerIds={interactiveLayerIds}
-        /* onMouseMove={(event) => {
-          if (event.features.length > 0) {
-            let id = event.features[0].properties.myID;
-            if (hoveredStateIds != null && !hoveredStateIds.includes(id)) {
-              setHoveredStateIds([id]);
-            }
-          }
-        }} */
         onMouseMove={onPolygonHover}
         onMouseDown={(e) => {
           if (e.originalEvent.altKey && e.originalEvent.which === 1) {
@@ -1674,22 +1500,6 @@ const MapComponent = forwardRef((props, ref) => {
                 }
               }}
             />
-            {/*  <Layer
-              key={`countriesLineLayer${hoveredStateIds.join("")}`}
-              {...{
-                id: "countriesSpeciesLines",
-                type: "line",
-                source: "countriesSource",
-                paint: {
-                  "line-color": "purple",
-                  "line-width": 2
-                },
-                filter: tester,
-                layout: {
-                  visibility: mapMode === "countries" ? "visible" : "none"
-                }
-              }}
-            /> */}
           </Source>
         )}
         {ecoregionHeatMap && ecoregionHeatMapMax && (
@@ -1703,6 +1513,7 @@ const MapComponent = forwardRef((props, ref) => {
               {...{
                 id: "ecoRegions",
                 type: "fill",
+                beforeId: "highlightLines",
                 source: "ecoregionsource",
                 paint: {
                   "fill-color": [
@@ -1711,12 +1522,6 @@ const MapComponent = forwardRef((props, ref) => {
                     ["get", "speciesCount"],
                     ...scaleColors
                   ]
-                  /*  "fill-outline-color": [
-                    "case",
-                    ["boolean", tester, false],
-                    "purple",
-                    "transparent"
-                  ] */
                 },
                 layout: {
                   visibility: mapMode === "ecoregions" ? "visible" : "none"
@@ -1725,36 +1530,6 @@ const MapComponent = forwardRef((props, ref) => {
             />
           </Source>
         )}
-        {/* {marineEcoregionHeatMap && marineEcoregionHeatMapMax && (
-          <Source
-            type="geojson"
-            id="ecoregionsource"
-            data={marineEcoRegionsGeoJson}
-          >
-            <Layer
-              key={`ecoregionFillLayer`}
-              {...{
-                id: "ecoRegions",
-                type: "fill",
-                source: "ecoregionsource",
-                paint: {
-                  "fill-color": [
-                    "interpolate",
-                    ["linear"],
-                    ["get", "speciesCount"],
-                    ...scaleColors
-                  ]
-                },
-                layout: {
-                  visibility:
-                    mapMode === "ecoregions" && isTerrestial === false
-                      ? "visible"
-                      : "none"
-                }
-              }}
-            />
-          </Source>
-        )} */}
         <Source
           type="geojson"
           id="ecoregionProtectionsource"
@@ -2070,7 +1845,6 @@ const MapComponent = forwardRef((props, ref) => {
           data={highlightLinesGeoJSON}
         >
           <Layer
-            //key={`ecoregionLineLayer${hoveredStateIds.join("")}`}
             {...{
               id: "highlightLines",
               type: "line",
