@@ -131,6 +131,11 @@ export default function HomeNew(props) {
 
   const [categoryFilter, setCategoryFilter] = useState(null);
   const [hoveredMapSpecies, setHoveredMapSpecies] = useState(null);
+  const [hoveredOrchestraSpecies, setHoveredOrchestraSpecies] = useState(null);
+  const setOrchestraHover = useCallback((species) => {
+    setHoveredMapSpecies(species);
+    setHoveredOrchestraSpecies(species);
+  }, []);
   const mapRef = useRef(null);
 
   const slice = false;
@@ -413,7 +418,7 @@ export default function HomeNew(props) {
                     instrumentPart={instrumentPart}
                     setInstrumentPart={setInstrumentPart}
                     instrumentVideos={instrumentVideos}
-                    setHoveredSpecies={setHoveredMapSpecies}
+                    setHoveredSpecies={setOrchestraHover}
                   />
                 </ResizeComponent>
               )}
@@ -452,6 +457,7 @@ export default function HomeNew(props) {
                     getTreeThreatLevel={getSpeciesSignThreat}
                     colorBlind={colorBlind}
                     setHoveredSpecies={setHoveredMapSpecies}
+                    highlightedSpecies={hoveredOrchestraSpecies}
                   />
                 </ResizeComponent>
               )}

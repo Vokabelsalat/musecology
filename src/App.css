@@ -730,6 +730,12 @@ path.handle:focus {
   z-index: 999 !important;
 }
 
+.treeMapLevel.orchestra-linked {
+  outline: 3px solid var(--highlightpurple);
+  outline-offset: -3px;
+  z-index: 998;
+}
+
 .threatIconOnMap:hover {
   transform: scale(1.5);
   transition-property: transform;

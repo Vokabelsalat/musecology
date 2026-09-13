@@ -11,6 +11,7 @@ export default function TreeMap(props) {
     getTreeThreatLevel,
     colorBlind,
     setHoveredSpecies,
+    highlightedSpecies,
     headerOffset = 0
   } = props;
 
@@ -25,6 +26,8 @@ export default function TreeMap(props) {
 
   // Then d3.treemap computes the position of each element of the hierarchy
   d3.treemap().size([width, height - headerOffset])(root);
+
+  const highlightedSpeciesSet = new Set(highlightedSpecies ?? []);
 
   return (
     <div
@@ -45,6 +48,7 @@ export default function TreeMap(props) {
               getTreeThreatLevel={getTreeThreatLevel}
               colorBlind={colorBlind}
               setHoveredSpecies={setHoveredSpecies}
+              highlightedSpeciesSet={highlightedSpeciesSet}
             />
           );
         })
@@ -56,6 +60,7 @@ export default function TreeMap(props) {
           getTreeThreatLevel={getTreeThreatLevel}
           colorBlind={colorBlind}
           setHoveredSpecies={setHoveredSpecies}
+          highlightedSpeciesSet={highlightedSpeciesSet}
         />
       )}
     </div>

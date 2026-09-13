@@ -6,11 +6,15 @@ export default function TreeMapLevel(props) {
     filterTreeMap,
     getTreeThreatLevel,
     colorBlind,
-    setHoveredSpecies
+    setHoveredSpecies,
+    highlightedSpeciesSet
   } = props;
   const speciesInLevel = node.leaves()
     .filter((leaf) => leaf.data.filterDepth === 4)
     .map((leaf) => leaf.data.name);
+  const orchestraMatch = speciesInLevel.some((species) =>
+    highlightedSpeciesSet?.has(species)
+  );
 
   return (
     <div
@@ -26,7 +30,7 @@ export default function TreeMapLevel(props) {
       }}
       onMouseEnter={() => setHoveredSpecies?.(speciesInLevel)}
       onMouseLeave={() => setHoveredSpecies?.(null)}
-      className="treeMapLevel"
+      className={`treeMapLevel${orchestraMatch ? " orchestra-linked" : ""}`}
     >
       {node.children ? (
         node.children

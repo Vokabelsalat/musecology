@@ -80,8 +80,15 @@ test("hovering a genus image in a grouped family highlights the whole family", (
   family.leaves = () => species;
 
   const setHoveredSpecies = jest.fn();
-  const { container } = render(
-    <TreeMapLevel node={family} setHoveredSpecies={setHoveredSpecies} />
+  const { container, rerender } = render(
+    <TreeMapLevel
+      node={family}
+      setHoveredSpecies={setHoveredSpecies}
+      highlightedSpeciesSet={new Set(["Other gamma"])}
+    />
+  );
+  expect(container.querySelector(".treeMapLevel")).toHaveClass(
+    "orchestra-linked"
   );
   const genusImage = container.querySelector(
     ".treeMapLevel > div[style*='background-color: gray']"
@@ -93,4 +100,15 @@ test("hovering a genus image in a grouped family highlights the whole family", (
     "Genus beta",
     "Other gamma"
   ]);
+
+  rerender(
+    <TreeMapLevel
+      node={family}
+      setHoveredSpecies={setHoveredSpecies}
+      highlightedSpeciesSet={new Set(["Unrelated species"])}
+    />
+  );
+  expect(container.querySelector(".treeMapLevel")).not.toHaveClass(
+    "orchestra-linked"
+  );
 });
