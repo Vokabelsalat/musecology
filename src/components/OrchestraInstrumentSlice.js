@@ -41,6 +41,7 @@ export default function OrchestraInstrumentSlice(props) {
     setInstrumentGroup,
     setInstrumentPart,
     setHoveredSpecies,
+    onSelect,
     isSelected = false,
     showThreatDonuts = true
   } = props;
@@ -85,10 +86,14 @@ export default function OrchestraInstrumentSlice(props) {
         setHoveredSpecies?.(groupSpecies);
       }}
       onClick={(e) => {
+        e.stopPropagation();
+        if (onSelect) {
+          onSelect(instrument);
+          return;
+        }
         setInstrumentGroup?.(groupName);
         setInstrument(instrument);
         setInstrumentPart?.(null);
-        e.stopPropagation();
       }}
     >
       <path

@@ -3,6 +3,9 @@ import { useMemo } from "react";
 export default function OrchestraHeader(props) {
   const {
     instrumentGroup,
+    instrumentFamily,
+    setInstrumentFamily,
+    familySpecies,
     instrument,
     instrumentPart,
     setInstrument,
@@ -29,7 +32,7 @@ export default function OrchestraHeader(props) {
           width: "100%",
           backgroundColor: "white",
           display: "grid",
-          gridTemplateColumns: "auto auto",
+          gridTemplateColumns: "auto auto auto",
           gridTemplateRows: "auto",
           gridGap: "10px",
           gridColumn: "1"
@@ -48,6 +51,7 @@ export default function OrchestraHeader(props) {
               }}
               onClick={() => {
                 setInstrument(null);
+                setInstrumentFamily?.(null);
                 /* filterTreeMap({ data: { name: kingdom, filterDepth: 1 } }); */
               }}
               onMouseEnter={() => setHoveredSpecies?.(groupSpecies)}
@@ -57,6 +61,25 @@ export default function OrchestraHeader(props) {
               <div className="font-bold">{instrumentGroup}</div>
             </div>
           </>
+        )}
+        {instrumentFamily && (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "auto",
+              gridTemplateRows: "auto auto",
+              cursor: "pointer",
+              padding: "5px"
+            }}
+            onClick={() => {
+              setInstrument(null);
+            }}
+            onMouseEnter={() => setHoveredSpecies?.(familySpecies)}
+            onMouseLeave={() => setHoveredSpecies?.(instrumentSpecies)}
+          >
+            <div>Instrument Family</div>
+            <div className="font-bold">{instrumentFamily}</div>
+          </div>
         )}
         {instrument && (
           <div

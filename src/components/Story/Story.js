@@ -402,6 +402,17 @@ export default function Story(props) {
       activeFigure != null &&
       contents != null &&
       contents[activeFigure] != null &&
+      contents[activeFigure].instrumentFamily !== undefined
+    ) {
+      setInstrumentFamily(contents[activeFigure].instrumentFamily);
+    } else {
+      setInstrumentFamily(null);
+    }
+
+    if (
+      activeFigure != null &&
+      contents != null &&
+      contents[activeFigure] != null &&
       contents[activeFigure].instrumentPart !== undefined
     ) {
       setInstrumentPart(contents[activeFigure].instrumentPart);
@@ -422,6 +433,7 @@ export default function Story(props) {
   const [instrument, setInstrument] = useState();
   const [instrumentGroup, setInstrumentGroup] = useState();
   const [instrumentPart, setInstrumentPart] = useState();
+  const [instrumentFamily, setInstrumentFamily] = useState(null);
   const [colorBlind, setColorBlind] = useState(false);
 
   useEffect(() => {
@@ -465,6 +477,7 @@ export default function Story(props) {
     domainYears,
     instrumentData,
     instrumentGroupData,
+    instrumentFamilyData,
     speciesCountries,
     speciesEcos,
     speciesHexas,
@@ -500,7 +513,9 @@ export default function Story(props) {
     instrumentData,
     instrumentGroup,
     instrumentGroupData,
-    instrumentPart
+    instrumentPart,
+    instrumentFamily,
+    instrumentFamilyData
   );
 
   const filteredSpeciesFromTimeline = useTimelineFilter(
@@ -802,6 +817,9 @@ export default function Story(props) {
                                     ...content.visualization,
                                     instrumentData: filteredInstrumentData,
                                     instrumentGroupData: instrumentGroupData,
+                                    instrumentFamilyData: instrumentFamilyData,
+                                    instrumentFamily: instrumentFamily,
+                                    setInstrumentFamily: setInstrumentFamily,
                                     instrument: instrument,
                                     instrumentGroup: instrumentGroup,
                                     instrumentPart: instrumentPart,

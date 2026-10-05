@@ -95,40 +95,71 @@ test("leaving an instrument slice restores its group species", () => {
   ]);
 });
 
-test("hover previews a group's instruments without selecting it", () => {
+test("selected group shows families, selected family shows its instruments", () => {
   const setInstrumentGroup = jest.fn();
+  const setInstrumentFamily = jest.fn();
   const setInstrument = jest.fn();
   const setInstrumentPart = jest.fn();
-  const { container } = render(
-    <svg>
-      <OrchestraGroup
-        id="keyboard"
-        groupName="Keyboard"
-        position={{ x: 255, y: 255 }}
-        positionID={0}
-        selected={false}
-        instruments={["Piano", "Organ"]}
-        species={{ Piano: ["Species A"], Organ: ["Species B"] }}
-        showThreatDonuts={false}
-        setInstrumentGroup={setInstrumentGroup}
-        setInstrument={setInstrument}
-        setInstrumentPart={setInstrumentPart}
-      />
-    </svg>
-  );
-  const group = container.querySelector(".orchestraGroupGroup");
+  const SVGElementGetBBox = SVGElement.prototype.getBBox;
+  SVGElement.prototype.getBBox = () => ({ x: 0, y: 0, width: 1, height: 1 });
+  const groupProps = {
+    id: "keyboard",
+    groupName: "Keyboard",
+    position: { x: 255, y: 255 },
+    positionID: 0,
+    instruments: ["Piano", "Organ"],
+    families: { Pianos: ["Piano"], Organs: ["Organ"] },
+    species: { Piano: ["Species A"], Organ: ["Species B"] },
+    showThreatDonuts: false,
+    setZoom: () => {},
+    setInstrumentGroup,
+    setInstrumentFamily,
+    setInstrument,
+    setInstrumentPart
+  };
 
-  expect(screen.queryByText("Piano")).not.toBeInTheDocument();
-  fireEvent.mouseEnter(group);
-  expect(screen.getByText("Piano")).toBeInTheDocument();
-  expect(screen.getByText("Organ")).toBeInTheDocument();
-  expect(setInstrumentGroup).not.toHaveBeenCalled();
+  try {
+    const { container, rerender } = render(
+      <svg>
+        <OrchestraGroup {...groupProps} selected={false} />
+      </svg>
+    );
+    const group = container.querySelector(".orchestraGroupGroup");
 
-  fireEvent.click(screen.getByText("Piano").closest("g"));
-  expect(setInstrumentGroup).toHaveBeenCalledWith("Keyboard");
-  expect(setInstrument).toHaveBeenCalledWith("Piano");
-  expect(setInstrumentPart).toHaveBeenCalledWith(null);
+    fireEvent.mouseEnter(group);
+    expect(screen.queryByText("Pianos")).not.toBeInTheDocument();
+    expect(screen.queryByText("Piano")).not.toBeInTheDocument();
 
-  fireEvent.mouseLeave(group);
-  expect(screen.queryByText("Piano")).not.toBeInTheDocument();
+    rerender(
+      <svg>
+        <OrchestraGroup {...groupProps} selected={true} />
+      </svg>
+    );
+    expect(screen.getByText("Pianos")).toBeInTheDocument();
+    expect(screen.getByText("Organs")).toBeInTheDocument();
+    expect(screen.queryByText("Piano")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("Pianos").closest("g"));
+    expect(setInstrumentFamily).toHaveBeenCalledWith("Pianos");
+    expect(setInstrument).toHaveBeenCalledWith(null);
+    expect(setInstrumentGroup).not.toHaveBeenCalled();
+
+    rerender(
+      <svg>
+        <OrchestraGroup
+          {...groupProps}
+          selected={true}
+          instrumentFamily="Pianos"
+        />
+      </svg>
+    );
+    expect(screen.getByText("Piano")).toBeInTheDocument();
+    expect(screen.queryByText("Organ")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText("Piano").closest("g"));
+    expect(setInstrumentGroup).toHaveBeenCalledWith("Keyboard");
+    expect(setInstrument).toHaveBeenLastCalledWith("Piano");
+  } finally {
+    SVGElement.prototype.getBBox = SVGElementGetBBox;
+  }
 });

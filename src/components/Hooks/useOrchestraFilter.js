@@ -6,7 +6,9 @@ export function useOrchestraFilter(
   instrumentData,
   instrumentGroup,
   instrumentGroupData,
-  instrumentPart
+  instrumentPart,
+  instrumentFamily = null,
+  instrumentFamilyData = {}
 ) {
   return useMemo(() => {
     let filtSpecies = Object.keys(species);
@@ -14,6 +16,10 @@ export function useOrchestraFilter(
       let filtInstruments = instrumentGroupData[instrumentGroup];
       if (instrument) {
         filtInstruments = [instrument];
+      } else if (instrumentFamily) {
+        filtInstruments =
+          instrumentFamilyData?.[instrumentGroup]?.[instrumentFamily] ??
+          filtInstruments;
       }
 
       if (instrumentPart && instrumentData.hasOwnProperty(instrument)) {
@@ -47,6 +53,8 @@ export function useOrchestraFilter(
     instrumentGroup,
     instrumentGroupData,
     instrumentPart,
+    instrumentFamily,
+    instrumentFamilyData,
     species
   ]);
 }

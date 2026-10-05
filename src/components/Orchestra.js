@@ -19,6 +19,9 @@ export default function OrchestraNew(props) {
     height,
     instrumentData,
     instrumentGroupData,
+    instrumentFamilyData = {},
+    instrumentFamily = null,
+    setInstrumentFamily,
     colorBlind,
     threatType,
     getThreatLevel,
@@ -105,6 +108,25 @@ export default function OrchestraNew(props) {
         )
       ]
     : [];
+  const groupFamilies = instrumentFamilyData?.[instrumentGroup] ?? {};
+  const activeFamily =
+    instrumentFamily ??
+    (instrument
+      ? Object.keys(groupFamilies).find((family) =>
+          groupFamilies[family].includes(instrument)
+        )
+      : null) ??
+    null;
+  const familyInstruments = activeFamily
+    ? groupFamilies[activeFamily] ?? []
+    : [];
+  const familySpecies = [
+    ...new Set(
+      familyInstruments.flatMap((name) =>
+        Object.values(instrumentData[name] ?? {}).flat()
+      )
+    )
+  ];
   const instrumentSpecies = instrument
     ? [...new Set(Object.values(instrumentData[instrument] ?? {}).flat())]
     : [];
@@ -148,6 +170,7 @@ export default function OrchestraNew(props) {
             /* setSelected(null); */
             zoomInto(null);
             setInstrument(null);
+            setInstrumentFamily?.(null);
             setInstrumentGroup(null);
             setInstrumentPart(null);
             setHoveredSpecies?.(null);
@@ -210,6 +233,11 @@ export default function OrchestraNew(props) {
                 selected={group === instrumentGroup}
                 setZoom={zoomInto}
                 instruments={instrumentGroupData[group]}
+                families={instrumentFamilyData?.[group] ?? {}}
+                instrumentFamily={
+                  group === instrumentGroup ? instrumentFamily : null
+                }
+                setInstrumentFamily={setInstrumentFamily}
                 species={species}
                 getThreatLevel={getThreatLevel}
                 threatType={threatType}
@@ -243,6 +271,9 @@ export default function OrchestraNew(props) {
           <div className="grid grid-cols-2 grid-rows-[min-content_auto]">
             <OrchestraHeader
               instrumentGroup={instrumentGroup}
+              instrumentFamily={activeFamily}
+              setInstrumentFamily={setInstrumentFamily}
+              familySpecies={familySpecies}
               instrument={instrument}
               instrumentParts={instrumentData[instrument]}
               instrumentPart={instrumentPart}

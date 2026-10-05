@@ -107,6 +107,7 @@ export default function HomeNew(props) {
   const [instrument, setInstrument] = useState();
   const [instrumentGroup, setInstrumentGroup] = useState();
   const [instrumentPart, setInstrumentPart] = useState();
+  const [instrumentFamily, setInstrumentFamily] = useState(null);
 
   const [countriesDictionary, setCountriesDictionary] = useState(null);
   const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
@@ -242,6 +243,7 @@ export default function HomeNew(props) {
     domainYears,
     instrumentData,
     instrumentGroupData,
+    instrumentFamilyData,
     speciesCountries,
     speciesEcos,
     speciesHexas,
@@ -298,7 +300,9 @@ export default function HomeNew(props) {
     instrumentData,
     instrumentGroup,
     instrumentGroupData,
-    instrumentPart
+    instrumentPart,
+    instrumentFamily,
+    instrumentFamilyData
   );
 
   const filteredSpeciesFromTreeMap = useTreeMapFilter(
@@ -408,6 +412,9 @@ export default function HomeNew(props) {
                   <OrchestraNew
                     instrumentData={filteredInstrumentData}
                     instrumentGroupData={instrumentGroupData}
+                    instrumentFamilyData={instrumentFamilyData}
+                    instrumentFamily={instrumentFamily}
+                    setInstrumentFamily={setInstrumentFamily}
                     getThreatLevel={getSpeciesSignThreat}
                     threatType={threatType}
                     colorBlind={colorBlind}

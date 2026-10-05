@@ -37,6 +37,8 @@ export default function OrchestraInstruments(props) {
     setHoveredSpecies,
     isSelected = false,
     selectedInstrument = null,
+    heading = groupName,
+    onSelectItem,
     showThreatDonuts = true
   } = props;
 
@@ -96,7 +98,7 @@ export default function OrchestraInstruments(props) {
           id={`textPathHeading${id}${groupName}`}
           style={{ dominantBaseline: "central" }}
         >
-          {groupName}
+          {heading}
         </textPath>
       </text>
       {instruments.map((instrument, index) => {
@@ -134,6 +136,7 @@ export default function OrchestraInstruments(props) {
             setInstrument={setInstrument}
             setInstrumentGroup={setInstrumentGroup}
             setInstrumentPart={setInstrumentPart}
+            onSelect={onSelectItem}
             showThreatDonuts={showThreatDonuts}
           />
         );

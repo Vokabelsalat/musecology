@@ -82,6 +82,9 @@ export const Content = (props) => {
             id={visualizationId}
             instrumentData={vis.instrumentData}
             instrumentGroupData={vis.instrumentGroupData}
+            instrumentFamilyData={vis.instrumentFamilyData}
+            instrumentFamily={vis.instrumentFamily}
+            setInstrumentFamily={vis.setInstrumentFamily}
             getThreatLevel={vis.getThreatLevel}
             threatType={vis.threatType}
             colorBlind={colorBlind}

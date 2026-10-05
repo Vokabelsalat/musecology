@@ -25,9 +25,55 @@ export default function OrchestraGroup(props) {
     setInstrumentPart,
     positionID,
     instrument,
+    instruments,
+    families = {},
+    instrumentFamily = null,
+    setInstrumentFamily,
     setHoveredSpecies
   } = props;
   const groupSpecies = [...new Set(Object.values(species).flat())];
+
+  const familyNames = Object.keys(families)
+    .filter((family) =>
+      families[family].some((name) => instruments.includes(name))
+    )
+    .sort();
+  const activeFamily =
+    instrumentFamily ??
+    (instrument
+      ? familyNames.find((family) => families[family].includes(instrument))
+      : null) ??
+    null;
+
+  const getFamilySpecies = (family) => [
+    ...new Set(families[family].flatMap((name) => species[name] ?? []))
+  ];
+
+  let ringProps = { instruments, groupSpecies };
+  if (familyNames.length > 0 && activeFamily === null) {
+    ringProps = {
+      instruments: familyNames,
+      species: Object.fromEntries(
+        familyNames.map((family) => [family, getFamilySpecies(family)])
+      ),
+      groupSpecies,
+      selectedInstrument: null,
+      onSelectItem: (family) => {
+        setInstrumentFamily?.(family);
+        setInstrument(null);
+        setInstrumentPart(null);
+      }
+    };
+  } else if (activeFamily !== null && families[activeFamily]) {
+    ringProps = {
+      instruments: families[activeFamily].filter((name) =>
+        instruments.includes(name)
+      ),
+      groupSpecies: getFamilySpecies(activeFamily),
+      heading: activeFamily,
+      isSelected: selected && instrument == null
+    };
+  }
 
   const ref = useRef(null);
 
@@ -59,6 +105,7 @@ export default function OrchestraGroup(props) {
             }
           } */
           setInstrumentGroup(groupName);
+          setInstrumentFamily?.(null);
           setInstrument(null);
           setInstrumentPart(null);
         }}
@@ -85,7 +132,7 @@ export default function OrchestraGroup(props) {
             acrOptions={acrOptions}
             isSelected={selected}
             selectedInstrument={instrument}
-            groupSpecies={groupSpecies}
+            {...ringProps}
             id={`${id}OrchestraInstruments`}
           />
         ) : (

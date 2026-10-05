@@ -26,6 +26,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
     let tmpYears = new Set();
     let tmpInstrumentGroupData = {};
     let tmpInstrumentData = {};
+    let tmpInstrumentFamilyData = {};
     let tmpSpeciesCountries = {};
     let tmpSpeciesEcos = {};
     let tmpSpeciesHexas = {};
@@ -116,6 +117,17 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
           );
         } else if (mat.Instruments != null) {
           tmpInstrumentGroupData[mat["Instrument groups"]] = [mat.Instruments];
+        }
+
+        const family = mat["Instrument families"];
+        if (mat.Instruments != null && family) {
+          const group = mat["Instrument groups"];
+          tmpInstrumentFamilyData[group] = tmpInstrumentFamilyData[group] ?? {};
+          tmpInstrumentFamilyData[group][family] =
+            tmpInstrumentFamilyData[group][family] ?? [];
+          if (!tmpInstrumentFamilyData[group][family].includes(mat.Instruments)) {
+            tmpInstrumentFamilyData[group][family].push(mat.Instruments);
+          }
         }
 
         const mP = mat["Main part"];
@@ -365,6 +377,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       domainYears: tmpDomainYears,
       instrumentData: tmpInstrumentData,
       instrumentGroupData: tmpInstrumentGroupData,
+      instrumentFamilyData: tmpInstrumentFamilyData,
       speciesCountries: tmpSpeciesCountries,
       speciesEcos: tmpSpeciesEcos,
       speciesHexas: tmpSpeciesHexas,
