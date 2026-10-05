@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { OverlayContext } from "./OverlayProvider";
 import { TooltipContext } from "./TooltipProvider";
 import { ThreatLevel } from "../utils/timelineUtils";
-import { Citation, getAssessmentCitation } from "./TimelineCitations";
+import AssessmentDetails from "./AssessmentDetails";
 
 export default function TimelineMarker(props) {
   const {
@@ -27,18 +27,6 @@ export default function TimelineMarker(props) {
 
   const [overlay, setOverlay] = useContext(OverlayContext);
   const { setTooltip } = useContext(TooltipContext);
-
-  const citation = useMemo(
-    () => (
-      <Citation
-        citation={getAssessmentCitation(
-          assessment.assessmentType,
-          assessmentAndElement.element
-        )}
-      />
-    ),
-    [assessmentAndElement, assessment]
-  );
 
   const marker = useMemo(() => {
     if (assessment.assessmentType === "IUCN") {
@@ -82,12 +70,13 @@ export default function TimelineMarker(props) {
     <g
       onClick={(e) => {
         setOverlay(
-          <div className="max-w-[80vw]">
-            <pre className="w-full text-wrap">
-              {JSON.stringify(assessmentAndElement.element, null, 2)}
-            </pre>
-            {citation}
-          </div>
+          <AssessmentDetails
+            assessment={assessment}
+            element={assessmentAndElement.element}
+            species={species}
+            author={author}
+            colorBlind={colorBlind}
+          />
         );
       }}
       onMouseEnter={(event) => {

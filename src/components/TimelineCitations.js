@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-function formatDate(dateString) {
+export function formatDate(dateString) {
   if (dateString == null) {
     return "2025";
   }
