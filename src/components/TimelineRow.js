@@ -40,17 +40,17 @@ export default function TimelineRow(props) {
       switch (populationTrend) {
         case 1:
           populationTrendColor = iucnAssessment.get("EX").getColor(colorBlind);
-          populationTrendIcon = "\u21D8";
+          populationTrendIcon = "\u2193";
           populationTrendText = "Decreasing";
           break;
         case 0:
           populationTrendColor = iucnAssessment.get("LC").getColor(colorBlind);
-          populationTrendIcon = "\u21D7";
+          populationTrendIcon = "\u2191";
           populationTrendText = "Increasing";
           break;
         case 2:
           populationTrendColor = iucnAssessment.get("NT").getColor(colorBlind);
-          populationTrendIcon = "\u21D2";
+          populationTrendIcon = "\u2192";
           populationTrendText = "Stable";
           break;
         case null:
@@ -96,28 +96,28 @@ export default function TimelineRow(props) {
       </div>
       <svg height={`${rowHeight}`} width={width}>
         {sortedData.map((assessmentAndElement, index) => {
-            let xVal = x(parseInt(assessmentAndElement.element.year));
-            if (xVal < 0) {
-              return;
-            }
+          let xVal = x(parseInt(assessmentAndElement.element.year));
+          if (xVal < 0) {
+            return;
+          }
 
-            return (
-              <g
-                key={`${assessmentAndElement.element.year}${assessmentAndElement.element.type}${assessmentAndElement.element.text}${assessmentAndElement.element.sciName}${colorBlind}`}
-                transform={`translate(${xVal}, 0)`}
-              >
-                <TimelineMarker
-                  iconWidth={Math.min(width, x.bandwidth())}
-                  width={width}
-                  height={rowHeight - 2}
-                  assessmentAndElement={assessmentAndElement}
-                  colorBlind={colorBlind}
-                  species={species}
-                  author={author}
-                />
-              </g>
-            );
-          })}
+          return (
+            <g
+              key={`${assessmentAndElement.element.year}${assessmentAndElement.element.type}${assessmentAndElement.element.text}${assessmentAndElement.element.sciName}${colorBlind}`}
+              transform={`translate(${xVal}, 0)`}
+            >
+              <TimelineMarker
+                iconWidth={Math.min(width, x.bandwidth())}
+                width={width}
+                height={rowHeight - 2}
+                assessmentAndElement={assessmentAndElement}
+                colorBlind={colorBlind}
+                species={species}
+                author={author}
+              />
+            </g>
+          );
+        })}
       </svg>
       <div className={`h-[${rowHeight}px]`}>
         {type === "iucn" && populationTrend !== null && (

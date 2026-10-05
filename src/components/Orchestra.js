@@ -123,6 +123,19 @@ export default function OrchestraNew(props) {
         padding: "1px"
       }}
     >
+      <div className="absolute top-2 left-2 text-lg bg-slate-50 rounded-full h-[20px] w-[20px] hover:w-fit flex items-center justify-center group shadow-md">
+        &copy;
+        <span className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto text-sm">
+          <a
+            target="_blank"
+            className="text-[var(--highlightpurple)] underline"
+            href="https://doi.org/10.5281/zenodo.10546544"
+          >
+            Lichtenberg, S. 2026. Materials used for Classical Music Instruments
+            v.2.0. Zenodo. https://doi.org/10.5281/zenodo.10546544
+          </a>
+        </span>
+      </div>
       {instrumentGroup && (
         <div
           className="resetButton"
@@ -268,7 +281,9 @@ export default function OrchestraNew(props) {
                           setInstrumentPart(instPart);
                         }}
                         onMouseEnter={() =>
-                          setHoveredSpecies?.(instrumentData[instrument][instPart])
+                          setHoveredSpecies?.(
+                            instrumentData[instrument][instPart]
+                          )
                         }
                         onMouseLeave={() =>
                           setHoveredSpecies?.(instrumentSpecies)

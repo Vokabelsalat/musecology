@@ -89,13 +89,19 @@ export default function TreeMapTile(props) {
 
     if (max.data.image) {
       for (const photo of max.data.image) {
-        ph.push({ type: "cover", src: photo.link, author: photo.source });
+        ph.push({
+          type: "cover",
+          src: photo.link,
+          author: photo.source,
+          source: photo.source
+        });
       }
     } else if (max.data.proxy) {
       ph.push({
         type: "proxy",
         src: max.data.proxy.link,
-        author: max.data.proxy.source
+        author: max.data.proxy.source,
+        source: max.data.proxy.source
       });
     }
 
@@ -119,90 +125,114 @@ export default function TreeMapTile(props) {
     return ph;
   }, [max, speciesLevel]);
 
-  content = (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex"
-      }}
-    >
-      {[...photos].map((entry, index) => {
-        return (
-          <Fragment key={`MaterialViewPhoto-${index}`}>
-            <img
-              style={{
-                display:
-                  visibleIndex % photos.length === index ? "block" : "none",
-                width: "100%",
-                height: "100%",
-                objectFit: speciesLevel ? "unset" : "cover",
-                boxSizing: "border-box"
+  content = useMemo(() => {
+    const photoIndex = visibleIndex % photos.length;
+    if (photos[photoIndex] == null) return null;
+
+    let extended = false;
+    let link = null;
+    let text = photos[photoIndex].source;
+
+    if (
+      photos[photoIndex].source ===
+      "Thünen Institut - Wood collection of Dr. Wolfgang Mautz"
+    ) {
+      extended = true;
+      link =
+        "https://www.thuenen.de/de/thuenen-institut/verbundstrukturen/thuenen-kompetenzzentrum-holzherkuenfte/die-wissenschaftliche-holzsammlung-xylothek-1";
+    } else if (photos[photoIndex].type === "wiki") {
+      link = transformWikimediaURL(photos[photoIndex].src ?? "");
+      const author =
+        photos[photoIndex].author != null && photos[photoIndex].author !== ""
+          ? photos[photoIndex].author.replace(/<[^>]+>/g, "")
+          : "";
+
+      const license =
+        photos[photoIndex].license != null && photos[photoIndex].license !== ""
+          ? photos[photoIndex].license.replace(/<[^>]+>/g, "")
+          : "";
+
+      text = [author, license].join(", ");
+    } else {
+      text = photos[photoIndex].author;
+    }
+
+    return (
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex"
+        }}
+      >
+        {[...photos].map((entry, index) => {
+          return (
+            <Fragment key={`MaterialViewPhoto-${index}`}>
+              <img
+                style={{
+                  display: photoIndex === index ? "block" : "none",
+                  width: "100%",
+                  height: "100%",
+                  objectFit: speciesLevel ? "contain" : "unset",
+                  boxSizing: "border-box"
+                }}
+                src={entry.src}
+                alt={`Material View ${index}`}
+              />
+              {entry.type === "proxy" && <div className="proxyText">PROXY</div>}
+            </Fragment>
+          );
+        })}
+        {speciesLevel && photos.length > 1 && (
+          <>
+            <div
+              className="imageSliderButtonDiv imageSliderButtonDivLeft"
+              onClick={() => {
+                setVisibleIndex(visibleIndex - 1);
               }}
-              src={entry.src}
-              alt={`Material View ${index}`}
-            />
-            {entry.type === "proxy" && <div className="proxyText">PROXY</div>}
-          </Fragment>
-        );
-      })}
-      {speciesLevel && photos.length > 1 && (
-        <>
-          <div
-            className="imageSliderButtonDiv imageSliderButtonDivLeft"
-            onClick={() => {
-              setVisibleIndex(visibleIndex - 1);
-            }}
-          >
-            <div className="chevronLeft"></div>
-          </div>
-          <div
-            className="imageSliderButtonDiv imageSliderButtonDivRight"
-            onClick={() => {
-              setVisibleIndex(visibleIndex + 1);
-            }}
-          >
-            <div className="chevronRight"></div>
-          </div>
-          {photos[visibleIndex] !== undefined && (
-            <div className="absolute top-1 right-1 text-lg bg-slate-50 rounded-full h-[20px] w-[20px] hover:w-fit flex items-center justify-center group transition-all duration-500 hover:p-1">
-              <span className="opacity-0 w-0 overflow-hidden group-hover:opacity-100 group-hover:w-auto transition-all duration-500 text-sm">
-                {photos[visibleIndex].type === "wiki" ? (
+            >
+              <div className="chevronLeft"></div>
+            </div>
+            <div
+              className="imageSliderButtonDiv imageSliderButtonDivRight"
+              onClick={() => {
+                setVisibleIndex(visibleIndex + 1);
+              }}
+            >
+              <div className="chevronRight"></div>
+            </div>
+            {photos[photoIndex] !== undefined && (
+              <div
+                className={`${
+                  extended ? "w-fit" : "w-[20px]"
+                } absolute top-1 left-1 text-lg bg-slate-50 rounded-full h-[20px] hover:w-fit flex items-center justify-center group p-1`}
+              >
+                &copy;
+                <span
+                  className={`${
+                    extended
+                      ? "opacity-100 w-auto"
+                      : "opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto"
+                  } overflow-hidden text-sm`}
+                >
                   <a
                     target="_blank"
-                    href={transformWikimediaURL(photos[visibleIndex].src ?? "")}
+                    href={link}
                     className="text-[var(--highlightpurple)] underline"
                   >
-                    {photos[visibleIndex].author != null &&
-                      photos[visibleIndex].author !== "" && (
-                        <>
-                          {photos[visibleIndex].author.replace(/<[^>]+>/g, "")}
-                        </>
-                      )}
-                    {photos[visibleIndex].license != null &&
-                      photos[visibleIndex].license !== "" && (
-                        <>
-                          ,{" "}
-                          {photos[visibleIndex].license.replace(/<[^>]+>/g, "")}
-                          ,{" Wikipedia"}
-                        </>
-                      )}
+                    {text}
                   </a>
-                ) : (
-                  <>{photos[visibleIndex].author}</>
-                )}
-              </span>
-              &copy;
-            </div>
-          )}
-        </>
-      )}
-    </div>
-  );
-  /* } */
+                </span>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    );
+  }, [photos, speciesLevel, visibleIndex]);
 
   return (
     <div
