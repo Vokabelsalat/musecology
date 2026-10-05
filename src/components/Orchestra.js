@@ -118,7 +118,7 @@ export default function OrchestraNew(props) {
       : null) ??
     null;
   const familyInstruments = activeFamily
-    ? groupFamilies[activeFamily] ?? []
+    ? (groupFamilies[activeFamily] ?? [])
     : [];
   const familySpecies = [
     ...new Set(
@@ -184,7 +184,7 @@ export default function OrchestraNew(props) {
         width={scaledWidth + 4}
         height={scaledHeight + 4}
         style={{
-          border: "1px solid lightgray",
+          // border: "1px solid lightgray",
           boxSizing: "border-box",
           padding: "1px"
         }}

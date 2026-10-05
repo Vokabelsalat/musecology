@@ -26,7 +26,7 @@ export default function CenterPanel(props) {
   } = props;
 
   return (
-    <div className="centerPanel">
+    <div className="centerPanel px-2">
       <div className="centerPanelSide centerPanelSideLeft">
         <div
           style={{

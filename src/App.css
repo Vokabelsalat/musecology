@@ -731,9 +731,9 @@ path.handle:focus {
 }
 
 .treeMapLevel:hover {
-  outline: 2px solid var(--highlightpurple);
+  outline: 4px solid var(--highlightpurple);
   z-index: 9999 !important;
-  outline-offset: -3px;
+  outline-offset: -4px;
 }
 
 .treeMapLevel.orchestra-linked {
