@@ -1,5 +1,6 @@
 import TimelineNew from "./Timeline";
 import TimelineScaleD3 from "./TimelineScaleD3";
+import TimelineCitations from "./TimelineCitations";
 
 import { replaceSpecialCharacters } from "../utils/utils";
 
@@ -124,6 +125,12 @@ export default function TimelineViewNew(props) {
                 />
               )}
           </div>
+          {sortedKeys.length === 1 && (
+            <TimelineCitations
+              data={data[sortedKeys[0]]}
+              width={timescaleWidth + 140}
+            />
+          )}
         </div>
       }
       {
