@@ -29,6 +29,10 @@ export default function TreeMap(props) {
 
   const highlightedSpeciesSet = new Set(highlightedSpecies ?? []);
 
+  if (root == null) {
+    return <></>;
+  }
+
   return (
     <div
       style={{

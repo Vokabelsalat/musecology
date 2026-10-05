@@ -133,8 +133,6 @@ export default function TreeMapTile(props) {
     let link = null;
     let text = photos[photoIndex].source;
 
-    console.log("photo", photos[photoIndex]);
-
     if (
       photos[photoIndex].source ===
       "Thünen Institut - Wood collection of Dr. Wolfgang Mautz"
@@ -242,17 +240,18 @@ export default function TreeMapTile(props) {
         top: node.y0 - parentTop,
         width: node.x1 - node.x0,
         height: node.y1 - node.y0,
-        backgroundColor: "gray",
+        backgroundColor: "lightgray",
         overflow: "hidden"
       }}
     >
       {content}
       {showThreatIcon && (
         <div
+          className="border border-[lightgray] rounded-full bg-white p-[1px]"
           style={{
             position: "absolute",
-            bottom: "4px",
-            right: "4px",
+            bottom: "8px",
+            right: "8px",
             zIndex: 1,
             pointerEvents: "none",
             transform: node.parent == null ? "scale(1.5)" : "none",
@@ -263,6 +262,7 @@ export default function TreeMapTile(props) {
             leftColor={economicThreat.getColor(colorBlind)}
             rightColor={ecologicalThreat.getColor(colorBlind)}
             isAnimal={node.data.isAnimal}
+            shadow
           />
         </div>
       )}

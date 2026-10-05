@@ -33,7 +33,7 @@ export default function TreeMapHeader(props) {
               gridTemplateRows: "auto auto",
               cursor: "pointer",
               padding: "0px 2px",
-              border: family != null ? "" : "2px solid var(--highlightpurple)",
+              border: family == null ? "2px solid var(--highlightpurple)" : "",
               boxSizing: "border-box"
             }}
             onClick={() => {
@@ -47,6 +47,32 @@ export default function TreeMapHeader(props) {
           </div>
         </>
       )}
+      {kingdom && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "auto",
+            gridTemplateRows: "auto auto",
+            cursor: "pointer",
+            padding: "0px 2px",
+            border:
+              genus == null && family != null
+                ? "2px solid var(--highlightpurple)"
+                : "",
+            boxSizing: "border-box"
+          }}
+          onClick={() => {
+            filterTreeMap({ data: { name: family, filterDepth: 2 } });
+          }}
+        >
+          <div style={{}}>Family</div>
+          {family && (
+            <div style={{ fontWeight: "bold", fontStyle: "italic" }}>
+              {family}
+            </div>
+          )}
+        </div>
+      )}
       {family && (
         <div
           style={{
@@ -55,17 +81,22 @@ export default function TreeMapHeader(props) {
             gridTemplateRows: "auto auto",
             cursor: "pointer",
             padding: "0px 2px",
-            border: genus != null ? "" : "2px solid var(--highlightpurple)",
+            border:
+              genus != null && species == null
+                ? "2px solid var(--highlightpurple)"
+                : "",
             boxSizing: "border-box"
           }}
           onClick={() => {
-            filterTreeMap({ data: { name: family, filterDepth: 2 } });
+            filterTreeMap({ data: { name: genus, filterDepth: 3 } });
           }}
         >
-          <div style={{}}>Family</div>
-          <div style={{ fontWeight: "bold", fontStyle: "italic" }}>
-            {family}
-          </div>
+          <div style={{}}>Genus</div>
+          {genus && (
+            <div style={{ fontWeight: "bold", fontStyle: "italic" }}>
+              {genus}
+            </div>
+          )}
         </div>
       )}
       {genus && (
@@ -76,26 +107,7 @@ export default function TreeMapHeader(props) {
             gridTemplateRows: "auto auto",
             cursor: "pointer",
             padding: "0px 2px",
-            border: species != null ? "" : "2px solid var(--highlightpurple)",
-            boxSizing: "border-box"
-          }}
-          onClick={() => {
-            filterTreeMap({ data: { name: genus, filterDepth: 3 } });
-          }}
-        >
-          <div style={{}}>Genus</div>
-          <div style={{ fontWeight: "bold", fontStyle: "italic" }}>{genus}</div>
-        </div>
-      )}
-      {species && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "auto",
-            gridTemplateRows: "auto auto",
-            cursor: "pointer",
-            padding: "0px 2px",
-            border: "2px solid var(--highlightpurple)",
+            border: species != null ? "2px solid var(--highlightpurple)" : "",
             boxSizing: "border-box"
           }}
           onClick={() => {
@@ -103,7 +115,7 @@ export default function TreeMapHeader(props) {
           }}
         >
           <div style={{}}>Species</div>
-          <div className="font-bold italic">{species}</div>
+          {species && <div className="font-bold italic">{species}</div>}
         </div>
       )}
     </div>

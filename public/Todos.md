@@ -5,8 +5,6 @@ Bring instrument families into the hierarchy of the orchstra visualization betwe
 Think through the country mapping again. And fix up unmapped countries. Make sure that they show up in the Country Search list as well.
 Have the list of instrument parts augemnted by Wikimedia Commons photograph of the instrument. Switch or tab between image and videos.
 Design crawling script to collect wikimedia links for each of the instruments.
-Species Tree Map Icons could need a bit more padding.
-The non-selected (next) category/hierarchy level in the species tree map is missing.
 Set proxy photos for Diospyros.
 IUCN and Species plus data must be updated regularly.
 Standadization of Layout of tooltips.
@@ -16,3 +14,5 @@ Standadization of Layout of tooltips.
 [x] We should highlight the photos by Thünen Institut permanently. Blur the white background a bit.
 [x] Extend the timeline view by the used resources when only one species is selected.
 [x] The popop window of the timeline assessments could need a brush up. Prefarably in a table. The logo of the assessing party should be shown in there as well.
+[x] Species Tree Map Icons could need a bit more padding.
+[x] The non-selected (next) category/hierarchy level in the species tree map is missing.
