@@ -1,18 +1,5 @@
-import { PatternRect } from "leaflet";
-import {
-  useEffect,
-  useRef,
-  useState,
-  cloneElement,
-  useMemo,
-  useContext
-} from "react";
-import {
-  citesAssessment,
-  bgciAssessment,
-  iucnAssessment
-} from "../utils/timelineUtils";
-import { pushOrCreate } from "../utils/utils";
+import { useContext, useMemo } from "react";
+import { iucnAssessment } from "../utils/timelineUtils";
 import TimelineMarker from "./TimelineMarker";
 import { TooltipContext } from "./TooltipProvider";
 

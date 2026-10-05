@@ -38,12 +38,13 @@ export default function TimelineFront(props) {
           onClick={onClick}
           style={{
             height: "100%",
+            maxHeight: "60px",
             width: "100%",
             overflow: "hidden"
             // backgroundImage: `url(${imageLink[0].link})`
           }}
         >
-          <img width={100} src={imageLink[0].link} />
+          <img className="size-full" src={imageLink[0].link} />
         </div>
       ) : (
         dummyLink !== null && createProxyPhoto(dummyLink)
