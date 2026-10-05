@@ -176,7 +176,7 @@ export default function Tooltip(props) {
           <div className="flex items-center gap-2 text-[medium] font-bold">
             {countryCode && (
               <ReactCountryFlag
-                style={{ fontSize: "1.5em", lineHeight: "1.5em" }}
+                style={{ fontSize: "1.5em" }}
                 countryCode={countryCode}
                 svg={!isEmojiSupported("🇬🇧")}
                 aria-label={`${title} flag`}
@@ -221,7 +221,7 @@ export default function Tooltip(props) {
               )}
             </div>
           </div>
-          <div className="italic mt-1">Click to filter!</div>
+          <div className="italic mt-2">Click to filter!</div>
         </div>
       );
     } else if (tooltipMode === "species") {
@@ -244,8 +244,8 @@ export default function Tooltip(props) {
                   <div key={`langTag-${species}-${language}`}>
                     <ReactCountryFlag
                       style={{
-                        fontSize: "1.5em",
-                        lineHeight: "1.5em"
+                        fontSize: "1.5em"
+                        // lineHeight: "1.5em"
                       }}
                       countryCode={langUnicode[language]}
                       svg={!isEmojiSupported("🇬🇧")}
@@ -262,7 +262,7 @@ export default function Tooltip(props) {
                 tooltipOptions.imageLink,
                 tooltipOptions.dummyLink
               )}
-            <div className="self-center w-auto h-min grid grid-cols-[repeat(5,min-content)] grid-rows-5 gap-x-3">
+            <div className="self-center w-auto h-min grid grid-cols-[repeat(5,min-content)] grid-rows-5 gap-x-3 gap-y-1">
               <div className="col-span-2 flex justify-end font-bold">Trade</div>
               <div className="row-span-5 flex items-center justify-center">
                 <ThreatIcon
@@ -318,7 +318,7 @@ export default function Tooltip(props) {
               </div>
             )}
           </div>
-          <div className="italic">Click to filter!</div>
+          <div className="mt-2 italic">Click to filter!</div>
         </div>
       );
     } else {

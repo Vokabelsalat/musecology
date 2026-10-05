@@ -1270,7 +1270,8 @@ const MapComponent = forwardRef((props, ref) => {
             break;
         }
 
-        setHoveredStateIds(hoverIds.filter(Boolean));
+        if (hoverIds.filter(Boolean).length > 0)
+          setHoveredStateIds(hoverIds.filter(Boolean));
 
         if (title) {
           const groupedThreats = new Map();
@@ -1306,11 +1307,11 @@ const MapComponent = forwardRef((props, ref) => {
             }
           });
         } else {
-          setTooltip(null);
+          // setTooltip(null);
         }
       } else {
-        setHoveredStateIds([]);
-        setTooltip(null);
+        // setHoveredStateIds([]);
+        // setTooltip(null);
       }
       /*  setHoverInfo({
       longitude: event.lngLat.lng,
@@ -1455,8 +1456,8 @@ const MapComponent = forwardRef((props, ref) => {
           }
         }}
         onMouseLeave={(event) => {
-          setHoveredStateIds([]);
-          setTooltip(null);
+          // setHoveredStateIds([]);
+          // setTooltip(null);
         }}
         onClick={(event) => {
           console.log(
