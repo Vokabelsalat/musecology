@@ -133,6 +133,8 @@ export default function TreeMapTile(props) {
     let link = null;
     let text = photos[photoIndex].source;
 
+    console.log("photo", photos[photoIndex]);
+
     if (
       photos[photoIndex].source ===
       "Thünen Institut - Wood collection of Dr. Wolfgang Mautz"
@@ -204,29 +206,29 @@ export default function TreeMapTile(props) {
             >
               <div className="chevronRight"></div>
             </div>
-            {photos[photoIndex] !== undefined && (
-              <div
-                className={`${
-                  extended ? "w-fit" : "w-min"
-                } absolute top-1 left-1 text-lg bg-slate-50/75 rounded-full h-6 hover:w-fit flex items-center justify-center group px-1`}
-              >
-                &copy;
-                <span
-                  className={`${
-                    extended ? "flex" : "hidden group-hover:flex"
-                  } overflow-hidden text-sm px-1`}
-                >
-                  <a
-                    target="_blank"
-                    href={link}
-                    className="text-[var(--highlightpurple)] underline"
-                  >
-                    {text}
-                  </a>
-                </span>
-              </div>
-            )}
           </>
+        )}
+        {speciesLevel && photos[photoIndex] !== undefined && (
+          <div
+            className={`${
+              extended ? "w-fit" : "w-min"
+            } absolute top-1 left-1 text-lg bg-slate-50/75 rounded-full h-6 hover:w-fit flex items-center justify-center group px-1`}
+          >
+            &copy;
+            <span
+              className={`${
+                extended ? "flex" : "hidden group-hover:flex"
+              } overflow-hidden text-sm px-1`}
+            >
+              <a
+                target="_blank"
+                href={link}
+                className="text-[var(--highlightpurple)] underline"
+              >
+                {text}
+              </a>
+            </span>
+          </div>
         )}
       </div>
     );
