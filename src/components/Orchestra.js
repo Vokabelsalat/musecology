@@ -184,7 +184,7 @@ export default function OrchestraNew(props) {
         width={scaledWidth + 4}
         height={scaledHeight + 4}
         style={{
-          // border: "1px solid lightgray",
+          /* border: "1px solid lightgray", */
           boxSizing: "border-box",
           padding: "1px"
         }}
@@ -287,7 +287,6 @@ export default function OrchestraNew(props) {
             <div
               style={{
                 display: "grid",
-                gridGap: "5px",
                 padding: "5px"
               }}
             >
@@ -302,7 +301,6 @@ export default function OrchestraNew(props) {
                           cursor: "pointer",
                           width: "fit-content",
                           boxSizing: "border-box",
-                          padding: "2px",
                           border:
                             instrumentPart === instPart
                               ? "solid 2px purple"

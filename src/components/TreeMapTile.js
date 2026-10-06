@@ -240,14 +240,14 @@ export default function TreeMapTile(props) {
         top: node.y0 - parentTop,
         width: node.x1 - node.x0,
         height: node.y1 - node.y0,
-        backgroundColor: "lightgray",
+        backgroundColor: "#a2a2a2",
         overflow: "hidden"
       }}
     >
       {content}
       {showThreatIcon && (
         <div
-          className="border border-[lightgray] rounded-full bg-white p-[1px]"
+          // className="border border-[lightgray] rounded-full bg-white p-[1px]"
           style={{
             position: "absolute",
             bottom: "8px",

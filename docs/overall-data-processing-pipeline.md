@@ -92,7 +92,7 @@ Some downstream scripts expect the merged file in `public/data_merged.json`.
 Run:
 
 ```bash
-cp data-fusing-and-crawling/output/data_merged.json public/data_merged.json
+cp data-fusing-and-crawling/output/data_merged.json public/data/data_merged.json
 ```
 
 ## 4. (Optional) Manual Country Import
@@ -195,3 +195,13 @@ Use this order for a fresh full run:
 7. `python3 data-fusing-and-crawling/export_latest_timelines_csv.py`
 8. `python3 data-fusing-and-crawling/merge_iso_species_latest_assessments.py`
 9. `python3 data-fusing-and-crawling/export_iso_assessment_group_counts.py`
+
+- `
+cd data-fusing-and-crawling
+python3 start.py
+python3 mergeMapData.py
+python3 fixData.py
+cd ..
+python3 data-fusing-and-crawling/read_manual_country_import.py
+python3 data-fusing-and-crawling/filter_data_merged_by_diss_list.py
+`

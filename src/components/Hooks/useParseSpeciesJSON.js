@@ -5,7 +5,7 @@ import {
   bgciAssessment,
   citesAssessment
 } from "../../utils/timelineUtils";
-import { COUNTRY_SOURCE_PRIORITY } from "../../utils/countrySourcePriority";
+import { POLYGON_SOURCE_MAPPINGS } from "../../utils/polygonSourcePriority";
 import { returnImageLink, returnDummyLink, returnImageLinks } from "../Home";
 
 export function useParseSpeciesJSON(i_speciesData, slice) {
@@ -50,7 +50,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         !Object.keys(kingdoms).includes(speciesObj.Kingdom)
       ) {
         let tempKingdom = null;
-        if(speciesObj.origMat) {
+        if (speciesObj.origMat) {
           for (let mat of speciesObj.origMat) {
             if (
               mat.Kingdom != null &&
@@ -125,7 +125,9 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
           tmpInstrumentFamilyData[group] = tmpInstrumentFamilyData[group] ?? {};
           tmpInstrumentFamilyData[group][family] =
             tmpInstrumentFamilyData[group][family] ?? [];
-          if (!tmpInstrumentFamilyData[group][family].includes(mat.Instruments)) {
+          if (
+            !tmpInstrumentFamilyData[group][family].includes(mat.Instruments)
+          ) {
             tmpInstrumentFamilyData[group][family].push(mat.Instruments);
           }
         }
@@ -162,7 +164,9 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         let assessmentPerYear = {};
         for (let element of speciesObj.timeIUCN) {
           tmpYears.add(parseInt(element.year));
-          
+
+          console.log("element", element);
+
           let year = element.year.toString();
           let assessment = iucnAssessment.get(element.code);
 
@@ -257,7 +261,7 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
       };
 
       let tmpCountries = [];
-      for (const source of COUNTRY_SOURCE_PRIORITY) {
+      for (const source of POLYGON_SOURCE_MAPPINGS["countries"].sources.data) {
         const countries = speciesObj[source.field];
         if (Array.isArray(countries) && countries.length > 0) {
           tmpCountries = countries;

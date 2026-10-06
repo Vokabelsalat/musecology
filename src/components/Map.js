@@ -27,7 +27,7 @@ import { TooltipContext } from "./TooltipProvider";
 
 import mapboxAccessToken from "../config/mapbox";
 import compareThreatCategories from "../utils/compareThreatCategories";
-import { COUNTRY_SOURCE_PRIORITY } from "../utils/countrySourcePriority";
+import { getPolygonSourcePriority } from "../utils/polygonSourcePriority";
 import {
   getDiversityFilter,
   getDiversityRange
@@ -167,19 +167,19 @@ const MapComponent = forwardRef((props, ref) => {
   const [divScale, setDivScale] = useState({ scale: [], type: "countries" });
   const [hoveredScaleSegment, setHoveredScaleSegment] = useState(null);
   const [showLegend, setShowLegend] = useState(false);
-  const [showCountrySourcePriority, setShowCountrySourcePriority] =
+  const [showPolygonSourcePriority, setShowPolygonSourcePriority] =
     useState(false);
-  const countrySourcePriorityRef = useRef(null);
+  const polygonSourcePriorityRef = useRef(null);
   const legendRef = useRef(null);
   const [isTerrestial, setTerrestial] = useState(true);
   const { setTooltip } = useContext(TooltipContext);
 
   useEffect(() => {
-    if (!showCountrySourcePriority) return;
+    if (!showPolygonSourcePriority) return;
 
     const handleOutsidePointerDown = (event) => {
-      if (!countrySourcePriorityRef.current?.contains(event.target)) {
-        setShowCountrySourcePriority(false);
+      if (!polygonSourcePriorityRef.current?.contains(event.target)) {
+        setShowPolygonSourcePriority(false);
       }
     };
 
@@ -190,7 +190,7 @@ const MapComponent = forwardRef((props, ref) => {
         handleOutsidePointerDown,
         true
       );
-  }, [showCountrySourcePriority]);
+  }, [showPolygonSourcePriority]);
 
   const setDivScaleWithType = useCallback((scaleAndType) => {
     setDivScale({ type: scaleAndType.type, scale: scaleAndType.scale });
@@ -350,6 +350,13 @@ const MapComponent = forwardRef((props, ref) => {
   const [countriesHighlightLinesIndex, setCountriesHighlightLinesIndex] =
     useState(null);
   const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
+
+  const polygonSourcePriority = useMemo(
+    () => getPolygonSourcePriority(mapMode, isTerrestial),
+    [mapMode, isTerrestial]
+  );
+
+  console.log("polygonSourcePriority", polygonSourcePriority);
 
   const mappedSpeciesCount = useMemo(() => {
     const hasEntries = (value, useRegionType = false) => {
@@ -1307,11 +1314,11 @@ const MapComponent = forwardRef((props, ref) => {
             }
           });
         } else {
-          // setTooltip(null);
+          setTooltip(null);
         }
       } else {
-        // setHoveredStateIds([]);
-        // setTooltip(null);
+        setHoveredStateIds([]);
+        setTooltip(null);
       }
       /*  setHoverInfo({
       longitude: event.lngLat.lng,
@@ -1456,8 +1463,8 @@ const MapComponent = forwardRef((props, ref) => {
           }
         }}
         onMouseLeave={(event) => {
-          // setHoveredStateIds([]);
-          // setTooltip(null);
+          setHoveredStateIds([]);
+          setTooltip(null);
         }}
         onClick={(event) => {
           console.log(
@@ -1475,13 +1482,13 @@ const MapComponent = forwardRef((props, ref) => {
         }}
       >
         <div
-          ref={countrySourcePriorityRef}
+          ref={polygonSourcePriorityRef}
           style={{
             position: "absolute",
             top: 10,
             left: 10,
             zIndex: 1,
-            width: showCountrySourcePriority
+            width: showPolygonSourcePriority
               ? "min(340px, calc(100% - 20px))"
               : "auto",
             borderRadius: "6px",
@@ -1498,10 +1505,10 @@ const MapComponent = forwardRef((props, ref) => {
         >
           <button
             type="button"
-            aria-expanded={showCountrySourcePriority}
-            aria-controls="country-source-priority"
+            aria-expanded={showPolygonSourcePriority}
+            aria-controls="polygon-source-priority"
             onClick={() =>
-              setShowCountrySourcePriority((isExpanded) => !isExpanded)
+              setShowPolygonSourcePriority((isExpanded) => !isExpanded)
             }
             style={{
               display: "flex",
@@ -1522,27 +1529,57 @@ const MapComponent = forwardRef((props, ref) => {
               {mappedSpeciesCount.toLocaleString()} mapped species
             </span>
             <span aria-hidden="true">
-              {showCountrySourcePriority ? "−" : "+"}
+              {showPolygonSourcePriority ? "−" : "+"}
             </span>
           </button>
 
-          {showCountrySourcePriority && (
+          {showPolygonSourcePriority && (
             <div
-              id="country-source-priority"
+              id="polygon-source-priority"
               style={{
                 padding: "0 12px 12px",
                 borderTop: "1px solid rgba(30, 33, 46, 0.14)"
               }}
             >
               <p style={{ margin: "10px 0 8px" }}>
-                <strong>Species mapping source priority</strong>
+                <strong>{polygonSourcePriority.sources.title}</strong>
               </p>
-              <p style={{ margin: "0 0 10px" }}>
-                The first source with data is used; results from later sources
-                are not combined.
-              </p>
+              {polygonSourcePriority.sources.subtitle && (
+                <p style={{ margin: "0 0 10px" }}>
+                  {polygonSourcePriority.sources.subtitle}
+                </p>
+              )}
               <ol style={{ margin: 0, paddingLeft: "22px" }}>
-                {COUNTRY_SOURCE_PRIORITY.map((source) => (
+                {polygonSourcePriority.sources.data.map((source) => (
+                  <li key={source.field} style={{ marginBottom: "8px" }}>
+                    {source.href ? (
+                      <a
+                        href={source.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: "#095e8e", fontWeight: 600 }}
+                      >
+                        {source.name}
+                      </a>
+                    ) : (
+                      <strong>{source.name}</strong>
+                    )}
+                    <span style={{ display: "block" }}>
+                      {source.description}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              <p style={{ margin: "10px 0 8px" }}>
+                <strong>{polygonSourcePriority.boundaries.title}</strong>
+              </p>
+              {polygonSourcePriority.boundaries.subtitle && (
+                <p style={{ margin: "0 0 10px" }}>
+                  {polygonSourcePriority.boundaries.subtitle}
+                </p>
+              )}
+              <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                {polygonSourcePriority.boundaries.data.map((source) => (
                   <li key={source.field} style={{ marginBottom: "8px" }}>
                     {source.href ? (
                       <a
