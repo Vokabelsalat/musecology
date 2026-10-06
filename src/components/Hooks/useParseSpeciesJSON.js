@@ -278,12 +278,14 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
 
       tmpSpeciesEcos[genusSpecies] = {
         terrestrial: speciesObj.terEcos != null ? speciesObj.terEcos : [],
-        marine: speciesObj.marEcos != null ? speciesObj.marEcos : []
+        marine: speciesObj.marEcos != null ? speciesObj.marEcos : [],
+        source: speciesObj["Origin of distribution point data/range maps"]
       };
 
       tmpSpeciesHexas[genusSpecies] = {
         terrestrial: speciesObj.terHexagons ?? [],
-        marine: speciesObj.marHexagons ?? []
+        marine: speciesObj.marHexagons ?? [],
+        source: speciesObj["Origin of distribution point data/range maps"]
       };
 
       // Labels as Common Names from Wikipedia

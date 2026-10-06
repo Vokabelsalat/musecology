@@ -356,8 +356,6 @@ const MapComponent = forwardRef((props, ref) => {
     [mapMode, isTerrestial]
   );
 
-  console.log("polygonSourcePriority", polygonSourcePriority);
-
   const mappedSpeciesCount = useMemo(() => {
     const hasEntries = (value, useRegionType = false) => {
       if (Array.isArray(value)) {
@@ -1373,6 +1371,8 @@ const MapComponent = forwardRef((props, ref) => {
     }
   }, [ref]);
 
+  console.log("mapMode", mapMode);
+
   return (
     <div
       className="grid grid-cols-1"
@@ -1534,72 +1534,83 @@ const MapComponent = forwardRef((props, ref) => {
           </button>
 
           {showPolygonSourcePriority && (
-            <div
-              id="polygon-source-priority"
-              style={{
-                padding: "0 12px 12px",
-                borderTop: "1px solid rgba(30, 33, 46, 0.14)"
-              }}
-            >
-              <p style={{ margin: "10px 0 8px" }}>
-                <strong>{polygonSourcePriority.sources.title}</strong>
-              </p>
-              {polygonSourcePriority.sources.subtitle && (
-                <p style={{ margin: "0 0 10px" }}>
-                  {polygonSourcePriority.sources.subtitle}
-                </p>
+            <>
+              {mappedSpeciesCount > 1 ||
+              mapMode in ["countries", "orchestras", "protection"] ? (
+                <div
+                  id="polygon-source-priority"
+                  style={{
+                    padding: "0 12px 12px",
+                    borderTop: "1px solid rgba(30, 33, 46, 0.14)"
+                  }}
+                >
+                  <p style={{ margin: "10px 0 8px" }}>
+                    <strong>{polygonSourcePriority.sources.title}</strong>
+                  </p>
+                  {polygonSourcePriority.sources.subtitle && (
+                    <p style={{ margin: "0 0 10px" }}>
+                      {polygonSourcePriority.sources.subtitle}
+                    </p>
+                  )}
+                  <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                    {polygonSourcePriority.sources.data.map((source) => (
+                      <li key={source.field} style={{ marginBottom: "8px" }}>
+                        {source.href ? (
+                          <a
+                            href={source.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{ color: "#095e8e", fontWeight: 600 }}
+                          >
+                            {source.name}
+                          </a>
+                        ) : (
+                          <strong>{source.name}</strong>
+                        )}
+                        <span style={{ display: "block" }}>
+                          {source.description}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p style={{ margin: "10px 0 8px" }}>
+                    <strong>{polygonSourcePriority.boundaries.title}</strong>
+                  </p>
+                  {polygonSourcePriority.boundaries.subtitle && (
+                    <p style={{ margin: "0 0 10px" }}>
+                      {polygonSourcePriority.boundaries.subtitle}
+                    </p>
+                  )}
+                  <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                    {polygonSourcePriority.boundaries.data.map((source) => (
+                      <li key={source.field} style={{ marginBottom: "8px" }}>
+                        {source.href ? (
+                          <a
+                            href={source.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{ color: "#095e8e", fontWeight: 600 }}
+                          >
+                            {source.name}
+                          </a>
+                        ) : (
+                          <strong>{source.name}</strong>
+                        )}
+                        <span style={{ display: "block" }}>
+                          {source.description}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ) : (
+                <div>
+                  {Object.keys(speciesEcos).map((k) => (
+                    <div>{speciesEcos[k].source}</div>
+                  ))}
+                </div>
               )}
-              <ol style={{ margin: 0, paddingLeft: "22px" }}>
-                {polygonSourcePriority.sources.data.map((source) => (
-                  <li key={source.field} style={{ marginBottom: "8px" }}>
-                    {source.href ? (
-                      <a
-                        href={source.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: "#095e8e", fontWeight: 600 }}
-                      >
-                        {source.name}
-                      </a>
-                    ) : (
-                      <strong>{source.name}</strong>
-                    )}
-                    <span style={{ display: "block" }}>
-                      {source.description}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-              <p style={{ margin: "10px 0 8px" }}>
-                <strong>{polygonSourcePriority.boundaries.title}</strong>
-              </p>
-              {polygonSourcePriority.boundaries.subtitle && (
-                <p style={{ margin: "0 0 10px" }}>
-                  {polygonSourcePriority.boundaries.subtitle}
-                </p>
-              )}
-              <ol style={{ margin: 0, paddingLeft: "22px" }}>
-                {polygonSourcePriority.boundaries.data.map((source) => (
-                  <li key={source.field} style={{ marginBottom: "8px" }}>
-                    {source.href ? (
-                      <a
-                        href={source.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: "#095e8e", fontWeight: 600 }}
-                      >
-                        {source.name}
-                      </a>
-                    ) : (
-                      <strong>{source.name}</strong>
-                    )}
-                    <span style={{ display: "block" }}>
-                      {source.description}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </div>
+            </>
           )}
         </div>
         {keepAspectRatio !== true && (
