@@ -1467,13 +1467,6 @@ const MapComponent = forwardRef((props, ref) => {
           setTooltip(null);
         }}
         onClick={(event) => {
-          console.log(
-            "CLICK EVENT",
-            event,
-            event?.features[0]?.properties,
-            countriesToSpecies
-          );
-
           if (event.features.length > 0) {
             if (event.features[0].properties.hasOwnProperty("ROMNAM")) {
               setSelectedCountry(event.features[0].properties.ROMNAM);
@@ -1487,14 +1480,14 @@ const MapComponent = forwardRef((props, ref) => {
             position: "absolute",
             top: 10,
             left: 10,
-            zIndex: 1,
+            zIndex: 5,
             width: showPolygonSourcePriority
               ? "min(340px, calc(100% - 20px))"
               : "auto",
             borderRadius: "6px",
             backgroundColor: "rgba(255, 255, 255, 0.96)",
             boxShadow: "0 2px 8px rgba(0, 0, 0, 0.18)",
-            fontSize: "13px",
+            fontSize: "12px",
             lineHeight: 1.35,
             color: "#1e212e",
             pointerEvents: "auto",
@@ -1514,9 +1507,9 @@ const MapComponent = forwardRef((props, ref) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: "6px",
+              gap: "4px",
               width: "100%",
-              padding: "4px 5px",
+              padding: "3px 5px",
               border: 0,
               background: "transparent",
               color: "inherit",
@@ -1536,11 +1529,11 @@ const MapComponent = forwardRef((props, ref) => {
           {showPolygonSourcePriority && (
             <>
               {mappedSpeciesCount > 1 ||
-              mapMode in ["countries", "orchestras", "protection"] ? (
+              ["countries", "orchestras", "protection"].includes(mapMode) ? (
                 <div
                   id="polygon-source-priority"
                   style={{
-                    padding: "0 12px 12px",
+                    padding: "0 8px 8px",
                     borderTop: "1px solid rgba(30, 33, 46, 0.14)"
                   }}
                 >
@@ -1552,9 +1545,9 @@ const MapComponent = forwardRef((props, ref) => {
                       {polygonSourcePriority.sources.subtitle}
                     </p>
                   )}
-                  <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                  <ol style={{ margin: 0, paddingLeft: "20px" }}>
                     {polygonSourcePriority.sources.data.map((source) => (
-                      <li key={source.field} style={{ marginBottom: "8px" }}>
+                      <li key={source.field} style={{ marginBottom: "6px" }}>
                         {source.href ? (
                           <a
                             href={source.href}
@@ -1581,9 +1574,9 @@ const MapComponent = forwardRef((props, ref) => {
                       {polygonSourcePriority.boundaries.subtitle}
                     </p>
                   )}
-                  <ol style={{ margin: 0, paddingLeft: "22px" }}>
+                  <ol style={{ margin: 0, paddingLeft: "20px" }}>
                     {polygonSourcePriority.boundaries.data.map((source) => (
-                      <li key={source.field} style={{ marginBottom: "8px" }}>
+                      <li key={source.field} style={{ marginBottom: "6px" }}>
                         {source.href ? (
                           <a
                             href={source.href}

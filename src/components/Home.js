@@ -9,7 +9,6 @@ import TreeMapView from "./TreeMapViewNew";
 //import Map from "./MapNewTest";
 import { bgciAssessment, citesAssessment } from "../utils/timelineUtils";
 import Map from "./Map";
-import Overlay from "./Overlay";
 
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/dist/styles.min.css";
@@ -22,7 +21,6 @@ import { useTimelineFilter } from "./Hooks/useTimelineFilter";
 import { useTreeMapFilter } from "./Hooks/useTreeMapFilter";
 import { HoverProvider } from "./HoverProvider";
 import Navbar from "./Navbar";
-import { OverlayProvider } from "./OverlayProvider";
 import { TooltipProvider } from "./TooltipProvider";
 
 export const returnDummyLink = (speciesObj) => {
@@ -250,49 +248,6 @@ export default function HomeNew(props) {
     speciesLabels,
     kingdomData
   } = parsedSpecies;
-
-  //FilterSection
-  /*  const filteredSpeciesFromOrchestra = useMemo(() => {
-    let filtSpecies = Object.keys(species);
-    if (instrumentGroup) {
-      let filtInstruments = instrumentGroupData[instrumentGroup];
-      if (instrument) {
-        filtInstruments = [instrument];
-      }
-
-      if (instrumentPart) {
-        filtSpecies = instrumentData[instrument][instrumentPart];
-      } else {
-        filtSpecies = filtInstruments
-          .filter((key) => key in instrumentData)
-          .reduce(
-            (obj2, key) => (
-              obj2.push(
-                ...Object.values(instrumentData[key]).flatMap((entry) => {
-                  return entry;
-                })
-              ),
-              obj2
-            ),
-            []
-          );
-      }
-
-      filtSpecies = [...new Set(filtSpecies)];
-    }
-
-    return filtSpecies;
-  }, [
-    instrument,
-    instrumentData,
-    instrumentGroup,
-    instrumentGroupData,
-    instrumentPart,
-    species
-  ]); */
-
-  /* console.log("instrumentData", instrumentData);
-  console.log("filteredSpeciesFromOrchestra", filteredSpeciesFromOrchestra); */
 
   const filteredSpeciesFromOrchestra = useOrchestraFilter(
     species,
@@ -583,6 +538,7 @@ export default function HomeNew(props) {
                     setMarineEcoRegionSearchOptions={
                       setMarineEcoRegionSearchOptions
                     }
+                    getLatestSpeciesAssessment={getLatestSpeciesAssessment}
                   />
                 </ResizeComponent>
               )}
