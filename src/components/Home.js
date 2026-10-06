@@ -538,7 +538,6 @@ export default function HomeNew(props) {
                     setMarineEcoRegionSearchOptions={
                       setMarineEcoRegionSearchOptions
                     }
-                    getLatestSpeciesAssessment={getLatestSpeciesAssessment}
                   />
                 </ResizeComponent>
               )}
