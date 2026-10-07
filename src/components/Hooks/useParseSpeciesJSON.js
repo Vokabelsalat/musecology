@@ -165,8 +165,6 @@ export function useParseSpeciesJSON(i_speciesData, slice) {
         for (let element of speciesObj.timeIUCN) {
           tmpYears.add(parseInt(element.year));
 
-          console.log("element", element);
-
           let year = element.year.toString();
           let assessment = iucnAssessment.get(element.code);
 

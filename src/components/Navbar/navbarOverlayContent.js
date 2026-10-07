@@ -9,7 +9,7 @@ export const navbarOverlayContent = {
       {
         label: "The Story of Stringed Instrument Bows",
         href: "/stories/bow"
-      },
+      }
     ]
   },
   publications: {
@@ -38,8 +38,7 @@ export const navbarOverlayContent = {
         authors: "Kusnick, J., Lichtenberg, S., & Jänicke, S. (2023).",
         publication:
           "Workshop on Visualisation in Environmental Sciences. The Eurographics Association.",
-        href:
-          "https://findresearcher.sdu.dk/ws/portalfiles/portal/263852266/099-106.pdf",
+        href: "https://findresearcher.sdu.dk/ws/portalfiles/portal/263852266/099-106.pdf",
         linkLabel: "https://doi.org/10.2312/envirvis.20231112"
       }
     ]
@@ -57,7 +56,7 @@ export const navbarOverlayContent = {
   about: {
     title: "About MusEcology",
     paragraphs: [
-      "A classical symphony orchestra consists of up to 29 musical instruments manufactured from up to 758 distinct natural materials. The interrelationships between the extraction of raw materials for instrument making, the international trade conditions, and the protection status of endangered species and their ecosystems are highly complex and have yet to be sufficiently scientifically examined. However, rapidly progressing climate and ecological change call for sustainable solutions.",
+      "A classical symphony orchestra consists of up to 29 musical instruments manufactured from up to 768 distinct natural materials. The interrelationships between the extraction of raw materials for instrument making, the international trade conditions, and the protection status of endangered species and their ecosystems are highly complex and have yet to be sufficiently scientifically examined. However, rapidly progressing climate and ecological change call for sustainable solutions.",
       "To address this challenging task, we present MusEcology, a new interactive decision support system based on visualizations. The interactive visualizations offer entry points for users of various backgrounds to explore the interrelationships between musical instruments, natural resources and ecosystems.",
       "The tool’s fundamental objectives are to guarantee that (1) data processing correlates related data resources, (2) visual interfaces and interaction schemes encourage new interdisciplinary research on complex systems interactions, and (3) high-level decision-making is supported to identify alternative pathways towards sustainable instrument making."
     ],
@@ -65,16 +64,58 @@ export const navbarOverlayContent = {
       {
         name: "Silke Lichtenberg",
         role: "Ph. D. student",
-        affiliation: "TH Köln – University of Applied Sciences",
+        affiliation:
+          "TH Köln – University of Applied Sciences, Cologne, Germany",
         image: "/images/silke.jpg",
         imageAlt: "Silke Lichtenberg"
       },
       {
         name: "Jakob Kusnick",
         role: "Postdoctoral Fellow",
-        affiliation: "University of Bergen",
+        affiliation: "University of Bergen, Bergen, Norway",
         image: "/images/image001-1.jpg",
         imageAlt: "Jakob Kusnick"
+      }
+    ],
+    specialpeople: [
+      {
+        name: "Udo Nehren",
+        role: "Professor",
+        affiliation:
+          "TH Köln – University of Applied Sciences, Cologne, Germany"
+      },
+      {
+        name: "Stefan Jänicke",
+        role: "Professor",
+        affiliation: "University of Southern Denmark, Odense, Denmark"
+      },
+      {
+        name: "Elisabeth Huber-Sannwald",
+        role: "Professor",
+        affiliation:
+          "Instituto Potosino de Investigación Científica y Tecnológica, San Luis Potosi, Mexico"
+      },
+      {
+        name: "Emily Beech",
+        role: "Head of Conservation Prioritisation",
+        affiliation:
+          "Botanic Gardens Conservation International, Richmond, United Kingdom"
+      },
+      {
+        name: "Malin Rivers",
+        role: "Head of Conservation Prioritisation",
+        affiliation:
+          "Botanic Gardens Conservation International, Richmond, United Kingdom"
+      },
+      {
+        name: "Gerald Koch",
+        role: "Scientific Director and Professor",
+        affiliation: "Thünen Institute of Wood Research, Hamburg, Germany"
+      },
+      {
+        name: "Volker Haag",
+        role: "Scientific Officer",
+        affiliation: "Thünen Institute of Wood Research, Hamburg, Germany"
       }
     ]
   },
