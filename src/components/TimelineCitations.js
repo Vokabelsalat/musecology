@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { linkifyUrls } from "./Map";
 
 export function formatDate(dateString) {
   if (dateString == null) {
@@ -61,7 +62,7 @@ export default function TimelineCitations(props) {
   const { data, width } = props;
 
   const citations = useMemo(() => {
-    const unique = new Map();
+    const tmpCitations = { CITES: [], IUCN: [], BGCI: [] };
     [
       ["CITES", data.cites],
       ["IUCN", data.iucn],
@@ -75,14 +76,14 @@ export default function TimelineCitations(props) {
             assessmentAndElement.element
           );
           if (citation != null) {
-            const key = `${citation.text}${citation.url ?? ""}`;
-            if (!unique.has(key)) {
-              unique.set(key, citation);
+            const key = `${citation.text} ${citation.url ?? ""}`.trim();
+            if (!tmpCitations[type].includes(key)) {
+              tmpCitations[type].push(key);
             }
           }
         });
     });
-    return [...unique.values()];
+    return tmpCitations;
   }, [data]);
 
   if (citations.length === 0) {
@@ -95,13 +96,21 @@ export default function TimelineCitations(props) {
       style={{ maxWidth: width }}
     >
       <div className="font-bold">Data sources of the threat assessments</div>
-      <ul className="flex list-disc flex-col gap-1 pl-4">
-        {citations.map((citation) => (
-          <li key={`${citation.text}${citation.url ?? ""}`}>
-            <Citation citation={citation} />
-          </li>
-        ))}
-      </ul>
+      {Object.keys(citations).map((type) => {
+        if (citations[type].length == 0) {
+          return <></>;
+        }
+        return (
+          <div>
+            <span className="font-bold">{type}</span>
+            <ul className="flex list-disc flex-col gap-1 pl-4">
+              {citations[type].map((cite) => {
+                return <li key={cite}>{linkifyUrls(cite)}</li>;
+              })}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   );
 }

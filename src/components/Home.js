@@ -299,7 +299,7 @@ export default function HomeNew(props) {
     filteredSpeciesFromTreeMap
   ]);
 
-  console.log("all species data", speciesData);
+  // console.log("all species data", speciesData);
 
   /* console.log("filteredSpeciesFromOrchestra", filteredSpeciesFromOrchestra);
   console.log("filteredSpeciesFromTreeMap", filteredSpeciesFromTreeMap);

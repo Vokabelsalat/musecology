@@ -32,7 +32,8 @@ const COUNTRY_SOURCE_MAPPING = {
   },
   boundaries: {
     title: "Baselayer",
-    subtitle: null,
+    subtitle:
+      "Mapping raw data led to approximated species distributions within the following borders:",
     data: [
       {
         name: "UN Country Borders",
@@ -46,7 +47,7 @@ const COUNTRY_SOURCE_MAPPING = {
 
 const ECOREGION_SOURCES = {
   title: "Species Distribution Sources",
-  subtitle: null,
+  subtitle: "As raw data we used point and range map data from:",
   data: [
     {
       name: "BGCI",
@@ -85,7 +86,8 @@ const ECOREGION_SOURCE_MAPPING = {
   sources: ECOREGION_SOURCES,
   boundaries: {
     title: "Baselayer",
-    subtitle: null,
+    subtitle:
+      "Mapping raw data led to approximated species distributions within the following borders:",
     data: [
       {
         name: "Ecoregions 2017",
@@ -101,7 +103,8 @@ const HEXAGON_SOURCE_MAPPING = {
   sources: ECOREGION_SOURCES,
   boundaries: {
     title: "Baselayer",
-    subtitle: null,
+    subtitle:
+      "Mapping raw data led to approximated species distributions within the following borders:",
     data: [
       {
         name: "Artificial Hexagongrid",

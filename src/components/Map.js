@@ -114,26 +114,33 @@ const getThreatSignature = (data) =>
     .sort()
     .join(",");
 
-// Wraps a trailing URL in a source text into a link.
-const linkifyTrailingUrl = (text) => {
+// Wraps all URLs in a source text into links.
+export const linkifyUrls = (text) => {
   if (typeof text !== "string") return text;
-  const match = text.match(/(https?:\/\/\S+?)([.,;)]?)\s*$/);
-  if (!match) return text;
-  const [full, url, trailing] = match;
-  return (
-    <>
-      {text.slice(0, text.length - full.length)}
+  const urlPattern = /(?:https?:\/\/|www\.)\S+?(?=[.,;:!?)\]]*(?:\s|$))/g;
+  const parts = [];
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(urlPattern)) {
+    const url = match[0];
+    parts.push(text.slice(lastIndex, match.index));
+    parts.push(
       <a
-        href={url}
+        key={match.index}
+        href={url.startsWith("www.") ? `https://${url}` : url}
         target="_blank"
         rel="noreferrer"
         className="break-all text-[var(--highlightpurple)] underline"
       >
         {url}
       </a>
-      {trailing}
-    </>
-  );
+    );
+    lastIndex = match.index + url.length;
+  }
+
+  if (parts.length === 0) return text;
+  parts.push(text.slice(lastIndex));
+  return <>{parts}</>;
 };
 
 // querySourceFeatures can return the same logical feature from multiple tiles.
@@ -1637,8 +1644,65 @@ const MapComponent = forwardRef((props, ref) => {
                       speciesEcos[k].marine.length > 0
                     ) {
                       return (
-                        <div className="p-1">
-                          {linkifyTrailingUrl(speciesEcos[k].source)}
+                        <div
+                          id="polygon-source-priority"
+                          style={{
+                            padding: "0 8px 8px",
+                            borderTop: "1px solid rgba(30, 33, 46, 0.14)"
+                          }}
+                        >
+                          <p style={{ margin: "10px 0 8px" }}>
+                            <strong>
+                              {polygonSourcePriority.sources.title}
+                            </strong>
+                          </p>
+                          {polygonSourcePriority.sources.subtitle && (
+                            <p style={{ margin: "0 0 10px" }}>
+                              {polygonSourcePriority.sources.subtitle}
+                            </p>
+                          )}
+                          <div className="p-1 pl-5">
+                            {linkifyUrls(speciesEcos[k].source)}
+                          </div>
+                          <p style={{ margin: "10px 0 8px" }}>
+                            <strong>
+                              {polygonSourcePriority.boundaries.title}
+                            </strong>
+                          </p>
+                          {polygonSourcePriority.boundaries.subtitle && (
+                            <p style={{ margin: "0 0 10px" }}>
+                              {polygonSourcePriority.boundaries.subtitle}
+                            </p>
+                          )}
+                          <ol style={{ margin: 0, paddingLeft: "20px" }}>
+                            {polygonSourcePriority.boundaries.data.map(
+                              (source) => (
+                                <li
+                                  key={source.field}
+                                  style={{ marginBottom: "6px" }}
+                                >
+                                  {source.href ? (
+                                    <a
+                                      href={source.href}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      style={{
+                                        color: "#095e8e",
+                                        fontWeight: 600
+                                      }}
+                                    >
+                                      {source.name}
+                                    </a>
+                                  ) : (
+                                    <strong>{source.name}</strong>
+                                  )}
+                                  <span style={{ display: "block" }}>
+                                    {source.description}
+                                  </span>
+                                </li>
+                              )
+                            )}
+                          </ol>
                         </div>
                       );
                     }
