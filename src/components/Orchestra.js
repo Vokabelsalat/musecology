@@ -145,9 +145,9 @@ export default function OrchestraNew(props) {
         padding: "1px"
       }}
     >
-      <div className="absolute top-2 left-2 text-lg bg-slate-50 rounded-full cursor-pointer h-6 w-min hover:w-fit flex items-center justify-center group shadow-md px-1">
+      <div className="absolute top-2 left-2 text-sm bg-slate-50 rounded-full cursor-pointer h-5 w-min hover:w-fit flex items-center justify-center group shadow-md px-1">
         &copy;
-        <span className="hidden overflow-hidden group-hover:flex text-sm px-1">
+        <span className="hidden overflow-hidden group-hover:flex text-xs px-1">
           <a
             target="_blank"
             className="text-[var(--highlightpurple)] underline"

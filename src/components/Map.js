@@ -114,6 +114,28 @@ const getThreatSignature = (data) =>
     .sort()
     .join(",");
 
+// Wraps a trailing URL in a source text into a link.
+const linkifyTrailingUrl = (text) => {
+  if (typeof text !== "string") return text;
+  const match = text.match(/(https?:\/\/\S+?)([.,;)]?)\s*$/);
+  if (!match) return text;
+  const [full, url, trailing] = match;
+  return (
+    <>
+      {text.slice(0, text.length - full.length)}
+      <a
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        className="break-all text-[var(--highlightpurple)] underline"
+      >
+        {url}
+      </a>
+      {trailing}
+    </>
+  );
+};
+
 // querySourceFeatures can return the same logical feature from multiple tiles.
 const getSourceFeatureKey = (feature, unclusteredProperty) => {
   const properties = feature.properties ?? {};
@@ -1614,7 +1636,11 @@ const MapComponent = forwardRef((props, ref) => {
                       speciesEcos[k].terrestrial.length > 0 ||
                       speciesEcos[k].marine.length > 0
                     ) {
-                      return <div>{speciesEcos[k].source}</div>;
+                      return (
+                        <div className="p-1">
+                          {linkifyTrailingUrl(speciesEcos[k].source)}
+                        </div>
+                      );
                     }
                     return <></>;
                   })}
