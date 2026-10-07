@@ -479,7 +479,7 @@
   {
     "type": "text",
     "title": "International Trade",
-    "text": "The legal trade with pre-convention material clearly indicates on a global level the countries most involved to pau-brasil trade. The fact that pau-brasil is an endangered species, whose natural distribution nowadays is limited to very few protected areas combined with the continued international demand for pau-brasil wood and string instrument bows made of pau-brasil coupled with the confiscations in the recent past urged Brazil to propose in 2022 an upgrading of the pau-brasil listing to CITES Appendix <ThreatCode type='cites' code='I'></ThreatCode>, which was controversially discussed during the CITES CoP19 in Panama City.",
+    "text": "The legal trade with pre-convention material clearly indicates on a global level the countries most involved to pau-brasil trade. The fact that pau-brasil is an endangered species, whose natural distribution nowadays is limited to very few protected areas combined with the continued international demand for pau-brasil wood and string instrument bows made of pau-brasil coupled with the confiscations in the recent past urged Brazil to propose in 2022 as well as in 2025 an upgrading of the pau-brasil listing to CITES Appendix <ThreatCode type='cites' code='I'></ThreatCode>, which was controversially discussed during the CITES CoP19 in Panama City and during CITES CoP20 in Samarkand.",
     "image": {
       "url": "/stories/bowstory/johannesTool_Large.jpeg",
       "caption": "International Import / Export of Paubrasilia echinata from and to Brazil",
@@ -501,9 +501,9 @@
   },
   {
     "type": "text",
-    "title": "CITES CoP19 Panama, Proposal of Listing Pau-brasil in Appendix I",
+    "title": "CITES CoP19 in Panama City - 1<sup>st</sup> Proposal of Listing Pau-brasil in Appendix I",
 
-    "text": "The negotiations and discussions in the pau-brasil working group resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 that until 2023 excluded finished bows from the regulation and from 2023 onwards asks for an CITES export permission for finished bows leaving the country of pau-brasil's origin - that means Brazil.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/TBIJ0zGiryk?start=3250' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
+    "text": "The negotiations and discussions in the pau-brasil working group, during the CoP19 in Panama, resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 that until 2023 excluded finished bows from the regulation and from 2023 onwards asks for an CITES export permission for finished bows leaving the country of pau-brasil's origin - that means Brazil.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/TBIJ0zGiryk?start=3250' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
     "flyTo": {
       "center": [-79.548204, 8.937899],
       "zoom": 18,
@@ -519,14 +519,14 @@
   },
   {
     "type": "text",
-    "title": "CITES - threat or a blessing for musicians, violin and bow makers?",
-    "text": "<div style='display: grid;margin-top: 15px;grid-gap: 40px;text-align: left;'><div>Is CITES threatening music, musicians, violin and bow makers?</div><div>Or is the task of CITES a blessing as music and instrument makers profit in the long-term if species loss due to trade is avoided?</div><div>What is the right balance and what are the direct consequences in the workshop and on stage?</div><div>",
+    "title": "CITES CoP20 Samarkand, Usbekistan - 2<sup>nd</sup> Proposal of Listing Pau-brasil in Appendix I",
+
+    "text": "Even during CoP20 in Samarkand negotiations and discussions in the pau-brasil working group prevented a listing of pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode>. In combination with a strengthening of Annotation #10 that only excludes travels of musicians for non-commercial purposes Brazil agreed in maintaining pau-brasil in Appendix <ThreatCode type='cites' code='II'></ThreatCode>.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='50%' src='https://www.youtube.com/embed/AYccCOAMcP0?start=9066' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe><br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='50%' src='https://www.youtube.com/embed/FwpGdjyXtz4?start=321' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
     "flyTo": {
-      "center": [4.129790608581004, 47.07191652676002],
-      "zoom": 1,
-      "speed": 0.4
+      "center": [67.06857713431425, 39.66119638040882],
+      "zoom": 16,
+      "speed": 0.3
     },
-    "width": "80%",
     "mapLayer": {
       "type": "countries",
       "mapStyle": "satellite"
@@ -535,16 +535,16 @@
     "showCountries": false,
     "showThreatDonuts": false
   },
-  {
+    {
     "type": "text",
-    "title": "CITES CoP20 Samarkand, Usbekistan, Proposal of Listing Pau-brasil in Appendix I",
-
-    "text": "The negotiations and discussions in the pau-brasil working group resulted in NOT listing pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode> and rather maintaining its listing in Appendix <ThreatCode type='cites' code='II'></ThreatCode> but adapting the Annotation #10 since 2023 asked for an CITES export permission for finished bows leaving Brazil, the country of the species origin.<br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/AYccCOAMcP0?start=9066' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe><br/><br/><iframe style='width: 100% !important;height: auto;aspect-ratio: 16 / 9;' width='100%' src='https://www.youtube.com/embed/FwpGdjyXtz4?start=321' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
+    "title": "CITES - threat or a blessing for musicians, violin and bow makers?",
+    "text": "<div style='display: grid;margin-top: 15px;grid-gap: 40px;text-align: left;'><div>Is CITES threatening music, musicians, violin and bow makers?</div><div>Or is the task of CITES a blessing as music and instrument makers profit in the long-term if species loss due to trade is avoided?</div><div>Who are the advocates for the survival of endangered species?</div><div>What is the right balance and what are the direct consequences in the workshop and on stage?</div><div>",
     "flyTo": {
-      "center": [67.06857713431425, 39.66119638040882],
-      "zoom": 16,
-      "speed": 0.3
+      "center": [4.129790608581004, 47.07191652676002],
+      "zoom": 1,
+      "speed": 0.4
     },
+    "width": "80%",
     "mapLayer": {
       "type": "countries",
       "mapStyle": "satellite"
