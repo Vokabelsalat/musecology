@@ -205,18 +205,10 @@
       "copyright": "Silke Lichtenberg",
       "caption": "Sound of wood planing during the manufacturing of a violin."
     },
-    "flyTo": {
-      "center": [16.3727683154214, 48.20050021403356],
-      "zoom": 17,
-      "speed": 0.5
-    },
-    "mapLayer": {
-      "type": "countries",
-      "mapStyle": "satellite"
-    },
-    "projection": "globe",
-    "showCountries": false,
-    "showThreatDonuts": false
+    "legacyInstrument": "Violin bow, Viola bow, Cello bow, Double bass bow",
+    "instrument": "Violin bow| Viola bow| Cello bow| Double bass bow",
+    "instrumentGroup": "Strings",
+    "instrumentPart": null
   },
   {
     "type": "text",
