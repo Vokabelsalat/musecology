@@ -1598,9 +1598,15 @@ const MapComponent = forwardRef((props, ref) => {
                 </div>
               ) : (
                 <div>
-                  {Object.keys(speciesEcos).map((k) => (
-                    <div>{speciesEcos[k].source}</div>
-                  ))}
+                  {Object.keys(speciesEcos).map((k) => {
+                    if (
+                      speciesEcos[k].terrestrial.length > 0 ||
+                      speciesEcos[k].marine.length > 0
+                    ) {
+                      return <div>{speciesEcos[k].source}</div>;
+                    }
+                    return <></>;
+                  })}
                 </div>
               )}
             </>
