@@ -10,6 +10,8 @@ if (!supportedCommands.has(command)) {
 
 let commitSha = process.env.REACT_APP_GIT_COMMIT;
 let hasLocalChanges = process.env.REACT_APP_GIT_DIRTY;
+const shouldDisableSourcemaps =
+  command === "build" && process.env.GENERATE_SOURCEMAP == null;
 
 if (!commitSha) {
   const gitResult = spawnSync("git", ["rev-parse", "HEAD"], {
@@ -42,6 +44,7 @@ const child = spawn(
   {
     env: {
       ...process.env,
+      ...(shouldDisableSourcemaps ? { GENERATE_SOURCEMAP: "false" } : {}),
       REACT_APP_GIT_COMMIT: commitSha || "",
       REACT_APP_GIT_DIRTY: hasLocalChanges
     },
