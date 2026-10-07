@@ -55,7 +55,7 @@ export default function CountrySearchBar(props) {
   }, [data, countriesDictionary, ecoRegionSearchOptions]);
 
   useEffect(() => {
-    if (mapSearchMode === "countries") {
+    if (["countries", "orchestras"].includes(mapSearchMode)) {
       setValue(
         countryOptions.find((option) => option.value === selectedCountry) ??
           null
@@ -70,6 +70,7 @@ export default function CountrySearchBar(props) {
       case "protection":
         return "Ecoregion Search";
       case "countries":
+      case "orchestras":
       default:
         return "Country Search";
     }
@@ -83,7 +84,7 @@ export default function CountrySearchBar(props) {
     <Autocomplete
       value={value != null ? value : null}
       onChange={(event, newValue) => {
-        if (mapSearchMode === "countries") {
+        if (["countries", "orchestras"].includes(mapSearchMode)) {
           setSelectedCountry(newValue != null ? newValue.value : null);
         } else if (mapSearchMode === "ecoregions") {
           setSelectedEcoregion(newValue.value);
@@ -143,7 +144,9 @@ export default function CountrySearchBar(props) {
       clearOnBlur
       handleHomeEndKeys
       options={
-        mapSearchMode === "countries" ? countryOptions : ecoRegionOptions
+        ["countries", "orchestras"].includes(mapSearchMode)
+          ? countryOptions
+          : ecoRegionOptions
       }
       isOptionEqualToValue={(option, selectedValue) =>
         option.value === selectedValue.value

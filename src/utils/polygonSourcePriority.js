@@ -113,6 +113,34 @@ const HEXAGON_SOURCE_MAPPING = {
   }
 };
 
+const ORCHESTRA_SOURCE_MAPPING = {
+  sources: {
+    title: "Orchestras & Opera Houses Worldwide",
+    subtitle: null,
+    data: [
+      {
+        name: "musicalchairs",
+        field: null,
+        description:
+          "Directory orchestras & opera houses worldwide, including city locations. Accessed 12/2021",
+        href: "https://www.musicalchairs.info/orchestras"
+      }
+    ]
+  },
+  boundaries: {
+    title: "Baselayer",
+    subtitle: null,
+    data: [
+      {
+        name: "UN Country Borders",
+        field: "countryBorders",
+        description: "UNHCR Administrative Boundary",
+        href: "https://data.unhcr.org/en/geoservices"
+      }
+    ]
+  }
+};
+
 // const COUNTRY_MAPPING = {
 //   title: "Species mapping source priority",
 //   description:
@@ -167,7 +195,7 @@ const HEXAGON_SOURCE_MAPPING = {
 
 export const POLYGON_SOURCE_MAPPINGS = {
   countries: COUNTRY_SOURCE_MAPPING,
-  orchestras: COUNTRY_SOURCE_MAPPING,
+  orchestras: ORCHESTRA_SOURCE_MAPPING,
   ecoregions: ECOREGION_SOURCE_MAPPING,
   protection: ECOREGION_SOURCE_MAPPING,
   hexagons: HEXAGON_SOURCE_MAPPING

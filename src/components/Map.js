@@ -271,7 +271,7 @@ const MapComponent = forwardRef((props, ref) => {
             interactiveLayerIds = ["ecoRegionsProtection"];
             break;
           case "orchestras":
-            interactiveLayerIds = [];
+            interactiveLayerIds = ["countriesSpecies"];
             break;
           case "countries":
           default:
@@ -391,6 +391,17 @@ const MapComponent = forwardRef((props, ref) => {
         ).length;
     }
   }, [mapMode, speciesCountries, speciesEcos, speciesHexas, isTerrestial]);
+
+  const mappedOrchestrasCount = useMemo(() => {
+    if (orchestraHeatMap == null) {
+      return 0;
+    } else {
+      return Object.values(orchestraHeatMap).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+    }
+  }, [orchestraHeatMap]);
 
   useEffect(() => {
     const map = ref?.current;
@@ -1371,8 +1382,6 @@ const MapComponent = forwardRef((props, ref) => {
     }
   }, [ref]);
 
-  console.log("mapMode", mapMode);
-
   return (
     <div
       className="grid grid-cols-1"
@@ -1519,7 +1528,9 @@ const MapComponent = forwardRef((props, ref) => {
             }}
           >
             <span aria-live="polite">
-              {mappedSpeciesCount.toLocaleString()} mapped species
+              {mapMode === "orchestras"
+                ? `${mappedOrchestrasCount.toLocaleString()} mapped orchestras`
+                : `${mappedSpeciesCount.toLocaleString()} mapped species`}
             </span>
             <span aria-hidden="true">
               {showPolygonSourcePriority ? "−" : "+"}
