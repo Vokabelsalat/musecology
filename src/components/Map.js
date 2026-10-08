@@ -178,6 +178,7 @@ const MapComponent = forwardRef((props, ref) => {
     showThreatDonuts = true,
     showCountries = true,
     extraPolygon = null,
+    extraPoint = null,
     keepAspectRatio: i_keepAspectRatio = false,
     getPopulationTrend,
     categoryFilter,
@@ -363,6 +364,7 @@ const MapComponent = forwardRef((props, ref) => {
   const [isoToCountryID, setIsoToCountryID] = useState(null);
   const [ecosToMyIDs, setEcosToMyIDs] = useState(null);
   const [extraPolygonGeoJSON, setExtraPolygonGeoJSON] = useState(null);
+  const [extraPointGeoJSON, setExtraPointGeoJSON] = useState(null);
   const [keepAspectRatio] = useState(i_keepAspectRatio);
 
   const [highlightLinesGeoJSON, setHighlightLinesGeoJSON] = useState(null);
@@ -754,7 +756,7 @@ const MapComponent = forwardRef((props, ref) => {
     let tmpExtraPolygonPaint = null;
 
     if (extraPolygon) {
-      fetch("/data/" + extraPolygon.name + ".json")
+      fetch(extraPolygon.name + ".json")
         .then((res) => res.json())
         .then(function (geojson) {
           let tmpExtraPolygon = [];
@@ -785,6 +787,21 @@ const MapComponent = forwardRef((props, ref) => {
 
     /* return { extraPolygonPaint: tmpExtraPolygonPaint }; */
   }, [extraPolygon]);
+
+  useEffect(() => {
+    if (extraPoint) {
+      fetch(extraPoint.name + ".json")
+        .then((res) => res.json())
+        .then(function (geojson) {
+          setExtraPointGeoJSON({
+            features: geojson.features.map((feat) => structuredClone(feat)),
+            type: "FeatureCollection"
+          });
+        });
+    } else {
+      setExtraPointGeoJSON(null);
+    }
+  }, [extraPoint]);
 
   useEffect(() => {
     const tmpIsoToSpecies = {};
@@ -2008,6 +2025,72 @@ const MapComponent = forwardRef((props, ref) => {
                 },
                 layout: {
                   visibility: mapMode === "orchestras" ? "visible" : "none"
+                }
+              }}
+            />
+          </Source>
+        )}
+        {extraPointGeoJSON && extraPoint && (
+          <Source
+            type="geojson"
+            id="extraPointSource"
+            data={extraPointGeoJSON}
+            cluster={true}
+            clusterMaxZoom={14}
+            clusterRadius={70}
+          >
+            <Layer
+              {...{
+                id: "extraPointClusters",
+                type: "circle",
+                source: "extraPointSource",
+                filter: ["has", "point_count"],
+                paint: {
+                  "circle-color": extraPoint.fill ?? "purple",
+                  "circle-stroke-width": 1,
+                  "circle-stroke-color": "#FFF",
+                  "circle-radius": [
+                    "step",
+                    ["get", "point_count"],
+                    10,
+                    25,
+                    20,
+                    100,
+                    30,
+                    750,
+                    35
+                  ]
+                }
+              }}
+            />
+
+            <Layer
+              {...{
+                id: "extraPointCount",
+                type: "symbol",
+                source: "extraPointSource",
+                filter: ["has", "point_count"],
+                layout: {
+                  "text-field": "{point_count_abbreviated}",
+                  "text-size": 12
+                },
+                paint: {
+                  "text-color": "white"
+                }
+              }}
+            />
+
+            <Layer
+              {...{
+                id: "extraPointUnclustered",
+                type: "circle",
+                source: "extraPointSource",
+                filter: ["!", ["has", "point_count"]],
+                paint: {
+                  "circle-color": extraPoint.fill ?? "purple",
+                  "circle-radius": 4,
+                  "circle-stroke-width": 1,
+                  "circle-stroke-color": "#fff"
                 }
               }}
             />

@@ -1,0 +1,50 @@
+[
+  {
+    "type": "text",
+    "title": "CITES CoP20 Samarkand, Usbekistan - 2<sup>nd</sup> Proposal of Listing Pau-brasil in Appendix I",
+
+    "text": "Even during CoP20 in Samarkand negotiations and discussions in the pau-brasil working group prevented a listing of pau-brasil in Appendix <ThreatCode type='cites' code='I'></ThreatCode>. In combination with a strengthening of Annotation #10 that only excludes travels of musicians for non-commercial purposes Brazil agreed in maintaining pau-brasil in Appendix <ThreatCode type='cites' code='II'></ThreatCode>.<br/><br/><iframe style='width: 50% !important;height: auto;aspect-ratio: 16 / 9;' width='50%' src='https://www.youtube.com/embed/AYccCOAMcP0?start=9066' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe><br/><br/><iframe style='width: 50% !important;height: auto;aspect-ratio: 16 / 9;' width='50%' src='https://www.youtube.com/embed/FwpGdjyXtz4?start=321' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowfullscreen ></iframe>",
+    "flyTo": {
+      "center": [67.06857713431425, 39.66119638040882],
+      "zoom": 16,
+      "speed": 0.3
+    },
+    "mapLayer": {
+      "type": "countries",
+      "mapStyle": "satellite"
+    },
+    "projection": "globe",
+    "showCountries": false,
+    "showThreatDonuts": false
+  },
+  {
+    "type": "text",
+    "title": "Bow making - a critically endangered craft",
+    "text": "There are only around 150 bow makers worldwide, most of whom work in small workshops with 1–3 bow makers. Social and global environmental changes threaten the  century-old bow making craft. This is most evident in resulting resource scarcities, spanning from (1) a shrinking number of professional bow makers, to (2) a lack of structured training and apprenticeships all the way up to (3) an increasing number of threatened species that provide the materials for string instrument bows and are justifiably subject to trade regulations. Therefore, comprehensive actions and transformations are required that allow shaping a future for the survival of the pau-brasil tree and the bow making craftsmanship adapted to the changing circumstances.",
+    "image": {
+      "url": null,
+      "caption": "Map of bow maker workshops",
+      "copyright": null,
+      "width": "100%"
+    },
+    "audio": {
+      "url": "/sounds/hobelSound.wav#t=00:00:16",
+      "copyright": "Silke Lichtenberg",
+      "caption": "Sound of wood planing during the manufacturing of a violin."
+    },
+    "flyTo": {
+      "center": [16.3727683154214, 48.20050021403356],
+      "zoom": 17,
+      "speed": 0.5
+    },
+    "mapLayer": {
+      "type": "countries",
+      "mapStyle": "satellite"
+    },
+    "extraPoint": {
+      "name": "/data/bowMakers"
+    },
+    "showCountries": false,
+    "showThreatDonuts": false
+  }
+]

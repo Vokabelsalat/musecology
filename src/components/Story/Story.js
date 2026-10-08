@@ -62,6 +62,7 @@ export default function Story(props) {
   const [speciesData, setSpeciesData] = useState({});
   const [showThreatDonuts, setShowThreatDonuts] = useState(true);
   const [extraPolygon, setExtraPolygon] = useState(null);
+  const [extraPoint, setExtraPoint] = useState(null);
   const [showThreatStatusInCluster, setShowThreatStatusInCluster] =
     useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
@@ -265,6 +266,17 @@ export default function Story(props) {
       setExtraPolygon(contents[activeFigure].extraPolygon);
     } else {
       setExtraPolygon(null);
+    }
+
+    if (
+      activeFigure != null &&
+      contents != null &&
+      contents[activeFigure] != null &&
+      contents[activeFigure].extraPoint != null
+    ) {
+      setExtraPoint(contents[activeFigure].extraPoint);
+    } else {
+      setExtraPoint(null);
     }
 
     if (
@@ -640,6 +652,7 @@ export default function Story(props) {
                     showThreatStatusInCluster={showThreatStatusInCluster}
                     projection={projection}
                     extraPolygon={extraPolygon}
+                    extraPoint={extraPoint}
                     timeFrame={timeFrame}
                     categoryFilter={categoryFilter}
                     setCategoryFilter={setCategoryFilter}
