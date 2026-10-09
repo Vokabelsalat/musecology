@@ -107,6 +107,8 @@ export default function OrchestraHeader(props) {
           <div className="row-1 col-2 border-b">Videos</div>
           <div className="col-start-2 row-start-2 p-2">
             {Object.entries(videos).map(([k, v]) => {
+              console.log("v", v);
+
               if (v != null) {
                 return (
                   <div>
@@ -118,8 +120,9 @@ export default function OrchestraHeader(props) {
                           .replace("watch?v=", "embed/")
                           .replace(
                             "https://youtu.be/",
-                            "https://www.youtube.com/embed/"
-                          )}
+                            "www.youtube-nocookie.com/embed/"
+                          )
+                          .replace("youtube.com/", "youtube-nocookie.com/")}
                       ></iframe>
                     </div>
                   </div>

@@ -85,17 +85,32 @@ const ECOREGION_SOURCES = {
 const ECOREGION_SOURCE_MAPPING = {
   sources: ECOREGION_SOURCES,
   boundaries: {
-    title: "Baselayer",
-    subtitle:
-      "Mapping raw data led to approximated species distributions within the following borders:",
-    data: [
-      {
-        name: "Ecoregions 2017",
-        // field: "countryBorders",
-        // description: "UNHCR Administrative Boundary",
-        href: "https://ecoregions.appspot.com"
-      }
-    ]
+    terrestrial: {
+      title: "Baselayer",
+      subtitle:
+        "Mapping raw data led to approximated species distributions within the following borders:",
+      data: [
+        {
+          name: "Terrestrial Ecoregions 2017",
+          // field: "countryBorders",
+          // description: "UNHCR Administrative Boundary",
+          href: "https://ecoregions.appspot.com"
+        }
+      ]
+    },
+    marine: {
+      title: "Baselayer",
+      subtitle:
+        "Mapping raw data led to approximated species distributions within the following borders:",
+      data: [
+        {
+          name: "Marine Ecoregions 2007",
+          // field: "countryBorders",
+          // description: "UNHCR Administrative Boundary",
+          href: "https://resourcewatch.org/data/explore/Marine-Ecoregions?section=Discover&selectedCollection=&zoom=3&lat=0&lng=0&pitch=0&bearing=0&basemap=dark&labels=light&layers=%255B%257B%2522dataset%2522%253A%252236803484-c413-49a9-abe2-2286ee99b624%2522%252C%2522opacity%2522%253A1%252C%2522layer%2522%253A%25222dd860af-21be-47c6-8e1d-0b8eb63bfa46%2522%257D%255D&aoi=&page=1&sort=most-viewed&sortDirection=-1"
+        }
+      ]
+    }
   }
 };
 
@@ -204,10 +219,15 @@ export const POLYGON_SOURCE_MAPPINGS = {
   hexagons: HEXAGON_SOURCE_MAPPING
 };
 
-export const getPolygonSourcePriority = (mapMode, isTerrestial = true) => {
+export const getPolygonSourcePriority = (mapMode, isTerrestrial = true) => {
   const mapping = POLYGON_SOURCE_MAPPINGS[mapMode] ?? COUNTRY_SOURCE_MAPPING;
-  // const sources = Array.isArray(mapping.sources)
-  //   ? mapping.sources
-  //   : mapping.sources[isTerrestial ? "terrestrial" : "marine"];
-  return { ...mapping };
+
+  return {
+    ...mapping,
+    boundaries:
+      Object.keys(mapping.boundaries).includes("terrestrial") ||
+      Object.keys(mapping.boundaries).includes("marine")
+        ? mapping.boundaries[isTerrestrial ? "terrestrial" : "marine"]
+        : mapping.boundaries
+  };
 };

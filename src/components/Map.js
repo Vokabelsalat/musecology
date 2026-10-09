@@ -201,7 +201,7 @@ const MapComponent = forwardRef((props, ref) => {
     useState(false);
   const polygonSourcePriorityRef = useRef(null);
   const legendRef = useRef(null);
-  const [isTerrestial, setTerrestial] = useState(true);
+  const [isTerrestrial, setTerrestrial] = useState(true);
   const { setTooltip } = useContext(TooltipContext);
 
   useEffect(() => {
@@ -348,8 +348,8 @@ const MapComponent = forwardRef((props, ref) => {
   const [centroidsOfEcoregions, setCentroidsOfEcoregions] = useState(null);
   const [centroidsOfMarineEcoregions, setCentroidsOfMarineEcoregions] =
     useState(null);
-  const ecoregionIdKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
-  const ecoregionCentroids = isTerrestial
+  const ecoregionIdKey = isTerrestrial ? "ECO_ID" : "ECO_CODE";
+  const ecoregionCentroids = isTerrestrial
     ? centroidsOfEcoregions
     : centroidsOfMarineEcoregions;
   const [ecoregionHeatMap, setEcoregionHeatMap] = useState(null);
@@ -383,8 +383,8 @@ const MapComponent = forwardRef((props, ref) => {
   const [countryRomnamToMyID, setCountryRomnamToMyID] = useState({});
 
   const polygonSourcePriority = useMemo(
-    () => getPolygonSourcePriority(mapMode, isTerrestial),
-    [mapMode, isTerrestial]
+    () => getPolygonSourcePriority(mapMode, isTerrestrial),
+    [mapMode, isTerrestrial]
   );
 
   const mappedSpeciesCount = useMemo(() => {
@@ -397,7 +397,7 @@ const MapComponent = forwardRef((props, ref) => {
       }
 
       if (useRegionType) {
-        const regionEntries = value[isTerrestial ? "terrestrial" : "marine"];
+        const regionEntries = value[isTerrestrial ? "terrestrial" : "marine"];
         return Array.isArray(regionEntries) && regionEntries.length > 0;
       }
 
@@ -421,7 +421,7 @@ const MapComponent = forwardRef((props, ref) => {
           hasEntries(value)
         ).length;
     }
-  }, [mapMode, speciesCountries, speciesEcos, speciesHexas, isTerrestial]);
+  }, [mapMode, speciesCountries, speciesEcos, speciesHexas, isTerrestrial]);
 
   const mappedOrchestrasCount = useMemo(() => {
     if (orchestraHeatMap == null) {
@@ -731,7 +731,7 @@ const MapComponent = forwardRef((props, ref) => {
 
   const hoveredEcoregionIds = useMemo(() => {
     const regionType =
-      isTerrestial || mapMode === "protection" ? "terrestrial" : "marine";
+      isTerrestrial || mapMode === "protection" ? "terrestrial" : "marine";
     return [
       ...new Set(
         hoveredSpeciesNames
@@ -739,10 +739,10 @@ const MapComponent = forwardRef((props, ref) => {
           .map(String)
       )
     ];
-  }, [hoveredSpeciesNames, speciesEcos, isTerrestial, mapMode]);
+  }, [hoveredSpeciesNames, speciesEcos, isTerrestrial, mapMode]);
 
   const hoveredHexagonIds = useMemo(() => {
-    const regionType = isTerrestial ? "terrestrial" : "marine";
+    const regionType = isTerrestrial ? "terrestrial" : "marine";
     return [
       ...new Set(
         hoveredSpeciesNames
@@ -750,7 +750,7 @@ const MapComponent = forwardRef((props, ref) => {
           .map(String)
       )
     ];
-  }, [hoveredSpeciesNames, speciesHexas, isTerrestial]);
+  }, [hoveredSpeciesNames, speciesHexas, isTerrestrial]);
 
   useEffect(() => {
     let tmpExtraPolygonPaint = null;
@@ -866,7 +866,7 @@ const MapComponent = forwardRef((props, ref) => {
         continue;
       }
 
-      for (let speciesEco of isTerrestial
+      for (let speciesEco of isTerrestrial
         ? ecos["terrestrial"]
         : ecos["marine"]) {
         if (tmpEcoToSpecies.hasOwnProperty(speciesEco)) {
@@ -882,15 +882,15 @@ const MapComponent = forwardRef((props, ref) => {
     let tmpEcoregionHeatMapMax = 0;
     let tmpEcoRegionsGeoJson = { type: "FeatureCollection", features: [] };
     if (
-      (ecoRegionsGeoJson && isTerrestial) ||
-      (!isTerrestial && marineEcoRegionsGeoJson)
+      (ecoRegionsGeoJson && isTerrestrial) ||
+      (!isTerrestrial && marineEcoRegionsGeoJson)
     ) {
       // const idKey = isTerrestial ? "ECO_ID" : "ECO_CODE";
       // for (let ecoregion of [
       //   ...marineEcoRegionsGeoJson.features,
       //   ...ecoRegionsGeoJson.features
       // ]) {
-      for (let ecoregion of isTerrestial
+      for (let ecoregion of isTerrestrial
         ? ecoRegionsGeoJson.features
         : marineEcoRegionsGeoJson.features) {
         let tmpEco = { ...ecoregion, properties: { ...ecoregion.properties } };
@@ -923,7 +923,7 @@ const MapComponent = forwardRef((props, ref) => {
     setEcoregionHeatMapMax(tmpEcoregionHeatMapMax);
     setEcoregionHeatMap(tmpEcoregionHeatMap);
     setEcosToMyIDs(tmpEcosToMyIDs);
-  }, [speciesEcos, ecoRegionsGeoJson, marineEcoRegionsGeoJson, isTerrestial]);
+  }, [speciesEcos, ecoRegionsGeoJson, marineEcoRegionsGeoJson, isTerrestrial]);
 
   useEffect(() => {
     const tmpHexasToSpecies = {};
@@ -933,7 +933,7 @@ const MapComponent = forwardRef((props, ref) => {
         continue;
       }
 
-      for (let speciesHex of isTerrestial ? hexas.terrestrial : hexas.marine) {
+      for (let speciesHex of isTerrestrial ? hexas.terrestrial : hexas.marine) {
         if (tmpHexasToSpecies.hasOwnProperty(speciesHex)) {
           tmpHexasToSpecies[speciesHex.toString()].push(species);
         } else {
@@ -968,7 +968,7 @@ const MapComponent = forwardRef((props, ref) => {
     setHexagonHeatMapMax(tmpHexagonHeatMapMax);
     setHexagonHeatMap(tmpHexagonHeatMap);
     setHexasToSpecies(tmpHexasToSpecies);
-  }, [hexagonGeoJSON, speciesHexas, isTerrestial]);
+  }, [hexagonGeoJSON, speciesHexas, isTerrestrial]);
 
   const colors = ["#fed976", "#feb24c", "#fd8d3c", "#fc4e2a", "#e31a1c"];
 
@@ -1217,6 +1217,16 @@ const MapComponent = forwardRef((props, ref) => {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
+  }
+
+  if (countriesGeoJsonTest) {
+    const emptyCountries = {};
+    for (const feat of countriesGeoJsonTest.features) {
+      if (feat.properties.speciesCount === 0) {
+        emptyCountries[feat.properties.ISO3CD] = feat.properties;
+      }
+    }
+    console.log("Empty Countries", emptyCountries);
   }
 
   function createClusterDonut(props) {
@@ -2304,14 +2314,14 @@ const MapComponent = forwardRef((props, ref) => {
             }}
             type="button"
             onClick={(e) => {
-              setTerrestial(!isTerrestial);
+              setTerrestrial(!isTerrestrial);
             }}
           >
             <div className="tools-box w-full h-full">
               <div className="grid grid-cols-2 w-[60px] justify-items-center h-full">
                 <div
                   className={`border-r border-[#e5e7eb] rounded-[4px_0px_0px_4px] w-full h-full flex justify-center items-center delay-150 duration-500 ease-in-out transition-colors ${
-                    isTerrestial ? "bg-transparent" : "bg-[#f3f3f4]"
+                    isTerrestrial ? "bg-transparent" : "bg-[#f3f3f4]"
                   } hover:bg-[rgba(45,45,255,0.2)]`}
                   onMouseEnter={(e) => {
                     setTooltip({
@@ -2325,14 +2335,14 @@ const MapComponent = forwardRef((props, ref) => {
                 >
                   <FontAwesomeIcon
                     icon={faMountainSun}
-                    color={isTerrestial ? blueIconColor : "gray"}
+                    color={isTerrestrial ? blueIconColor : "gray"}
                     className="delay-150 duration-1000 ease-in-out transition-colors"
                     size="lg"
                   />
                 </div>
                 <div
                   className={`flex items-center justify-center size-full delay-150 duration-500 ease-in-out transition-colors rounded-[0px_4px_4px_0px] ${
-                    isTerrestial ? "#f3f3f4" : "transparent"
+                    isTerrestrial ? "#f3f3f4" : "transparent"
                   } hover:bg-[rgba(45,45,255,0.2)]`}
                   onMouseEnter={(e) => {
                     setTooltip({
@@ -2346,7 +2356,7 @@ const MapComponent = forwardRef((props, ref) => {
                 >
                   <FontAwesomeIcon
                     icon={faDroplet}
-                    color={isTerrestial ? "gray" : blueIconColor}
+                    color={isTerrestrial ? "gray" : blueIconColor}
                     className="delay-150 duration-1000 ease-in-out transition-colors"
                     size="lg"
                   />

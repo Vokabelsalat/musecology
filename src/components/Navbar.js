@@ -19,6 +19,11 @@ const navigationItems = [
     content: navbarOverlayContent.publications
   },
   {
+    label: "Data",
+    Content: ImprintOverlayContent,
+    content: navbarOverlayContent.data
+  },
+  {
     label: "About",
     Content: AboutOverlayContent,
     content: navbarOverlayContent.about
@@ -45,11 +50,18 @@ export default function Navbar() {
         gridColumnStart: 1,
         gridColumnEnd: "span 2"
       }}
-      className="grid grid-cols-6 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[35px]"
+      className="grid grid-cols-7 w-full items-center grid-rows-1 px-7 border-b border-gray-200 z-[9999] h-[35px]"
     >
-      <a className="hover:font-bold text-xl text-black flex flex-row items-center gap-2" href="/">
-        <img className="size-5" src="/favicon.png" alt="MusEcology Logo"/> MusEcology
-      </a>
+      <div className="flex">
+        <a
+          className="hover:font-bold text-xl text-black flex flex-row items-center gap-2"
+          href="/"
+        >
+          <img className="size-5" src="/favicon.png" alt="MusEcology Logo" />{" "}
+          MusEcology
+        </a>
+        <span className="text-xs ml-1">v1.1</span>
+      </div>
       {navigationItems.map(({ label, Content, content }) => (
         <button
           aria-haspopup="dialog"

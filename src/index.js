@@ -1,6 +1,10 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import "@fontsource/great-vibes";
+import "@fontsource/montserrat";
+import "@fontsource/libre-baskerville";
+import "@fontsource/source-sans-pro";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 

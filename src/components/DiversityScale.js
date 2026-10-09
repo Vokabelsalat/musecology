@@ -259,7 +259,7 @@ export default function DiversityScale(props) {
     "ecoregions",
     "hexagons",
     "devider",
-    "orchestras",
+    // "orchestras",
     "protection"
   ];
 

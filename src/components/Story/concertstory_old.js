@@ -45,12 +45,7 @@ const concertContents = [
         of Lorem Ipsum.
       </>
     ),
-    image: {
-      url: "https://images.ctfassets.net/0i0zqigm38c2/3exNPrwEV0gT0hyEAsT5Nx/1e0403578281fff58b9e0bc16958b350/Gluck-Saal.jpg",
-      caption:
-        "Gluck-Saal im Opernhaus (Staatstheater Nürnberg/Matthias Dengler)",
-      width: "100%"
-    },
+
     flyTo: {
       // bearing: 90,
       // pitch: 40
@@ -359,12 +354,7 @@ const concertContents = [
         of Lorem Ipsum.
       </>
     ),
-    image: {
-      url: "https://images.ctfassets.net/0i0zqigm38c2/3exNPrwEV0gT0hyEAsT5Nx/1e0403578281fff58b9e0bc16958b350/Gluck-Saal.jpg",
-      caption:
-        "Gluck-Saal im Opernhaus (Staatstheater Nürnberg/Matthias Dengler)",
-      width: "100%"
-    },
+
     flyTo: {
       // bearing: 90,
       // pitch: 40
@@ -548,12 +538,7 @@ const concertContents = [
         of Lorem Ipsum.
       </>
     ),
-    image: {
-      url: "https://images.ctfassets.net/0i0zqigm38c2/3exNPrwEV0gT0hyEAsT5Nx/1e0403578281fff58b9e0bc16958b350/Gluck-Saal.jpg",
-      caption:
-        "Gluck-Saal im Opernhaus (Staatstheater Nürnberg/Matthias Dengler)",
-      width: "100%"
-    },
+
     flyTo: {
       // bearing: 90,
       // pitch: 40

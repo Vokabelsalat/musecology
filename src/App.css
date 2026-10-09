@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css?family=Great+Vibes");
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-
-@import url("https://fonts.googleapis.com/css?family=Libre+Baskerville");
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-
 :root {
   --main: rgba(45, 188, 233, 1);
   --highlight: rgba(251, 176, 59, 1);
