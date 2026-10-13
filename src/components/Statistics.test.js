@@ -1,0 +1,90 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+import Statistics from "./Statistics";
+
+jest.mock("../utils/timelineUtils", () => ({
+  iucnAssessment: { get: () => ({ getColor: () => "gray" }) }
+}));
+
+const stats = {
+  generated: "2026-10-13",
+  species: { total: 2, byKingdom: { Plantae: 2 }, byEcosystem: { T: 2 } },
+  map: {
+    countries: { total: 10, withSpecies: 4, withoutSpecies: 6 },
+    terrestrialEcoregions: { total: 5, withSpecies: 1, withoutSpecies: 4 },
+    marineEcoregions: { total: 3, withSpecies: 0, withoutSpecies: 3 },
+    hexagons: {
+      total: 100,
+      withSpecies: 7,
+      withoutSpecies: 93,
+      maxSpeciesPerHexagon: 1
+    }
+  },
+  coverage: {
+    countrySources: { treeCountries: 2 },
+    withCountries: 2,
+    withEcoregions: 1,
+    withHexagons: 1,
+    withEcoregionsAndHexagons: 1,
+    withoutEcoregionsAndHexagons: 1
+  },
+  speciesWithoutDistributionMap: [
+    {
+      name: "Abies nomapia",
+      kingdom: "Plantae",
+      family: "Pinaceae",
+      ecosystem: "T",
+      iucn: "EN",
+      origin: "",
+      countrySource: "treeCountries",
+      countries: 1
+    }
+  ],
+  unmatchedCountryValues: { GI: 1 },
+  unknownMapIds: {
+    terrestrialEcoregions: [],
+    marineEcoregions: [],
+    hexagons: 0
+  },
+  ecoregions: [
+    {
+      id: 1,
+      name: "Alpine forests",
+      type: "terrestrial",
+      realm: "Palearctic",
+      group: "Forests",
+      speciesCount: 1,
+      kingdoms: { Plantae: 1 },
+      iucn: { LC: 1 },
+      species: ["Abies alba"]
+    },
+    {
+      id: 2,
+      name: "Coral sea",
+      type: "marine",
+      realm: "Pacific",
+      group: "Reef",
+      speciesCount: 0,
+      kingdoms: {},
+      iucn: {},
+      species: []
+    }
+  ]
+};
+
+test("statistics page lists species without map and expands ecoregions", async () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ json: () => Promise.resolve(stats) })
+  );
+  render(<Statistics />);
+
+  expect(await screen.findByText("Abies nomapia")).toBeInTheDocument();
+  expect(screen.getByText("Terrestrial ecoregions", { selector: "div" })).toBeInTheDocument();
+  expect(screen.queryByText("Abies alba")).not.toBeInTheDocument();
+
+  fireEvent.click(screen.getByText(/Alpine forests/));
+  expect(screen.getByText("Abies alba")).toBeInTheDocument();
+
+  fireEvent.click(screen.getByLabelText("Only ecoregions without species"));
+  expect(screen.queryByText(/Alpine forests/)).not.toBeInTheDocument();
+  expect(screen.getByText(/Coral sea/)).toBeInTheDocument();
+});

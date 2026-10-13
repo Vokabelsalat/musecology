@@ -7,6 +7,7 @@ import ResizeComponent from "./components/ResizeComponent";
 import HomeNew from "./components/Home";
 import StoryEditor from "./components/StoryEditor";
 import StoryWrapper from "./components/StoryWrapper";
+import Statistics from "./components/Statistics";
 import Overlay from "./components/Overlay";
 import { OverlayProvider } from "./components/OverlayProvider";
 
@@ -90,6 +91,7 @@ function App() {
               element={<StoryWrapper sciebo={true} />}
             />
             <Route exact path="/stories/:storyId" element={<StoryWrapper />} />
+            <Route exact path="/statistics" element={<Statistics />} />
           </Routes>
           {/* <Route exact path="/timeline">
               <TimelineView />

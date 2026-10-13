@@ -32,7 +32,8 @@ Paths are relative to `data-fusing-and-crawling/` unless they start with `public
 | 4 | `fix-data` | `fixData.py` | `output/data_merged.json`, `level4.geojson`, `public/data/countryDictionary.json`, `downloaded-data/Reason for changing red list category_2007-2024.csv`, `downloaded-data/wcvp_names.csv`, `downloaded-data/wcvp_distribution.csv` | `public/data/data_merged.json`, `output/zero_ecos.json` |
 | 5 | `manual-countries` | `read_manual_country_import.py` | `public/data/data_merged.json`, `public/data/manualCountryImport.csv`, `public/data/countryDictionary.json` | `public/data/data_merged_manual.json` |
 | 6 | `filter` | `filter_data_merged_by_diss_list.py` | `public/data/data_merged_manual.json` | `public/data/data_merged_diss_filtered.json` |
-| 7 | `instrument-images` | `crawlInstrumentImages.py` | `downloaded-data/Database-musical_instruments-species.xlsx`, Wikipedia / Wikidata / Commons APIs | `public/data/instrument_images.json` |
+| 7 | `statistics` | `export_statistics.py` | `public/data/data_merged_diss_filtered.json`, `public/data/countryDictionary.json`, `public/data/UN_Worldmap.json`, `public/data/WWF_Terrestrial_Ecoregions2017.json`, `public/data/Marine_ecoregions.json`, `public/data/hexagons.json` | `public/data/statistics.json` |
+| 8 | `instrument-images` | `crawlInstrumentImages.py` | `downloaded-data/Database-musical_instruments-species.xlsx`, Wikipedia / Wikidata / Commons APIs | `public/data/instrument_images.json` |
 
 ### 1. Build species data (`start.py`)
 
@@ -73,7 +74,11 @@ Keeps species with `Domestication` = wild and a scientific name of at most two w
 
 Details: `docs/diss-species-filter-process.md`
 
-### 7. Instrument images (`crawlInstrumentImages.py`)
+### 7. Statistics (`export_statistics.py`)
+
+Computes the data coverage shown on the unlinked page `/statistics`: totals of countries, ecoregions and hexagons on the world map and how many of them contain species, species without ecoregion and hexagon map, per-ecoregion species lists with kingdom and IUCN breakdown, and country values or map IDs that cannot be matched to the map. Species are assigned to countries in the same way as in the frontend (first non-empty source of BGCI, IUCN, POWO, manual).
+
+### 8. Instrument images (`crawlInstrumentImages.py`)
 
 Crawls the top 3 Wikimedia Commons images for every instrument in the Excel sheet `Musical instrument parts to spe`. Already crawled instruments are kept, use `--refresh` when running the script on its own to crawl all again.
 
