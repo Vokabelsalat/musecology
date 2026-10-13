@@ -96,6 +96,7 @@ export const Content = (props) => {
             setInstrumentPart={vis.setInstrumentPart}
             showThreatDonuts={vis.showThreatDonuts}
             instrumentVideos={vis.instrumentVideos}
+            instrumentImages={vis.instrumentImages}
           />
         );
       case "timeline":

@@ -125,6 +125,7 @@ export default function HomeNew(props) {
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedEcoregion, setSelectedEcoregion] = useState();
   const [instrumentVideos, setInstrumentVideos] = useState();
+  const [instrumentImages, setInstrumentImages] = useState({});
 
   const [treeMapFilter, setTreeMapFilter] = useState({});
 
@@ -219,6 +220,15 @@ export default function HomeNew(props) {
       })
       .catch((error) => {
         console.log(`Couldn't find instrument_videos.json`, error);
+      });
+
+    fetch("/data/instrument_images.json")
+      .then((res) => res.json())
+      .then(function (instrumentImages) {
+        setInstrumentImages(instrumentImages);
+      })
+      .catch((error) => {
+        console.log(`Couldn't find instrument_images.json`, error);
       });
 
     fetch("/data/countryDictionary.json")
@@ -382,6 +392,7 @@ export default function HomeNew(props) {
                     instrumentPart={instrumentPart}
                     setInstrumentPart={setInstrumentPart}
                     instrumentVideos={instrumentVideos}
+                    instrumentImages={instrumentImages}
                     setHoveredSpecies={setOrchestraHover}
                   />
                 </ResizeComponent>

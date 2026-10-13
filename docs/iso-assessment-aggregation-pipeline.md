@@ -24,11 +24,11 @@ python3 data-fusing-and-crawling/export_latest_timelines_csv.py
 
 Input:
 
-- `public/data_merged.json`
+- `public/data/data_merged_diss_filtered.json`
 
 Output:
 
-- `public/data_merged_latest_timelines.csv`
+- `public/data/data_merged_latest_timelines.csv`
 
 What it does:
 
@@ -113,6 +113,6 @@ python3 data-fusing-and-crawling/export_iso_assessment_group_counts.py
 
 ## Notes
 
-- If `public/data_merged.json` changes, rerun all three steps in order.
+- If `public/data/data_merged_diss_filtered.json` changes, rerun all three steps in order.
 - Step 2 depends on Step 1 output.
 - Step 3 depends on Step 2 output.

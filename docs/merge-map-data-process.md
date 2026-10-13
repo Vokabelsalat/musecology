@@ -12,7 +12,7 @@ The script reads species data from `output/data_test.json`, looks up per-species
 
 ## Required Inputs
 
-Run the script from inside `data-fusing-and-crawling/` so relative paths resolve.
+Paths are resolved relative to `data-fusing-and-crawling/`. The `Species_*` folders are downloaded from sciebo by `download_sciebo_folder.py` (pipeline step `download-maps`).
 
 - Base species data:
   - `output/data_test.json`
@@ -53,8 +53,7 @@ The output is written with indentation and post-processed to replace `NaN` with 
 From project root:
 
 ```bash
-cd data-fusing-and-crawling
-python3 mergeMapData.py
+python3 data-fusing-and-crawling/mergeMapData.py
 ```
 
 ## Notes

@@ -8,7 +8,7 @@ This document describes how `data-fusing-and-crawling/start.py` works, which inp
 
 ## Required Inputs
 
-The script expects to be run from inside `data-fusing-and-crawling/` so relative paths resolve correctly.
+Paths are resolved relative to `data-fusing-and-crawling/`, so the script can be run from any directory.
 
 ### Mandatory input (as requested)
 
@@ -26,15 +26,17 @@ The script expects to be run from inside `data-fusing-and-crawling/` so relative
 
 ### Existing output used as input in some modes
 
-- `output/data.json` (required for `offline` and `mixed`)
+- `output/data.json` (required for `offline`, `mixed` and `local`)
 
 ## Mode Configuration
 
-Mode is configured in the source:
+Mode is passed as first command line argument (default: `local`):
 
-```python
-mode = "mixed"  # "offline" # "online" # "dry" # "mixed"
+```bash
+python3 data-fusing-and-crawling/start.py "dry online"
 ```
+
+When run via `run_pipeline.py`, use `--mode "dry online"`.
 
 The script checks mode via string containment (`if "offline" in mode`, etc.), so combinations work in one string, for example:
 
@@ -44,6 +46,7 @@ The script checks mode via string containment (`if "offline" in mode`, etc.), so
 - `"dry online"`
 - `"dry mixed"`
 - `"dry offline"`
+- `"local"`
 
 ## Mode Behavior
 
@@ -60,6 +63,11 @@ The script checks mode via string containment (`if "offline" in mode`, etc.), so
 - `mixed`:
   - Loads existing `output/data.json`
   - Also runs online crawling for missing species only
+
+- `local`:
+  - Re-reads all Excel data (species, photos, instrument parts)
+  - Takes crawled data (IUCN, BGCI, CITES, Wikipedia) from `output/data.json` instead of crawling
+  - Does not overwrite `output/data.json`
 
 - `dry`:
   - Can be combined with other modes
@@ -98,12 +106,12 @@ Depending on mode:
 From project root:
 
 ```bash
-cd data-fusing-and-crawling
-python3 start.py
+python3 data-fusing-and-crawling/start.py [MODE]
 ```
+
+Or as part of the full pipeline: `python3 data-fusing-and-crawling/run_pipeline.py` (see `docs/overall-data-processing-pipeline.md`).
 
 ## Notes
 
-- `mode` is currently hardcoded in `start.py` and must be edited manually before running.
 - If required input files are missing, the script will fail with file read errors.
 - API/network availability is required for `online`/`mixed`.

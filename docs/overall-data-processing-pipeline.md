@@ -2,206 +2,91 @@
 
 This document describes the full end-to-end data processing flow.
 
-## Scope
+## Run
 
-Core build pipeline:
+All steps are chained in one script, run from the project root:
 
-1. Start with Excel-based source data.
-2. Run `start.py` to build species data.
-3. Run `mergeMapData.py` to attach map-derived IDs.
-4. Copy merged data to `public/` for downstream scripts.
+```bash
+python3 data-fusing-and-crawling/run_pipeline.py
+```
 
-Downstream enrichment and reporting:
+Options:
 
-5. Optional manual country import.
-6. Optional Diss-list filter.
-7. Export latest timeline values per species to CSV.
-8. Merge latest timeline values into ISO -> species mapping.
-9. Aggregate grouped counts per ISO and export to CSV.
+- `--mode MODE`: mode passed to `start.py` (`local` by default, see `docs/start-pipeline-process.md`)
+- `--from STEP` / `--to STEP`: run only a range of steps, e.g. `--from merge-maps`
+- `--list`: list the step names
 
-## 0. Ground Source Data (Excel + helper files)
+For every step the script prints the command, the input files (`in`) before and the output files (`out`) after running, with their sizes. An output of one step reappears as `in` of a later step, which shows how the data is chained. The pipeline stops at the first failing step.
 
-The pipeline starts with the Excel workbook in:
+All scripts resolve their paths relative to their own location, so they can also be run individually from the project root, e.g. `python3 data-fusing-and-crawling/mergeMapData.py`.
 
-- `data-fusing-and-crawling/downloaded-data/Database-musical_instruments-species.xlsx`
+## Steps
 
-`start.py` also expects additional files in `data-fusing-and-crawling/downloaded-data/`:
+Paths are relative to `data-fusing-and-crawling/` unless they start with `public/`.
 
-- `wcvp_names.csv`
+| # | Step | Script | Input | Output |
+| --- | --- | --- | --- | --- |
+| 1 | `start` | `start.py` | `downloaded-data/Database-musical_instruments-species.xlsx`, `downloaded-data/wcvp_names.csv`, `output/data.json` (local/offline/mixed) | `output/data_test.json` (+ `output/data.json`, `output/photos.txt` in online/mixed) |
+| 2 | `download-maps` | `download_sciebo_folder.py` | sciebo share `/MusEcology/Maps` | `downloaded-data/` (incl. `Species_*` map folders) |
+| 3 | `merge-maps` | `mergeMapData.py` | `output/data_test.json`, `downloaded-data/Species_*/` | `output/data_merged.json` |
+| 4 | `fix-data` | `fixData.py` | `output/data_merged.json`, `level4.geojson`, `public/data/countryDictionary.json`, `downloaded-data/Reason for changing red list category_2007-2024.csv`, `downloaded-data/wcvp_names.csv`, `downloaded-data/wcvp_distribution.csv` | `public/data/data_merged.json`, `output/zero_ecos.json` |
+| 5 | `manual-countries` | `read_manual_country_import.py` | `public/data/data_merged.json`, `public/data/manualCountryImport.csv`, `public/data/countryDictionary.json` | `public/data/data_merged_manual.json` |
+| 6 | `filter` | `filter_data_merged_by_diss_list.py` | `public/data/data_merged_manual.json` | `public/data/data_merged_diss_filtered.json` |
+| 7 | `instrument-images` | `crawlInstrumentImages.py` | `downloaded-data/Database-musical_instruments-species.xlsx`, Wikipedia / Wikidata / Commons APIs | `public/data/instrument_images.json` |
 
-Required sheets in `Database-musical_instruments-species.xlsx`:
+### 1. Build species data (`start.py`)
+
+Reads the Excel workbook and, depending on the mode, crawls IUCN, BGCI, CITES and Wikipedia or reuses the crawled data from `output/data.json`. Required sheets in the workbook:
 
 - `Species-Material Fotos`
 - `Botanical species specifications`
 - `Musical instrument parts to spe`
 
-For exact requirements and mode behavior, see:
+Details: `docs/start-pipeline-process.md`
 
-- `docs/start-pipeline-process.md`
+### 2. Download map data from sciebo (`download_sciebo_folder.py`)
 
-## 1. Run `start.py`
+Downloads the public sciebo folder `/MusEcology/Maps` via WebDAV into `downloaded-data/`. Files that already exist locally are skipped, so delete a file to fetch a newer version. A different target folder can be passed as argument when running the script on its own.
 
-From project root:
+### 3. Merge map data (`mergeMapData.py`)
 
-```bash
-cd data-fusing-and-crawling
-python3 start.py
-```
+Adds map IDs (`terHexagons`, `marHexagons`, `terEcos`, `marEcos`, `bios`) from the per-species files in `downloaded-data/Species_*`.
 
-What this step produces (depending on mode):
+Details: `docs/merge-map-data-process.md`
 
-- `output/data.json`
-- `output/data_test.json` (main handoff file for map merge)
-- `output/photos.txt`
+### 4. Fix data (`fixData.py`)
 
-Important:
+- Maps outdated IUCN codes to current categories and adds the reason of change per assessment.
+- Normalizes `timeIUCN`, `timeThreat` and `timeListing` years.
+- Adds POWO distributions (`powo_areas_L3`, `powo_countries_L4`, `powoCountries`).
+- Writes species without any eco/hexagon data to `output/zero_ecos.json`.
 
-- Configure `mode` directly in `data-fusing-and-crawling/start.py`.
-- `offline`/`mixed` modes require existing `output/data.json`.
+### 5. Manual country import (`read_manual_country_import.py`)
 
-Detailed step documentation:
+Adds `manualCountries` from the curated CSV.
 
-- `docs/start-pipeline-process.md`
+Details: `docs/manual-country-import-process.md`
 
-## 2. Merge Map Data (`mergeMapData.py`)
+### 6. Species filter (`filter_data_merged_by_diss_list.py`)
 
-Run after `start.py` has produced `output/data_test.json`.
+Keeps species with `Domestication` = wild and a scientific name of at most two words.
 
-From project root:
+Details: `docs/diss-species-filter-process.md`
 
-```bash
-cd data-fusing-and-crawling
-python3 mergeMapData.py
-```
+### 7. Instrument images (`crawlInstrumentImages.py`)
 
-What this step does:
+Crawls the top 3 Wikimedia Commons images for every instrument in the Excel sheet `Musical instrument parts to spe`. Already crawled instruments are kept, use `--refresh` when running the script on its own to crawl all again.
 
-- Reads `output/data_test.json`
-- Looks up species map layer JSONs in `downloaded-data/Species_*`
-- Adds map ID arrays to each species entry
-- Writes `output/data_merged.json`
+Details: `docs/instrument-images-process.md`
 
-Detailed step documentation:
+## Reporting (not part of `run_pipeline.py`)
 
-- `docs/merge-map-data-process.md`
-
-## 3. Move Merged Output to `public/`
-
-Some downstream scripts expect the merged file in `public/data_merged.json`.
-
-Run:
-
-```bash
-cp data-fusing-and-crawling/output/data_merged.json public/data/data_merged.json
-```
-
-## 4. (Optional) Manual Country Import
-
-Adds `manualCountries` from curated CSV:
-
-```bash
-python3 data-fusing-and-crawling/read_manual_country_import.py
-```
-
-Details:
-
-- `docs/manual-country-import-process.md`
-
-## 5. (Optional) Diss Species Filter
-
-Filters merged data to species listed in the Diss CSV:
-
-```bash
-python3 data-fusing-and-crawling/filter_data_merged_by_diss_list.py
-```
-
-Details:
-
-- `docs/diss-species-filter-process.md`
-
-## 6. Export Latest Timeline Assessments per Species
-
-Create one CSV row per species with latest values from:
-
-- `timeIUCN` (latest by `year`)
-- `timeThreat` (latest by `assessmentYear`)
-- `timeListing` (latest by `year`)
-
-Run:
+Run after the pipeline when the ISO statistics are needed:
 
 ```bash
 python3 data-fusing-and-crawling/export_latest_timelines_csv.py
-```
-
-Input:
-
-- `public/data_merged.json`
-
-Output:
-
-- `public/data_merged_latest_timelines.csv`
-
-## 7. Merge Latest Assessments into ISO -> Species Mapping
-
-Replace species-name arrays by per-species assessment objects while keeping ISO keys.
-
-Run:
-
-```bash
 python3 data-fusing-and-crawling/merge_iso_species_latest_assessments.py
-```
-
-Inputs:
-
-- `public/isoToSpecies.json`
-- `public/data_merged_latest_timelines.csv`
-
-Output:
-
-- `public/isoToSpecies_with_latest_assessments.json`
-
-## 8. Group and Count Assessment Values per ISO
-
-Group and count, within each ISO, values of:
-
-- `timeIUCN_code`
-- `timeThreat_threatened`
-- `timeListing_appendix`
-
-Run:
-
-```bash
 python3 data-fusing-and-crawling/export_iso_assessment_group_counts.py
 ```
 
-Input:
-
-- `public/isoToSpecies_with_latest_assessments.json`
-
-Output:
-
-- `public/iso_assessment_group_counts.csv`
-
-## Quick Run Order
-
-Use this order for a fresh full run:
-
-1. Ensure Excel + required `downloaded-data` files are in place.
-2. `python3 data-fusing-and-crawling/start.py`
-3. `python3 data-fusing-and-crawling/mergeMapData.py`
-4. `cp data-fusing-and-crawling/output/data_merged.json public/data_merged.json`
-5. (Optional) `python3 data-fusing-and-crawling/read_manual_country_import.py`
-6. (Optional) `python3 data-fusing-and-crawling/filter_data_merged_by_diss_list.py`
-7. `python3 data-fusing-and-crawling/export_latest_timelines_csv.py`
-8. `python3 data-fusing-and-crawling/merge_iso_species_latest_assessments.py`
-9. `python3 data-fusing-and-crawling/export_iso_assessment_group_counts.py`
-
-- `
-cd data-fusing-and-crawling
-python3 start.py
-python3 mergeMapData.py
-python3 fixData.py
-cd ..
-python3 data-fusing-and-crawling/read_manual_country_import.py
-python3 data-fusing-and-crawling/filter_data_merged_by_diss_list.py
-`
+Details: `docs/iso-assessment-aggregation-pipeline.md`

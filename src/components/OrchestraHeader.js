@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import InstrumentPhotoCarousel from "./InstrumentPhotoCarousel";
 
 export default function OrchestraHeader(props) {
   const {
@@ -11,6 +12,7 @@ export default function OrchestraHeader(props) {
     setInstrument,
     setInstrumentPart,
     instrumentVideos,
+    instrumentImages = {},
     groupSpecies,
     instrumentSpecies,
     setHoveredSpecies
@@ -24,6 +26,22 @@ export default function OrchestraHeader(props) {
     }
     return null;
   }, [instrumentVideos, instrument]);
+
+  const photos = instrumentImages?.[instrument]?.images ?? [];
+  const hasVideos =
+    videos != null && Object.values(videos).some((v) => v != null);
+
+  const tabs = [
+    ...(photos.length > 0 ? ["Photos"] : []),
+    ...(hasVideos ? ["Videos"] : [])
+  ];
+  const [activeTab, setActiveTab] = useState(null);
+
+  useEffect(() => {
+    setActiveTab(null);
+  }, [instrument]);
+
+  const shownTab = tabs.includes(activeTab) ? activeTab : tabs[0];
 
   return (
     <>
@@ -102,33 +120,53 @@ export default function OrchestraHeader(props) {
           </div>
         )}
       </div>
-      {videos != null && (
+      {tabs.length > 0 && (
         <>
-          <div className="row-1 col-2 border-b">Videos</div>
+          <div className="row-1 col-2 border-b flex items-end gap-4 px-2">
+            {tabs.map((tab) => (
+              <div
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`cursor-pointer pb-1 ${
+                  tab === shownTab ? "font-bold" : ""
+                }`}
+                style={{
+                  borderBottom:
+                    tab === shownTab
+                      ? "2px solid var(--highlightpurple)"
+                      : "2px solid transparent"
+                }}
+              >
+                {tab}
+              </div>
+            ))}
+          </div>
           <div className="col-start-2 row-start-2 p-2">
-            {Object.entries(videos).map(([k, v]) => {
-              console.log("v", v);
-
-              if (v != null) {
-                return (
-                  <div>
-                    <div className="font-bold">{k}</div>
-                    <div className="pb-[56.25%] relative">
-                      <iframe
-                        className="absolute top-0 left-0 w-full h-full"
-                        src={v
-                          .replace("watch?v=", "embed/")
-                          .replace(
-                            "https://youtu.be/",
-                            "www.youtube-nocookie.com/embed/"
-                          )
-                          .replace("youtube.com/", "youtube-nocookie.com/")}
-                      ></iframe>
+            {shownTab === "Photos" && (
+              <InstrumentPhotoCarousel photos={photos} />
+            )}
+            {shownTab === "Videos" &&
+              Object.entries(videos).map(([k, v]) => {
+                if (v != null) {
+                  return (
+                    <div key={k}>
+                      <div className="font-bold">{k}</div>
+                      <div className="pb-[56.25%] relative">
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full"
+                          src={v
+                            .replace("watch?v=", "embed/")
+                            .replace(
+                              "https://youtu.be/",
+                              "www.youtube-nocookie.com/embed/"
+                            )
+                            .replace("youtube.com/", "youtube-nocookie.com/")}
+                        ></iframe>
+                      </div>
                     </div>
-                  </div>
-                );
-              }
-            })}
+                  );
+                }
+              })}
           </div>
         </>
       )}

@@ -33,6 +33,7 @@ export default function OrchestraNew(props) {
     setInstrumentPart,
     showThreatDonuts = true,
     instrumentVideos,
+    instrumentImages,
     setHoveredSpecies
   } = props;
 
@@ -280,11 +281,13 @@ export default function OrchestraNew(props) {
               setInstrument={setInstrument}
               setInstrumentPart={setInstrumentPart}
               instrumentVideos={instrumentVideos}
+              instrumentImages={instrumentImages}
               groupSpecies={groupSpecies}
               instrumentSpecies={instrumentSpecies}
               setHoveredSpecies={setHoveredSpecies}
             />
             <div
+              className="col-start-1 row-start-2"
               style={{
                 display: "grid",
                 padding: "5px"

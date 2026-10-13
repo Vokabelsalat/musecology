@@ -83,6 +83,7 @@ export default function Story(props) {
   const [countriesDictionary, setCountriesDictionary] = useState(null);
   const [orchestrasToISO3, setOrchestrasToISO3] = useState(null);
   const [instrumentVideos, setInstrumentVideos] = useState({});
+  const [instrumentImages, setInstrumentImages] = useState({});
 
   const mapRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -467,6 +468,15 @@ export default function Story(props) {
         console.log(`Couldn't find instrument_videos.json`, error);
       });
 
+    fetch("/data/instrument_images.json")
+      .then((res) => res.json())
+      .then(function (images) {
+        setInstrumentImages(images);
+      })
+      .catch((error) => {
+        console.log(`Couldn't find instrument_images.json`, error);
+      });
+
     fetch("/data/countryDictionary.json")
       .then((res) => res.json())
       .then(function (dictionary) {
@@ -838,6 +848,7 @@ export default function Story(props) {
                                     instrumentPart: instrumentPart,
                                     setInstrumentPart: setInstrumentPart,
                                     instrumentVideos: instrumentVideos,
+                                    instrumentImages: instrumentImages,
                                     getThreatLevel: getSpeciesSignThreat,
                                     imageLinks: imageLinks,
                                     dummyImageLinks: dummyImageLinks,
