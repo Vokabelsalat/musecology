@@ -16,7 +16,7 @@ const stats = {
       total: 100,
       withSpecies: 7,
       withoutSpecies: 93,
-      maxSpeciesPerHexagon: 1
+      maxSpecies: 1
     }
   },
   coverage: {
@@ -45,6 +45,24 @@ const stats = {
     marineEcoregions: [],
     hexagons: 0
   },
+  regionTotals: {
+    continents: { Europe: 5 },
+    terrestrialRealms: { Palearctic: 4 },
+    marineRealms: {}
+  },
+  instrumentFamilies: [
+    {
+      family: "Violin family",
+      speciesCount: 2,
+      countries: 3,
+      terrestrialEcoregions: 1,
+      marineEcoregions: 0,
+      hexagons: 7,
+      continents: { Europe: 3 },
+      terrestrialRealms: { Palearctic: 1 },
+      marineRealms: {}
+    }
+  ],
   ecoregions: [
     {
       id: 1,
@@ -78,11 +96,17 @@ test("statistics page lists species without map and expands ecoregions", async (
   render(<Statistics />);
 
   expect(await screen.findByText("Abies nomapia")).toBeInTheDocument();
-  expect(screen.getByText("Terrestrial ecoregions", { selector: "div" })).toBeInTheDocument();
+  expect(
+    screen.getByText("Terrestrial ecoregions", { selector: "div" })
+  ).toBeInTheDocument();
   expect(screen.queryByText("Abies alba")).not.toBeInTheDocument();
 
   fireEvent.click(screen.getByText(/Alpine forests/));
   expect(screen.getByText("Abies alba")).toBeInTheDocument();
+
+  fireEvent.click(screen.getByText(/Violin family/));
+  expect(screen.getByText("Countries per continent")).toBeInTheDocument();
+  expect(screen.getByText("1 / 4 ecoregions")).toBeInTheDocument();
 
   fireEvent.click(screen.getByLabelText("Only ecoregions without species"));
   expect(screen.queryByText(/Alpine forests/)).not.toBeInTheDocument();

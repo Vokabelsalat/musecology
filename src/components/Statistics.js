@@ -27,6 +27,18 @@ const iucnColor = (code) =>
 const percent = (value, total) =>
   total > 0 ? `${((value / total) * 100).toFixed(1)}%` : "–";
 
+function Toggle({ open, hidden = false }) {
+  return (
+    <span
+      className={`inline-block w-6 text-xl leading-none text-center align-middle transition-transform ${
+        open ? "rotate-90" : ""
+      } ${hidden ? "invisible" : ""}`}
+    >
+      ▸
+    </span>
+  );
+}
+
 function Section({ title, children }) {
   return (
     <section className="py-6 border-b">
@@ -91,7 +103,7 @@ function IucnBar({ counts, total }) {
   );
 }
 
-function MapTile({ title, value }) {
+function MapTile({ title, value, unit }) {
   return (
     <div className="border p-3">
       <div>{title}</div>
@@ -101,11 +113,10 @@ function MapTile({ title, value }) {
         {percent(value.withSpecies, value.total)}),{" "}
         {value.withoutSpecies.toLocaleString()} without
       </div>
-      {value.maxSpeciesPerHexagon != null && (
-        <div className="text-sm">
-          Max. {value.maxSpeciesPerHexagon} species in one hexagon
-        </div>
-      )}
+      <div className="text-sm">
+        Max. {value.maxSpecies} species in{" "}
+        {value.maxName != null ? value.maxName : `one ${unit}`}
+      </div>
     </div>
   );
 }
@@ -128,6 +139,135 @@ function CountTable({ title, counts, labels = {}, total }) {
           ))}
       </Table>
     </div>
+  );
+}
+
+function RegionList({ title, counts, totals, unit }) {
+  const entries = Object.entries(counts);
+  return (
+    <div>
+      <div className="font-bold pb-1">{title}</div>
+      {entries.length === 0 ? (
+        <div>None</div>
+      ) : (
+        entries.map(([region, count]) => (
+          <div key={region} className="flex justify-between gap-4">
+            <span>{region}</span>
+            <span className="tabular-nums whitespace-nowrap">
+              {count} / {totals[region] ?? "–"} {unit}
+            </span>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+function InstrumentFamilies({ families, totals, map }) {
+  const [sort, setSort] = useState({
+    column: "speciesCount",
+    descending: true
+  });
+  const [expanded, setExpanded] = useState(null);
+
+  const rows = useMemo(() => {
+    const direction = sort.descending ? -1 : 1;
+    return [...families].sort((a, b) => {
+      const x = a[sort.column];
+      const y = b[sort.column];
+      if (x === y) return a.family.localeCompare(b.family);
+      return (
+        (typeof x === "number" ? x - y : String(x).localeCompare(y)) * direction
+      );
+    });
+  }, [families, sort]);
+
+  const sortProps = { sort, setSort };
+  const share = (value, total) => (
+    <>
+      {value.toLocaleString()}{" "}
+      <span className="tabular-nums">({percent(value, total)})</span>
+    </>
+  );
+
+  return (
+    <Table
+      head={[
+        <SortHeader label="Instrument family" column="family" {...sortProps} />,
+        <SortHeader label="Species" column="speciesCount" {...sortProps} />,
+        <SortHeader label="Countries" column="countries" {...sortProps} />,
+        <SortHeader
+          label="Terrestrial ecoregions"
+          column="terrestrialEcoregions"
+          {...sortProps}
+        />,
+        <SortHeader
+          label="Marine ecoregions"
+          column="marineEcoregions"
+          {...sortProps}
+        />,
+        <SortHeader label="Hexagons" column="hexagons" {...sortProps} />
+      ]}
+    >
+      {rows.map((f) => {
+        const open = expanded === f.family;
+        return (
+          <Fragment key={f.family}>
+            <tr
+              className="border-b cursor-pointer hover:bg-gray-100"
+              onClick={() => setExpanded(open ? null : f.family)}
+            >
+              <td className="py-1 pr-4">
+                <Toggle open={open} />
+                {f.family}
+              </td>
+              <td className="py-1 pr-4 tabular-nums">{f.speciesCount}</td>
+              <td className="py-1 pr-4">
+                {share(f.countries, map.countries.total)}
+              </td>
+              <td className="py-1 pr-4">
+                {share(
+                  f.terrestrialEcoregions,
+                  map.terrestrialEcoregions.total
+                )}
+              </td>
+              <td className="py-1 pr-4">
+                {share(f.marineEcoregions, map.marineEcoregions.total)}
+              </td>
+              <td className="py-1 pr-4">
+                {share(f.hexagons, map.hexagons.total)}
+              </td>
+            </tr>
+            {open && (
+              <tr className="border-b">
+                <td colSpan={6} className="py-2">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <RegionList
+                      title="Countries per continent"
+                      counts={f.continents}
+                      totals={totals.continents}
+                      unit="countries"
+                    />
+                    <RegionList
+                      title="Terrestrial ecoregions per realm"
+                      counts={f.terrestrialRealms}
+                      totals={totals.terrestrialRealms}
+                      unit="ecoregions"
+                    />
+                    <RegionList
+                      title="Marine ecoregions per realm"
+                      counts={f.marineRealms}
+                      totals={totals.marineRealms}
+                      unit="ecoregions"
+                    />
+                  </div>
+                </td>
+              </tr>
+            )}
+          </Fragment>
+        );
+      })}
+    </Table>
   );
 }
 
@@ -217,7 +357,7 @@ function Ecoregions({ ecoregions }) {
                 }
               >
                 <td className="py-1 pr-4">
-                  {e.speciesCount > 0 ? (open ? "▾ " : "▸ ") : ""}
+                  <Toggle open={open} hidden={e.speciesCount === 0} />
                   {e.name}
                 </td>
                 <td className="py-1 pr-4">
@@ -284,16 +424,26 @@ export default function Statistics() {
 
         <Section title="World map">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <MapTile title="Countries" value={stats.map.countries} />
+            <MapTile
+              title="Countries"
+              unit="country"
+              value={stats.map.countries}
+            />
             <MapTile
               title="Terrestrial ecoregions"
+              unit="ecoregion"
               value={stats.map.terrestrialEcoregions}
             />
             <MapTile
               title="Marine ecoregions"
+              unit="ecoregion"
               value={stats.map.marineEcoregions}
             />
-            <MapTile title="Hexagons" value={stats.map.hexagons} />
+            <MapTile
+              title="Hexagons"
+              unit="hexagon"
+              value={stats.map.hexagons}
+            />
           </div>
         </Section>
 
@@ -366,8 +516,16 @@ export default function Statistics() {
           </Table>
         </Section>
 
-        <Section title="Ecoregions">
-          <Ecoregions ecoregions={stats.ecoregions} />
+        <Section title="Instrument families">
+          <div className="pb-3">
+            Areas in which at least one species used for the instrument family
+            occurs. Share in brackets refers to all areas on the world map.
+          </div>
+          <InstrumentFamilies
+            families={stats.instrumentFamilies ?? []}
+            totals={stats.regionTotals ?? {}}
+            map={stats.map}
+          />
         </Section>
 
         <Section title="Data issues">
@@ -416,6 +574,10 @@ export default function Statistics() {
               </Table>
             </div>
           </div>
+        </Section>
+
+        <Section title={`Ecoregions (${stats.ecoregions.length})`}>
+          <Ecoregions ecoregions={stats.ecoregions} />
         </Section>
       </div>
     </div>
