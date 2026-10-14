@@ -197,7 +197,7 @@ export const navbarOverlayContent = {
         texts: [],
         items: [
           "<b>MusEcology Instrument and Species Database</b>: Curated database linking orchestral instruments and their parts to the species used as materials, compiled by Silke Lichtenberg. <i>Lichtenberg, S., Nehren, U., Anhuf, D., Brémaud, I., de Oliveira Pinto, T., Fonseca-Kruel, V. S., … & Rosa, P. (2025). Protecting threatened species and music traditions. Frontiers in Ecology and the Environment, e2837. <a href='https://doi.org/10.1002/fee.2837'>https://doi.org/10.1002/fee.2837</a></i>",
-          "<b>Thünen Institute Wood Collection</b>: Photographs of wood samples from the scientific wood collection (Xylothek), including the wood collection of Dr. Wolfgang Mautz. <i>Thünen Institute of Wood Research, Hamburg, Germany. <a href='https://www.thuenen.de/de/thuenen-institut/verbundstrukturen/thuenen-kompetenzzentrum-holzherkuenfte/die-wissenschaftliche-holzsammlung-xylothek-1'>www.thuenen.de</a></i>",
+          "<b>Thünen Institute Wood Collection</b>: Photographs of  the wood collection of Dr. Wolfgang Mautz. <i>Thünen Institute of Wood Research, Hamburg, Germany. <a href='www.thuenen.de'>www.thuenen.de</a></i>",
           "<b>Instrument Videos</b>: Recordings of the instruments, selected manually and embedded from <a href='https://www.youtube.com'>YouTube</a>."
         ]
       },
