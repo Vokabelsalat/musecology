@@ -47,7 +47,7 @@ Details: `docs/start-pipeline-process.md`
 
 ### 2. Download map data from sciebo (`download_sciebo_folder.py`)
 
-Downloads the public sciebo folder `/MusEcology/Maps` via WebDAV into `downloaded-data/`. Files that already exist locally are skipped, so delete a file to fetch a newer version. A different target folder can be passed as argument when running the script on its own.
+Downloads the public sciebo folder `/MusEcology/Maps` via WebDAV into `downloaded-data/`. Files are only downloaded if they are missing locally or newer on sciebo, and get the modification time from sciebo, so `merge-maps` can pick the newest of a `.json`/`.geojson` pair. Local files with the same size whose timestamp is only shifted by whole hours (e.g. extracted from a zip) count as up to date and just get their timestamp synced. A different target folder can be passed as argument when running the script on its own.
 
 ### 3. Merge map data (`mergeMapData.py`)
 
