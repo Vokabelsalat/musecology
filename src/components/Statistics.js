@@ -271,6 +271,80 @@ function InstrumentFamilies({ families, totals, map }) {
   );
 }
 
+const MISSING_FILTERS = {
+  any: "Missing countries, ecoregions or hexagons",
+  countries: "Missing countries",
+  ecoregions: "Missing ecoregions",
+  hexagons: "Missing hexagons",
+  ecoregionsAndHexagons: "Missing ecoregions and hexagons"
+};
+
+function MissingDistribution({ species }) {
+  const [filter, setFilter] = useState("any");
+
+  const rows = species.filter((s) =>
+    filter === "any"
+      ? true
+      : filter === "ecoregionsAndHexagons"
+      ? s.missing.includes("ecoregions") && s.missing.includes("hexagons")
+      : s.missing.includes(filter)
+  );
+
+  return (
+    <>
+      <div className="flex flex-wrap items-center gap-4 pb-3">
+        <select
+          className="border px-2 py-1"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          {Object.entries(MISSING_FILTERS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <span>{rows.length} species</span>
+      </div>
+      <Table
+        head={[
+          "Species",
+          "Kingdom",
+          "Family",
+          "Ecosystem",
+          "IUCN",
+          "Countries",
+          "Ecoregions",
+          "Hexagons",
+          "Country source",
+          "Origin of distribution data"
+        ]}
+      >
+        {rows.map((s) => (
+          <tr key={s.name} className="border-b align-top">
+            <td className="py-1 pr-4 italic whitespace-nowrap">{s.name}</td>
+            <td className="py-1 pr-4">{s.kingdom}</td>
+            <td className="py-1 pr-4">{s.family}</td>
+            <td className="py-1 pr-4">
+              {ECOSYSTEMS[s.ecosystem] ?? s.ecosystem}
+            </td>
+            <td className="py-1 pr-4">{s.iucn}</td>
+            <td className="py-1 pr-4 tabular-nums">{s.countries}</td>
+            <td className="py-1 pr-4 tabular-nums">
+              {s.terrestrialEcoregions + s.marineEcoregions}
+            </td>
+            <td className="py-1 pr-4 tabular-nums">{s.hexagons}</td>
+            <td className="py-1 pr-4">
+              {COUNTRY_SOURCES[s.countrySource ?? "none"]}
+            </td>
+            <td className="py-1 pr-4 break-words max-w-xs">{s.origin}</td>
+          </tr>
+        ))}
+      </Table>
+    </>
+  );
+}
+
 function Ecoregions({ ecoregions }) {
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
@@ -458,6 +532,9 @@ export default function Statistics() {
                 "With hexagons": coverage.withHexagons,
                 "With ecoregions and hexagons":
                   coverage.withEcoregionsAndHexagons,
+                "Without countries": coverage.withoutCountries,
+                "Without ecoregions": coverage.withoutEcoregions,
+                "Without hexagons": coverage.withoutHexagons,
                 "Without ecoregions and hexagons":
                   coverage.withoutEcoregionsAndHexagons
               }}
@@ -483,37 +560,11 @@ export default function Statistics() {
         </Section>
 
         <Section
-          title={`Species without ecoregion or hexagon map (${stats.speciesWithoutDistributionMap.length})`}
+          title={`Species with missing distribution data (${stats.speciesWithMissingDistribution.length})`}
         >
-          <Table
-            head={[
-              "Species",
-              "Kingdom",
-              "Family",
-              "Ecosystem",
-              "IUCN",
-              "Countries",
-              "Country source",
-              "Origin of distribution data"
-            ]}
-          >
-            {stats.speciesWithoutDistributionMap.map((s) => (
-              <tr key={s.name} className="border-b align-top">
-                <td className="py-1 pr-4 italic whitespace-nowrap">{s.name}</td>
-                <td className="py-1 pr-4">{s.kingdom}</td>
-                <td className="py-1 pr-4">{s.family}</td>
-                <td className="py-1 pr-4">
-                  {ECOSYSTEMS[s.ecosystem] ?? s.ecosystem}
-                </td>
-                <td className="py-1 pr-4">{s.iucn}</td>
-                <td className="py-1 pr-4 tabular-nums">{s.countries}</td>
-                <td className="py-1 pr-4">
-                  {COUNTRY_SOURCES[s.countrySource ?? "none"]}
-                </td>
-                <td className="py-1 pr-4 break-words max-w-xs">{s.origin}</td>
-              </tr>
-            ))}
-          </Table>
+          <MissingDistribution
+            species={stats.speciesWithMissingDistribution}
+          />
         </Section>
 
         <Section title="Instrument families">
