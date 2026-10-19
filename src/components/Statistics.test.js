@@ -60,6 +60,20 @@ const stats = {
       missing: ["countries"]
     }
   ],
+  speciesWithEmptyMapFiles: [
+    {
+      name: "Diospyros emptyia",
+      kingdom: "Plantae",
+      family: "Ebenaceae",
+      ecosystem: "T",
+      files: [
+        {
+          layer: "Terrestrial hexagons",
+          file: "Species_terrestrial_hexagons/Diospyros_emptyia.json"
+        }
+      ]
+    }
+  ],
   unmatchedCountryValues: { GI: 1 },
   unknownMapIds: {
     terrestrialEcoregions: [],
@@ -118,6 +132,9 @@ test("statistics page lists species without map and expands ecoregions", async (
 
   expect(await screen.findByText("Abies nomapia")).toBeInTheDocument();
   expect(screen.getByText("Picea nocountria")).toBeInTheDocument();
+  expect(
+    screen.getByText("Species_terrestrial_hexagons/Diospyros_emptyia.json")
+  ).toBeInTheDocument();
   fireEvent.change(
     screen.getByDisplayValue("Missing countries, ecoregions or hexagons"),
     { target: { value: "countries" } }

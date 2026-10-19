@@ -76,7 +76,7 @@ Details: `docs/diss-species-filter-process.md`
 
 ### 7. Statistics (`export_statistics.py`)
 
-Computes the data coverage shown on the unlinked page `/statistics`: totals of countries, ecoregions and hexagons on the world map and how many of them contain species, species missing countries, ecoregions or hexagons (each listed separately), per-ecoregion species lists with kingdom and IUCN breakdown, countries, ecoregions and hexagons per instrument family (with continents and realms), and country values or map IDs that cannot be matched to the map. Species are assigned to countries in the same way as in the frontend (first non-empty source of BGCI, IUCN, POWO, manual).
+Computes the data coverage shown on the unlinked page `/statistics`: totals of countries, ecoregions and hexagons on the world map and how many of them contain species, species missing countries, ecoregions or hexagons (each listed separately), species whose per-species map file in `downloaded-data/Species_*` contains no features, per-ecoregion species lists with kingdom and IUCN breakdown, countries, ecoregions and hexagons per instrument family (with continents and realms), and country values or map IDs that cannot be matched to the map. Species are assigned to countries in the same way as in the frontend (first non-empty source of BGCI, IUCN, POWO, manual).
 
 ### 8. Instrument images (`crawlInstrumentImages.py`)
 

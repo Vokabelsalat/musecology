@@ -286,8 +286,8 @@ function MissingDistribution({ species }) {
     filter === "any"
       ? true
       : filter === "ecoregionsAndHexagons"
-      ? s.missing.includes("ecoregions") && s.missing.includes("hexagons")
-      : s.missing.includes(filter)
+        ? s.missing.includes("ecoregions") && s.missing.includes("hexagons")
+        : s.missing.includes(filter)
   );
 
   return (
@@ -562,9 +562,43 @@ export default function Statistics() {
         <Section
           title={`Species with missing distribution data (${stats.speciesWithMissingDistribution.length})`}
         >
-          <MissingDistribution
-            species={stats.speciesWithMissingDistribution}
-          />
+          <MissingDistribution species={stats.speciesWithMissingDistribution} />
+        </Section>
+
+        <Section
+          title={`Species with empty map files (${(stats.speciesWithEmptyMapFiles ?? []).length})`}
+        >
+          <div className="pb-3">
+            The map file of the species exists in the downloaded map data, but
+            contains no features.
+          </div>
+          <Table
+            head={[
+              "Species",
+              "Kingdom",
+              "Family",
+              "Ecosystem",
+              "Layer",
+              "File"
+            ]}
+          >
+            {(stats.speciesWithEmptyMapFiles ?? []).flatMap((s) =>
+              s.files.map((f) => (
+                <tr key={f.file} className="border-b align-top">
+                  <td className="py-1 pr-4 italic whitespace-nowrap">
+                    {s.name}
+                  </td>
+                  <td className="py-1 pr-4">{s.kingdom}</td>
+                  <td className="py-1 pr-4">{s.family}</td>
+                  <td className="py-1 pr-4">
+                    {ECOSYSTEMS[s.ecosystem] ?? s.ecosystem}
+                  </td>
+                  <td className="py-1 pr-4">{f.layer}</td>
+                  <td className="py-1 pr-4 break-all">{f.file}</td>
+                </tr>
+              ))
+            )}
+          </Table>
         </Section>
 
         <Section title="Instrument families">
