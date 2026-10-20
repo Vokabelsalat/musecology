@@ -98,6 +98,18 @@ const stats = {
       marineRealms: {}
     }
   ],
+  countries: [
+    {
+      id: "AUT",
+      name: "Austria",
+      type: "country",
+      continent: "Europe",
+      speciesCount: 1,
+      kingdoms: { Plantae: 1 },
+      iucn: { LC: 1 },
+      species: ["Picea abies"]
+    }
+  ],
   ecoregions: [
     {
       id: 1,
@@ -146,6 +158,9 @@ test("statistics page lists species without map and expands ecoregions", async (
   ).toBeInTheDocument();
   expect(screen.queryByText("Abies alba")).not.toBeInTheDocument();
 
+  fireEvent.click(screen.getByText(/Austria/));
+  expect(screen.getByText("Picea abies")).toBeInTheDocument();
+
   fireEvent.click(screen.getByText(/Alpine forests/));
   expect(screen.getByText("Abies alba")).toBeInTheDocument();
 
@@ -154,6 +169,34 @@ test("statistics page lists species without map and expands ecoregions", async (
   expect(screen.getByText("1 / 4 ecoregions")).toBeInTheDocument();
 
   fireEvent.click(screen.getByLabelText("Only ecoregions without species"));
+  expect(
+    screen.getByLabelText("Only countries without species")
+  ).toBeInTheDocument();
   expect(screen.queryByText(/Alpine forests/)).not.toBeInTheDocument();
   expect(screen.getByText(/Coral sea/)).toBeInTheDocument();
+});
+
+test("long statistics lists are paginated", async () => {
+  const countries = Array.from({ length: 60 }, (_, i) => ({
+    id: `C${String(i).padStart(2, "0")}`,
+    name: `Country ${String(i).padStart(2, "0")}`,
+    type: "country",
+    continent: "Europe",
+    speciesCount: 0,
+    kingdoms: {},
+    iucn: {},
+    species: []
+  }));
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ json: () => Promise.resolve({ ...stats, countries }) })
+  );
+  render(<Statistics />);
+
+  expect(await screen.findByText("Country 00")).toBeInTheDocument();
+  expect(screen.queryByText("Country 55")).not.toBeInTheDocument();
+  expect(screen.getByText(/Page 1 of 2/)).toBeInTheDocument();
+
+  fireEvent.click(screen.getByText("Next"));
+  expect(screen.getByText("Country 55")).toBeInTheDocument();
+  expect(screen.queryByText("Country 00")).not.toBeInTheDocument();
 });

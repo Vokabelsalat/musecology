@@ -12,7 +12,7 @@ Paths are resolved relative to `data-fusing-and-crawling/`, so the script can be
 
 ### Mandatory input (as requested)
 
-- `downloaded-data/Database-musical_instruments-species.xlsx`
+- `downloaded-data/Database-musical_instruments-species.xlsx`, downloaded from the sciebo share `/MusEcology` on every run (only if newer on sciebo; the local copy is used if the download fails)
 
 ### Additional required files from `downloaded-data/`
 

@@ -67,6 +67,51 @@ function Table({ head, children }) {
   );
 }
 
+const PAGE_SIZE = 50;
+
+function usePagination(rows) {
+  const [page, setPage] = useState(0);
+  const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  useEffect(() => setPage(0), [rows]);
+  const current = Math.min(page, pages - 1);
+  return {
+    pageRows: rows.slice(current * PAGE_SIZE, (current + 1) * PAGE_SIZE),
+    pagination: (
+      <Pagination
+        page={current}
+        pages={pages}
+        setPage={setPage}
+        total={rows.length}
+      />
+    )
+  };
+}
+
+function Pagination({ page, pages, setPage, total }) {
+  if (pages <= 1) return null;
+  const button = (label, target) => (
+    <button
+      className="border px-2 py-1 disabled:opacity-40 disabled:cursor-default"
+      disabled={target < 0 || target >= pages || target === page}
+      onClick={() => setPage(target)}
+    >
+      {label}
+    </button>
+  );
+  return (
+    <div className="flex flex-wrap items-center gap-2 pt-3">
+      {button("First", 0)}
+      {button("Previous", page - 1)}
+      <span className="px-2">
+        Page {page + 1} of {pages} ({page * PAGE_SIZE + 1}–
+        {Math.min((page + 1) * PAGE_SIZE, total)} of {total})
+      </span>
+      {button("Next", page + 1)}
+      {button("Last", pages - 1)}
+    </div>
+  );
+}
+
 function SortHeader({ label, column, sort, setSort }) {
   const active = sort.column === column;
   return (
@@ -282,13 +327,18 @@ const MISSING_FILTERS = {
 function MissingDistribution({ species }) {
   const [filter, setFilter] = useState("any");
 
-  const rows = species.filter((s) =>
-    filter === "any"
-      ? true
-      : filter === "ecoregionsAndHexagons"
-        ? s.missing.includes("ecoregions") && s.missing.includes("hexagons")
-        : s.missing.includes(filter)
+  const rows = useMemo(
+    () =>
+      species.filter((s) =>
+        filter === "any"
+          ? true
+          : filter === "ecoregionsAndHexagons"
+            ? s.missing.includes("ecoregions") && s.missing.includes("hexagons")
+            : s.missing.includes(filter)
+      ),
+    [species, filter]
   );
+  const { pageRows, pagination } = usePagination(rows);
 
   return (
     <>
@@ -320,7 +370,7 @@ function MissingDistribution({ species }) {
           "Origin of distribution data"
         ]}
       >
-        {rows.map((s) => (
+        {pageRows.map((s) => (
           <tr key={s.name} className="border-b align-top">
             <td className="py-1 pr-4 italic whitespace-nowrap">{s.name}</td>
             <td className="py-1 pr-4">{s.kingdom}</td>
@@ -341,11 +391,12 @@ function MissingDistribution({ species }) {
           </tr>
         ))}
       </Table>
+      {pagination}
     </>
   );
 }
 
-function Ecoregions({ ecoregions }) {
+function AreaTable({ areas, noun, columns, types, searchLabel }) {
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
   const [onlyEmpty, setOnlyEmpty] = useState(false);
@@ -357,12 +408,13 @@ function Ecoregions({ ecoregions }) {
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const filtered = ecoregions.filter(
+    const filtered = areas.filter(
       (e) =>
         (type === "all" || e.type === type) &&
         (!onlyEmpty || e.speciesCount === 0) &&
         (q === "" ||
           e.name.toLowerCase().includes(q) ||
+          String(e.id).toLowerCase().includes(q) ||
           e.species.some((s) => s.toLowerCase().includes(q)))
     );
     const direction = sort.descending ? -1 : 1;
@@ -374,25 +426,32 @@ function Ecoregions({ ecoregions }) {
         (typeof x === "number" ? x - y : String(x).localeCompare(y)) * direction
       );
     });
-  }, [ecoregions, type, query, onlyEmpty, sort]);
+  }, [areas, type, query, onlyEmpty, sort]);
 
+  const { pageRows, pagination } = usePagination(rows);
   const sortProps = { sort, setSort };
+  const colSpan = columns.length + 4;
 
   return (
     <>
       <div className="flex flex-wrap items-center gap-4 pb-3">
-        <select
-          className="border px-2 py-1"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        >
-          <option value="all">All ecoregions</option>
-          <option value="terrestrial">Terrestrial</option>
-          <option value="marine">Marine</option>
-        </select>
+        {types && (
+          <select
+            className="border px-2 py-1"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
+            <option value="all">All {noun}</option>
+            {Object.entries(types).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        )}
         <input
           className="border px-2 py-1 w-72 max-w-full"
-          placeholder="Search ecoregion or species"
+          placeholder={searchLabel}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
@@ -402,22 +461,23 @@ function Ecoregions({ ecoregions }) {
             checked={onlyEmpty}
             onChange={(e) => setOnlyEmpty(e.target.checked)}
           />
-          Only ecoregions without species
+          Only {noun} without species
         </label>
-        <span>{rows.length} ecoregions</span>
+        <span>
+          {rows.length} {noun}
+        </span>
       </div>
       <Table
         head={[
-          <SortHeader label="Ecoregion" column="name" {...sortProps} />,
-          <SortHeader label="Type" column="type" {...sortProps} />,
-          <SortHeader label="Realm" column="realm" {...sortProps} />,
-          <SortHeader label="Biome / Province" column="group" {...sortProps} />,
+          ...columns.map((c) => (
+            <SortHeader label={c.label} column={c.column} {...sortProps} />
+          )),
           <SortHeader label="Species" column="speciesCount" {...sortProps} />,
           "Plants / Animals",
           "IUCN (latest)"
         ]}
       >
-        {rows.map((e) => {
+        {pageRows.map((e) => {
           const key = `${e.type}-${e.id}`;
           const open = expanded === key;
           return (
@@ -430,15 +490,14 @@ function Ecoregions({ ecoregions }) {
                   e.speciesCount > 0 && setExpanded(open ? null : key)
                 }
               >
-                <td className="py-1 pr-4">
-                  <Toggle open={open} hidden={e.speciesCount === 0} />
-                  {e.name}
-                </td>
-                <td className="py-1 pr-4">
-                  {e.type === "terrestrial" ? "Terrestrial" : "Marine"}
-                </td>
-                <td className="py-1 pr-4">{e.realm}</td>
-                <td className="py-1 pr-4">{e.group}</td>
+                {columns.map((c, i) => (
+                  <td key={c.column} className="py-1 pr-4">
+                    {i === 0 && (
+                      <Toggle open={open} hidden={e.speciesCount === 0} />
+                    )}
+                    {c.render ? c.render(e) : e[c.column]}
+                  </td>
+                ))}
                 <td className="py-1 pr-4 tabular-nums">{e.speciesCount}</td>
                 <td className="py-1 pr-4 tabular-nums">
                   {e.kingdoms.Plantae ?? 0} / {e.kingdoms.Animalia ?? 0}
@@ -449,7 +508,7 @@ function Ecoregions({ ecoregions }) {
               </tr>
               {open && (
                 <tr className="border-b">
-                  <td colSpan={7} className="py-2">
+                  <td colSpan={colSpan} className="py-2">
                     <div className="columns-2 md:columns-4 gap-4 italic">
                       {e.species.map((s) => (
                         <div key={s}>{s}</div>
@@ -462,7 +521,44 @@ function Ecoregions({ ecoregions }) {
           );
         })}
       </Table>
+      {pagination}
     </>
+  );
+}
+
+const ECOREGION_TYPES = { terrestrial: "Terrestrial", marine: "Marine" };
+const ECOREGION_COLUMNS = [
+  { label: "Ecoregion", column: "name" },
+  { label: "Type", column: "type", render: (e) => ECOREGION_TYPES[e.type] },
+  { label: "Realm", column: "realm" },
+  { label: "Biome / Province", column: "group" }
+];
+const COUNTRY_COLUMNS = [
+  { label: "Country", column: "name" },
+  { label: "ISO3", column: "id" },
+  { label: "Continent", column: "continent" }
+];
+
+function Ecoregions({ ecoregions }) {
+  return (
+    <AreaTable
+      areas={ecoregions}
+      noun="ecoregions"
+      columns={ECOREGION_COLUMNS}
+      types={ECOREGION_TYPES}
+      searchLabel="Search ecoregion or species"
+    />
+  );
+}
+
+function Countries({ countries }) {
+  return (
+    <AreaTable
+      areas={countries}
+      noun="countries"
+      columns={COUNTRY_COLUMNS}
+      searchLabel="Search country or species"
+    />
   );
 }
 
@@ -659,6 +755,10 @@ export default function Statistics() {
               </Table>
             </div>
           </div>
+        </Section>
+
+        <Section title={`Countries (${(stats.countries ?? []).length})`}>
+          <Countries countries={stats.countries ?? []} />
         </Section>
 
         <Section title={`Ecoregions (${stats.ecoregions.length})`}>
